@@ -149,12 +149,17 @@ Init::
 	ldh a, [hCGB]
 	and a
 	jr z, .no_double_speed
-	call NormalSpeed
+	call DoubleSpeed
 .no_double_speed
 
 	xor a
 	ldh [rIF], a
+	ldh a, [hCGB]
+	and a
 	ld a, IE_DEFAULT
+	jr nz, .writeIE
+	ld a, %0001 ; only vblank
+.writeIE
 	ldh [rIE], a
 	ei
 
