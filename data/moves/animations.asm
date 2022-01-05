@@ -619,7 +619,7 @@ BattleAnim_EnemyDamage:
 	anim_wait 5
 	anim_bgeffect ANIM_BG_SHOW_MON, $0, BG_EFFECT_TARGET, $0
 	anim_wait 5
-	anim_loop 3, .loop
+	anim_loop 2, .loop
 	anim_ret
 
 BattleAnim_EnemyStatDown:
@@ -639,8 +639,8 @@ BattleAnim_PlayerStatDown:
 	anim_ret
 
 BattleAnim_PlayerDamage:
-	anim_bgeffect ANIM_BG_SHAKE_SCREEN_Y, $20, $2, $20
-	anim_wait 40
+	anim_bgeffect ANIM_BG_SHAKE_SCREEN_Y, $10, $2, $20
+	anim_wait 20
 	anim_ret
 
 BattleAnim_Wobble:

@@ -6,7 +6,7 @@ ShowLinkBattleParticipants:
 	ret z
 
 	farcall _ShowLinkBattleParticipants
-	ld c, 150
+	ld c, 40
 	call DelayFrames
 	call ClearTilemap
 	call ClearSprites

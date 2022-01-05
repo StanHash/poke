@@ -89,7 +89,7 @@ BattleCommand_Teleport:
 	call SetBattleDraw
 	call BattleCommand_LowerSub
 	call LoadMoveAnim
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 	call SetBattleDraw
 
