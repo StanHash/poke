@@ -1,37 +1,25 @@
-roms := pokecrystal.gbc pokecrystal11.gbc pokecrystal_au.gbc pokecrystal_debug.gbc pokecrystal11_debug.gbc
+rom := poke.gbc
 
 rom_obj := \
-audio.o \
-home.o \
-main.o \
-wram.o \
-data/text/common.o \
-data/maps/map_data.o \
-data/pokemon/dex_entries.o \
-data/pokemon/egg_moves.o \
-data/pokemon/evos_attacks.o \
-engine/movie/credits.o \
-engine/overworld/events.o \
-gfx/misc.o \
-gfx/pics.o \
-gfx/sprites.o \
-gfx/tilesets.o \
-lib/mobile/main.o
-
-pokecrystal_obj         := $(rom_obj:.o=.o)
-pokecrystal11_obj       := $(rom_obj:.o=11.o)
-pokecrystal_au_obj      := $(rom_obj:.o=_au.o)
-pokecrystal_debug_obj   := $(rom_obj:.o=_debug.o)
-pokecrystal11_debug_obj := $(rom_obj:.o=11_debug.o)
+  audio.o \
+  home.o \
+  main.o \
+  wram.o \
+  data/text/common.o \
+  data/maps/map_data.o \
+  data/pokemon/dex_entries.o \
+  data/pokemon/egg_moves.o \
+  data/pokemon/evos_attacks.o \
+  engine/movie/credits.o \
+  engine/overworld/events.o \
+  gfx/misc.o \
+  gfx/pics.o \
+  gfx/sprites.o \
+  gfx/tilesets.o \
+  lib/mobile/main.o
 
 
 ### Build tools
-
-ifeq (,$(shell which sha1sum))
-SHA1 := shasum
-else
-SHA1 := sha1sum
-endif
 
 RGBDS ?=
 RGBASM  ?= $(RGBDS)rgbasm
@@ -43,44 +31,26 @@ RGBLINK ?= $(RGBDS)rgblink
 ### Build targets
 
 .SUFFIXES:
-.PHONY: all crystal crystal11 crystal_au crystal_debug crystal11_debug clean tidy compare tools
+.PHONY: all clean tidy tools
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
 
-all: crystal
-crystal:         pokecrystal.gbc
-crystal11:       pokecrystal11.gbc
-crystal_au:      pokecrystal_au.gbc
-crystal_debug:   pokecrystal_debug.gbc
-crystal11_debug: pokecrystal11_debug.gbc
+all: $(rom)
 
 clean: tidy
 	find gfx \( -name "*.[12]bpp" -o -name "*.lz" -o -name "*.gbcpal" -o -name "*.sgb.tilemap" \) -delete
 	find gfx/pokemon -mindepth 1 ! -path "gfx/pokemon/unown/*" \( -name "bitmask.asm" -o -name "frames.asm" -o -name "front.animated.tilemap" -o -name "front.dimensions" \) -delete
 
 tidy:
-	rm -f $(roms) $(pokecrystal_obj) $(pokecrystal11_obj) $(pokecrystal_au_obj) $(pokecrystal_debug_obj) $(pokecrystal11_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
+	rm -f $(rom) $(rom_obj) $(rom:.gbc=.map) $(rom:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
-
-compare: $(roms)
-	@$(SHA1) -c roms.sha1
 
 tools:
 	$(MAKE) -C tools/
 
 
-RGBASMFLAGS = -L -Weverything -Wnumeric-string=2 -Wtruncation=1
-# Create a sym/map for debug purposes if `make` run with `DEBUG=1`
-ifeq ($(DEBUG),1)
-RGBASMFLAGS += -E
-endif
-
-$(pokecrystal_obj):         RGBASMFLAGS +=
-$(pokecrystal11_obj):       RGBASMFLAGS += -D _CRYSTAL11
-$(pokecrystal_au_obj):      RGBASMFLAGS += -D _CRYSTAL11 -D _CRYSTAL_AU
-$(pokecrystal_debug_obj):   RGBASMFLAGS += -D _DEBUG
-$(pokecrystal11_debug_obj): RGBASMFLAGS += -D _CRYSTAL11 -D _DEBUG
+RGBASMFLAGS = -L -Weverything -Wnumeric-string=2 -Wtruncation=1 -E
 
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -100,37 +70,19 @@ ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 
 # Dependencies for shared objects objects
-$(foreach obj, $(pokecrystal_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
-$(foreach obj, $(pokecrystal11_obj), $(eval $(call DEP,$(obj),$(obj:11.o=.asm))))
-$(foreach obj, $(pokecrystal_au_obj), $(eval $(call DEP,$(obj),$(obj:_au.o=.asm))))
-$(foreach obj, $(pokecrystal_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=.asm))))
-$(foreach obj, $(pokecrystal11_debug_obj), $(eval $(call DEP,$(obj),$(obj:11_debug.o=.asm))))
+$(foreach obj, $(rom_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
 
 endif
 
 
-pokecrystal_opt         = -Cjv -t PM_CRYSTAL -i BYTE -n 0 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokecrystal11_opt       = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokecrystal_au_opt      = -Cjv -t PM_CRYSTAL -i BYTU -n 0 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokecrystal_debug_opt   = -Cjv -t PM_CRYSTAL -i BYTE -n 0 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokecrystal11_debug_opt = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+rom_opt = -Cjv -t PM_CRYSTAL -i BYTE -n 0 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
 
-pokecrystal_base         = us
-pokecrystal11_base       = us
-pokecrystal_au_base      = us
-pokecrystal_debug_base   = dbg
-pokecrystal11_debug_base = dbg
-
-%.gbc: $$(%_obj) layout.link
-	$(RGBLINK) -n $*.sym -m $*.map -l layout.link -o $@ $(filter %.o,$^)
-	$(RGBFIX) $($*_opt) $@
-	tools/stadium --base $($*_base) $@
+$(rom): $(rom_obj) layout.link
+	$(RGBLINK) -n $(rom:.gbc=.sym) -m $(rom:.gbc=.map) -l layout.link -o $@ $(rom_obj)
+	$(RGBFIX) $(rom_opt) $@
 
 
 ### LZ compression rules
-
-# Delete this line if you don't care about matching and just want optimal compression.
-include gfx/lz.mk
 
 %.lz: %
 	tools/lzcomp $(LZFLAGS) -- $< $@
@@ -146,26 +98,6 @@ gfx/pokemon/%/bitmask.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/fr
 	tools/pokemon_animation -b $^ > $@
 gfx/pokemon/%/frames.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/front.dimensions
 	tools/pokemon_animation -f $^ > $@
-
-
-### Terrible hacks to match animations. Delete these rules if you don't care about matching.
-
-# Dewgong has an unused tile id in its last frame. The tile itself is missing.
-gfx/pokemon/dewgong/frames.asm: gfx/pokemon/dewgong/front.animated.tilemap gfx/pokemon/dewgong/front.dimensions
-	tools/pokemon_animation -f $^ > $@
-	echo "	db \$$4d" >> $@
-
-# Lugia has two unused tile ids in its last frame. The tiles themselves are missing.
-gfx/pokemon/lugia/frames.asm: gfx/pokemon/lugia/front.animated.tilemap gfx/pokemon/lugia/front.dimensions
-	tools/pokemon_animation -f $^ > $@
-	echo "	db \$$5e, \$$59" >> $@
-
-# Girafarig has a redundant tile after the end. It is used in two frames, so it must be injected into the generated graphics.
-# This is more involved, so it's hacked into pokemon_animation_graphics.
-gfx/pokemon/girafarig/front.animated.2bpp: gfx/pokemon/girafarig/front.2bpp gfx/pokemon/girafarig/front.dimensions
-	tools/pokemon_animation_graphics --girafarig -o $@ $^
-gfx/pokemon/girafarig/front.animated.tilemap: gfx/pokemon/girafarig/front.2bpp gfx/pokemon/girafarig/front.dimensions
-	tools/pokemon_animation_graphics --girafarig -t $@ $^
 
 
 ### Misc file-specific graphics rules
