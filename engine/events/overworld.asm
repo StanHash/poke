@@ -627,8 +627,7 @@ FlyFunction:
 	farcall RespawnPlayer
 	call DelayFrame
 	call UpdatePlayerSprite
-	farcall LoadOverworldFont
-	ret
+	jp LoadStandardFont
 
 WaterfallFunction:
 	call .TryWaterfall

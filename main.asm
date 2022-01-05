@@ -359,7 +359,6 @@ INCLUDE "data/phone/text/erin_overworld.asm"
 
 SECTION "bank2E", ROMX
 
-INCLUDE "engine/events/map_name_sign.asm"
 INCLUDE "engine/events/checkforhiddenitems.asm"
 INCLUDE "engine/events/treemons.asm"
 INCLUDE "engine/events/fishing_gfx.asm"
@@ -502,7 +501,6 @@ INCLUDE "engine/overworld/warp_connection.asm"
 INCLUDE "engine/link/mystery_gift.asm"
 INCLUDE "engine/battle/used_move_text.asm"
 INCLUDE "mobile/mobile_41.asm"
-INCLUDE "engine/gfx/load_overworld_font.asm"
 
 
 SECTION "mobile42", ROMX

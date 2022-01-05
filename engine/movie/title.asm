@@ -25,6 +25,8 @@ _TitleScreen:
 	ld hl, TitleSuicuneGFX
 	ld de, vTiles1
 	call Decompress
+	xor a
+	ld [hVramTiles1Kind], a
 
 ; Clear screen palettes
 	hlbgcoord 0, 0
@@ -92,6 +94,8 @@ _TitleScreen:
 	ld hl, TitleLogoGFX
 	ld de, vTiles1
 	call Decompress
+	xor a
+	ld [hVramTiles1Kind], a
 
 ; Decompress background crystal
 	ld hl, TitleCrystalGFX

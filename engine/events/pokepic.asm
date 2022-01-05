@@ -13,6 +13,8 @@ Pokepic::
 	call GetBaseData
 	ld de, vTiles1
 	predef GetMonFrontpic
+	xor a
+	ld [hVramTiles1Kind], a
 	ld a, [wMenuBorderTopCoord]
 	inc a
 	ld b, a

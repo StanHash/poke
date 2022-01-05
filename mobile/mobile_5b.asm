@@ -668,11 +668,12 @@ Function16cc02:
 	ret
 
 Function16cc18:
+	xor a
+	ld [hVramTiles1Kind], a
 	ld hl, vTiles1
 	ld de, MobileAdapterCheckGFX
 	lb bc, BANK(MobileAdapterCheckGFX), 46
-	call Get2bpp
-	ret
+	jp Get2bpp
 
 Function16cc25:
 	ld hl, Unknown_16cfa9

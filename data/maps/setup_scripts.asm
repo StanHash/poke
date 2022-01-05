@@ -86,7 +86,6 @@ MapSetupScript_Connection:
 	mapsetup LoadMapObjects
 	mapsetup FadeToMapMusic
 	mapsetup LoadMapPalettes
-	mapsetup InitMapNameSign
 	mapsetup ApplyMapPalettes
 	mapsetup LoadWildMonData
 	mapsetup UpdateRoamMons

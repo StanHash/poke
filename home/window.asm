@@ -39,9 +39,7 @@ CloseText::
 	ld a, $90
 	ldh [hWY], a
 	call UpdatePlayerSprite
-	farcall InitMapNameSign
-	farcall LoadOverworldFont
-	ret
+	jp ResetBGWindow
 
 OpenText::
 	call ClearWindowData

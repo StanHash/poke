@@ -176,3 +176,6 @@ endc
 hClockResetTrigger:: db
 
 hHasAlignedBGMap:: db
+
+; 0: anything not listed, 1: standard font
+hVramTiles1Kind:: db
