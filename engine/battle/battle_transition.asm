@@ -104,6 +104,8 @@ LoadTrainerBattlePokeballTiles:
 	ld b, BANK(TrainerBattlePokeballTiles)
 	ld c, 2
 	call Request2bpp
+	xor a
+	ld [hVramTiles1Kind], a
 
 	ldh a, [rVBK]
 	push af

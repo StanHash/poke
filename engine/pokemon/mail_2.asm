@@ -46,6 +46,8 @@ ReadAnyMail:
 	ld hl, vTiles1
 	lb bc, BANK(StandardEnglishFont), $80
 	call Get1bpp
+	xor a
+	ld [hVramTiles1Kind], a
 	pop de
 	call .LoadGFX
 	call EnableLCD

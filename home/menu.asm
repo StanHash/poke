@@ -826,3 +826,11 @@ InterpretMobileMenu:: ; unreferenced
 	farcall _InterpretMobileMenu
 	ld a, [wMenuCursorPosition]
 	ret
+
+ResetBGWindow::
+	xor a
+	ldh [hBGMapMode], a
+	ld a, $90
+	ldh [rWY], a
+	ldh [hWY], a
+	ret

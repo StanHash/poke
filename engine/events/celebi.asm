@@ -78,6 +78,8 @@ LoadCelebiGFX:
 	ld hl, vTiles1
 	lb bc, BANK(SpecialCelebiLeafGFX), 4
 	call Request2bpp
+	xor a
+	ld [hVramTiles1Kind], a
 	ld de, SpecialCelebiGFX
 	ld hl, vTiles0 tile SPECIALCELEBIEVENT_CELEBI
 	lb bc, BANK(SpecialCelebiGFX), 4 * 4
