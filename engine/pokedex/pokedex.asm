@@ -465,12 +465,8 @@ DexEntryScreen_MenuActionJumptable:
 
 .Cry:
 	call Pokedex_GetSelectedMon
-	ld a, [wTempSpecies]
-	call GetCryIndex
-	ld e, c
-	ld d, b
-	call PlayCry
-	ret
+	ld a, [wCurPartySpecies]
+	jp PlayMonCry
 
 .Print:
 	call Pokedex_ApplyPrintPals
