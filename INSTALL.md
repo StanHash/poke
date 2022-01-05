@@ -1,8 +1,6 @@
 # Instructions
 
-These instructions explain how to set up the tools required to build **pokecrystal**, including [**rgbds**](https://github.com/gbdev/rgbds), which assembles the source files into a ROM.
-
-If you run into trouble, ask for help on IRC or Discord (see [README.md](README.md)).
+These instructions explain how to set up the tools required to build this project (and most project based on **pokecrystal**), including [**rgbds**](https://github.com/gbdev/rgbds), which assembles the source files into a ROM.
 
 
 ## Windows 10
@@ -135,38 +133,28 @@ If your distro is not listed here, try to find the required software in its repo
 
 If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) to build **rgbds 0.5.2** from source.
 
-Now you're ready to [build **pokecrystal**](#build-pokecrystal).
+Now you're ready to [build the project](#build-the-project).
 
 
-## Build pokecrystal
+## Build the project
 
-To download the **pokecrystal** source files:
+To download the source files:
 
 ```bash
-git clone https://github.com/pret/pokecrystal
-cd pokecrystal
+git clone https://github.com/StanHash/poke
+cd poke
 ```
 
-To build **pokecrystal.gbc**:
+To build **poke.gbc**:
 
 ```bash
 make
 ```
 
-To build **pokecrystal11.gbc**:
-
-```bash
-make crystal11
-```
-
 ### Build with a local rgbds version
 
-If you have different projects that require different versions of `rgbds`, it might not be convenient to install rgbds 0.5.2 globally. Instead, you can put its files in a directory within pokecrystal, such as `pokecrystal/rgbds-0.5.2/`. Then specify it when you run `make`:
+If you have different projects that require different versions of `rgbds`, it might not be convenient to install rgbds 0.5.2 globally. Instead, you can put its files in a directory within the project, such as `poke/rgbds-0.5.2/`. Then specify it when you run `make`:
 
 ```bash
 make RGBDS=rgbds-0.5.2/
-```
-
-```bash
-make RGBDS=rgbds-0.5.2/ crystal11
 ```
