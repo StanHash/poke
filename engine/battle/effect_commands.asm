@@ -1657,14 +1657,14 @@ BattleCommand_CheckHit:
 	bit SUBSTATUS_PROTECT, a
 	ret z
 
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 ; 'protecting itself!'
 	ld hl, ProtectingItselfText
 	call StdBattleTextbox
 
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 	ld a, 1
@@ -2324,7 +2324,7 @@ BattleCommand_CriticalText:
 	ld [wCriticalHit], a
 
 .wait
-	ld c, 20
+	ld c, 5
 	jp DelayFrames
 
 .texts
@@ -5116,12 +5116,12 @@ BattleCommand_ForceSwitch:
 	ld a, $1
 	ld [wBattleAnimParam], a
 	call AnimateCurrentMove
-	ld c, $14
+	ld c, 5
 	call DelayFrames
 	hlcoord 1, 0
 	lb bc, 4, 10
 	call ClearBox
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 	ld a, [wOTPartyCount]
 	ld b, a
@@ -5211,12 +5211,12 @@ BattleCommand_ForceSwitch:
 	ld a, $1
 	ld [wBattleAnimParam], a
 	call AnimateCurrentMove
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 	hlcoord 9, 7
 	lb bc, 5, 11
 	call ClearBox
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 	ld a, [wPartyCount]
 	ld b, a
@@ -5264,7 +5264,7 @@ BattleCommand_ForceSwitch:
 	ld a, $1
 	ld [wBattleAnimParam], a
 	call AnimateCurrentMove
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 	pop af
 
@@ -5999,7 +5999,7 @@ BattleCommand_Paralyze:
 	jr nz, .failed
 	call CheckSubstituteOpp
 	jr nz, .failed
-	ld c, 30
+	ld c, 7
 	call DelayFrames
 	call AnimateCurrentMove
 	ld a, $1
@@ -6852,7 +6852,7 @@ AnimateFailedMove:
 BattleCommand_MoveDelay:
 ; movedelay
 ; Wait 40 frames.
-	ld c, 40
+	ld c, 10
 	jp DelayFrames
 
 BattleCommand_ClearText:

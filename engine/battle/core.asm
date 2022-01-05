@@ -42,7 +42,7 @@ DoBattle:
 	call EnemySwitch
 
 .wild
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 .player_2
@@ -1128,7 +1128,7 @@ ResidualDamage:
 
 .fainted
 	call RefreshBattleHuds
-	ld c, 20
+	ld c, 10
 	call DelayFrames
 	xor a
 	ret
@@ -2016,7 +2016,7 @@ HandleEnemyMonFaint:
 
 	ld a, $1
 	ldh [hBGMapMode], a
-	ld c, 60
+	ld c, 15
 	call DelayFrames
 
 	ld a, [wBattleMode]
@@ -2364,7 +2364,7 @@ WinTrainerBattle:
 	jr nz, .battle_tower
 
 	call BattleWinSlideInEnemyTrainerFrontpic
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 	ld a, [wBattleType]
@@ -2383,7 +2383,7 @@ WinTrainerBattle:
 
 .mobile
 	call BattleWinSlideInEnemyTrainerFrontpic
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 	ld c, $4 ; win
 	farcall Mobile_PrintOpponentBattleMessage
@@ -2391,7 +2391,7 @@ WinTrainerBattle:
 
 .battle_tower
 	call BattleWinSlideInEnemyTrainerFrontpic
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 	call EmptyBattleTextbox
 	ld c, BATTLETOWERTEXT_LOSS_TEXT
@@ -2921,7 +2921,7 @@ LostBattle:
 	call ClearBox
 	call BattleWinSlideInEnemyTrainerFrontpic
 
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 	ld a, [wDebugFlags]
@@ -2938,7 +2938,7 @@ LostBattle:
 	call ClearBox
 	call BattleWinSlideInEnemyTrainerFrontpic
 
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 	call EmptyBattleTextbox
@@ -2990,7 +2990,7 @@ LostBattle:
 	call ClearBox
 	call BattleWinSlideInEnemyTrainerFrontpic
 
-	ld c, 40
+	ld c, 10
 	call DelayFrames
 
 	ld c, $3 ; lost
@@ -4936,7 +4936,7 @@ LoadBattleMenu2:
 	jr nz, .error
 	ld hl, BattleText_LinkErrorBattleCanceled
 	call StdBattleTextbox
-	ld c, 60
+	ld c, 15
 	call DelayFrames
 .error
 	scf
@@ -5234,7 +5234,7 @@ EnemyMonEntrance:
 BattleMonEntrance:
 	call WithdrawMonText
 
-	ld c, 50
+	ld c, 12
 	call DelayFrames
 
 	ld hl, wPlayerSubStatus4
@@ -5268,7 +5268,7 @@ BattleMonEntrance:
 	ret
 
 PassedBattleMonEntrance:
-	ld c, 50
+	ld c, 12
 	call DelayFrames
 
 	hlcoord 9, 7
@@ -5764,7 +5764,7 @@ CheckPlayerHasUsableMoves:
 .force_struggle
 	ld hl, BattleText_MonHasNoMovesLeft
 	call StdBattleTextbox
-	ld c, 60
+	ld c, 15
 	call DelayFrames
 	xor a
 	ret
@@ -6538,7 +6538,7 @@ BattleWinSlideInEnemyTrainerFrontpic:
 
 	ld a, $1
 	ldh [hBGMapMode], a
-	ld c, 4
+	ld c, 3
 	call DelayFrames
 	pop hl
 	pop bc
@@ -6856,20 +6856,6 @@ _LoadBattleFontsHPBar:
 _LoadHPBar:
 	callfar LoadHPBar
 	ret
-
-LoadHPExpBarGFX: ; unreferenced
-	ld de, EnemyHPBarBorderGFX
-	ld hl, vTiles2 tile $6c
-	lb bc, BANK(EnemyHPBarBorderGFX), 4
-	call Get1bpp
-	ld de, HPExpBarBorderGFX
-	ld hl, vTiles2 tile $73
-	lb bc, BANK(HPExpBarBorderGFX), 6
-	call Get1bpp
-	ld de, ExpBarGFX
-	ld hl, vTiles2 tile $55
-	lb bc, BANK(ExpBarGFX), 8
-	jp Get2bpp
 
 EmptyBattleTextbox:
 	ld hl, .empty
@@ -7304,7 +7290,7 @@ GiveExperiencePoints:
 	hlcoord 11, 1
 	ld bc, 4
 	predef PrintTempMonStats
-	ld c, 30
+	ld c, 7
 	call DelayFrames
 	call WaitPressAorB_BlinkCursor
 	call SafeLoadTempTilemapToTilemap
@@ -7564,47 +7550,23 @@ AnimateExpBar:
 	call WaitSFX
 	ld de, SFX_EXP_BAR
 	call PlaySFX
-	ld c, 10
+	ld c, 2
 	call DelayFrames
 	pop bc
 	ret
 
 .LoopBarAnimation:
-	ld d, 3
 	dec b
 .anim_loop
 	inc b
 	push bc
-	push de
 	hlcoord 17, 11
 	call PlaceExpBar
-	pop de
 	ld a, $1
 	ldh [hBGMapMode], a
-	ld c, d
-	call DelayFrames
+	call DelayFrame
 	xor a
 	ldh [hBGMapMode], a
-	pop bc
-	ld a, c
-	cp b
-	jr z, .end_animation
-	inc b
-	push bc
-	push de
-	hlcoord 17, 11
-	call PlaceExpBar
-	pop de
-	ld a, $1
-	ldh [hBGMapMode], a
-	ld c, d
-	call DelayFrames
-	xor a
-	ldh [hBGMapMode], a
-	dec d
-	jr nz, .min_number_of_frames
-	ld d, 1
-.min_number_of_frames
 	pop bc
 	ld a, c
 	cp b
@@ -8269,7 +8231,7 @@ ExitBattle:
 	and a
 	jr z, .not_linked
 	call ShowLinkBattleParticipantsAfterEnd
-	ld c, 150
+	ld c, 40
 	call DelayFrames
 	call DisplayLinkBattleResult
 	ret
@@ -8401,7 +8363,7 @@ DisplayLinkBattleResult:
 	hlcoord 6, 8
 	call PlaceString
 	farcall BackupMobileEventIndex
-	ld c, 200
+	ld c, 50
 	call DelayFrames
 
 	ld a, BANK(sLinkBattleStats)
@@ -8419,7 +8381,7 @@ DisplayLinkBattleResult:
 	ret
 
 .mobile
-	ld c, 200
+	ld c, 50
 	call DelayFrames
 	call ClearTilemap
 	ret
@@ -8435,7 +8397,7 @@ DisplayLinkBattleResult:
 	hlcoord 6, 8
 	ld de, .InvalidBattle
 	call PlaceString
-	ld c, 200
+	ld c, 50
 	call DelayFrames
 	call ClearTilemap
 	ret
@@ -9072,7 +9034,7 @@ BattleStartMessage:
 	call PlaySFX
 	call WaitSFX
 
-	ld c, 20
+	ld c, 5
 	call DelayFrames
 
 	farcall Battle_GetTrainerName
