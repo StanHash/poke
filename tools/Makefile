@@ -9,8 +9,8 @@ tools := \
 	png_dimensions \
 	pokemon_animation \
 	pokemon_animation_graphics \
-	scan_includes \
-	stadium
+	scan_includes
+
 all: $(tools)
 	@:
 
@@ -22,7 +22,6 @@ png_dimensions: common.h
 pokemon_animation: common.h
 pokemon_animation_graphics: common.h
 scan_includes: common.h
-stadium: common.h
 
 lzcomp: CFLAGS = -O3 -flto -std=c11 -Wall -Wextra -pedantic -Wno-strict-overflow -Wno-sign-compare
 lzcomp: $(wildcard lz/*.c) $(wildcard lz/*.h)
