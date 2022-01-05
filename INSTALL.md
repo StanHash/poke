@@ -13,9 +13,9 @@ Update WSL's software before continuing. If you chose Debian, Ubuntu, or another
 apt-get update && apt-get upgrade
 ```
 
-WSL has its own file system that's not accessible from Windows, but Windows files *are* accessible from WSL. So you're going to want to install pokecrystal within Windows. You'll have to change the **current working directory** every time you open WSL.
+WSL has its own file system that's not accessible from Windows, but Windows files *are* accessible from WSL. So you're going to want to install the project within Windows. You'll have to change the **current working directory** every time you open WSL.
 
-For example, if you want to store pokecrystal in **C:\Users\\*\<user>*\Desktop**, enter this command:
+For example, if you want to store the project in **C:\Users\\*\<user>*\Desktop**, enter this command:
 
 ```bash
 cd /mnt/c/Users/<user>/Desktop
@@ -46,9 +46,9 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/windows)
 
 Now open the **Cygwin terminal** and enter the following commands.
 
-Cygwin has its own file system that's within Windows, at **C:\cygwin64\home\\*\<user>***. If you don't want to store pokecrystal there, you'll have to change the **current working directory** every time you open Cygwin.
+Cygwin has its own file system that's within Windows, at **C:\cygwin64\home\\*\<user>***. If you don't want to store the project there, you'll have to change the **current working directory** every time you open Cygwin.
 
-For example, if you want to store pokecrystal in **C:\Users\\*\<user>*\Desktop**:
+For example, if you want to store the project in **C:\Users\\*\<user>*\Desktop**:
 
 ```bash
 cd /cygdrive/c/Users/<user>/Desktop
@@ -56,7 +56,7 @@ cd /cygdrive/c/Users/<user>/Desktop
 
 (The Windows `C:\` drive is called `/cygdrive/c/` in Cygwin. Replace *\<user>* in the example path with your username.)
 
-Now you're ready to [build **pokecrystal**](#build-pokecrystal).
+Now you're ready to [build the project](#build-the-project).
 
 
 ## macOS
@@ -67,7 +67,7 @@ Open **Terminal** and prepare to enter commands.
 
 Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/macos) for macOS to install **rgbds 0.5.2**.
 
-Now you're ready to [build **pokecrystal**](#build-pokecrystal).
+Now you're ready to [build the project](#build-the-project).
 
 
 ## Linux
@@ -76,7 +76,7 @@ Open **Terminal** and enter the following commands, depending on which distro yo
 
 ### Debian or Ubuntu
 
-To install the software required for **pokecrystal**:
+To install the software required for the project:
 
 ```bash
 sudo apt-get install make gcc git
@@ -86,7 +86,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) 
 
 ### OpenSUSE
 
-To install the software required for **pokecrystal**:
+To install the software required for the project:
 
 ```bash
 sudo zypper install make gcc git
@@ -96,7 +96,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) 
 
 ### Arch Linux
 
-To install the software required for **pokecrystal**:
+To install the software required for the project:
 
 ```bash
 sudo pacman -S make gcc git rgbds
@@ -108,7 +108,7 @@ If you want to compile and install **rgbds** yourself instead, then follow the [
 
 ### Termux
 
-To install the software required for **pokecrystal**:
+To install the software required for the project:
 
 ```bash
 sudo apt install make clang git sed
