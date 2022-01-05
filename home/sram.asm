@@ -31,6 +31,7 @@ endc
 	ld [MBC3SRamEnable], a
 ; select sram bank
 	pop af
+	ldh [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ret
 

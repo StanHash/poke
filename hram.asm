@@ -175,4 +175,4 @@ hDebugRoomMenuPage::
 endc
 hClockResetTrigger:: db
 
-	ds 19
+hHasAlignedBGMap:: db

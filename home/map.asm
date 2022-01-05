@@ -591,9 +591,7 @@ ReadObjectEvents::
 	jr z, .skip
 	; jr c, .skip
 
-	; could have done "inc hl" instead
-	ld bc, 1
-	add hl, bc
+	inc hl
 ; Fill the remaining sprite IDs and y coords with 0 and -1, respectively.
 ; Bleeds into wObjectMasks due to a bug.  Uncomment the above code to fix.
 	ld bc, MAPOBJECT_LENGTH

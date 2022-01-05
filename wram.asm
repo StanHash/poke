@@ -1803,6 +1803,9 @@ wMinutesSince:: db
 wHoursSince:: db
 wDaysSince:: db
 
+; speedchoice ports
+wRequested1bppQuarters:: db
+wRequested2bppQuarters:: db
 
 SECTION "WRAM 1", WRAMX
 
@@ -3470,6 +3473,10 @@ NEXTU
 	ds $98
 w3_de00:: ds $200
 ENDU
+
+
+SECTION "Aligned Tile Map", WRAMX, ALIGN[8]
+wAlignedTileMap:: ds $400
 
 
 SECTION "GBC Video", WRAMX, ALIGN[8]
