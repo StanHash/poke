@@ -143,15 +143,6 @@ GetPocketCapacity:
 	ret z
 
 .not_bag
-	ld c, MAX_PC_ITEMS
-	ld a, e
-	cp LOW(wNumPCItems)
-	jr nz, .not_pc
-	ld a, d
-	cp HIGH(wNumPCItems)
-	ret z
-
-.not_pc
 	ld c, MAX_BALLS
 	ret
 

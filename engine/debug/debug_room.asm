@@ -1029,7 +1029,7 @@ DebugRoom_SaveItem:
 	cp c
 	jr z, .found
 	cp -1
-	jr z, .not_found
+	jr z, .done
 	inc hl
 	inc hl
 	jr .loop1
@@ -1046,22 +1046,6 @@ DebugRoom_SaveItem:
 	ld hl, .ItemNumberAddedText
 	jr .done
 
-.not_found
-	ld a, [sPlayerData + (wNumPCItems - wPlayerData)]
-	cp MAX_PC_ITEMS
-	jr nc, .full
-	inc a
-	ld [sPlayerData + (wNumPCItems - wPlayerData)], a
-	ld a, [wDebugRoomItemID]
-	ld [hli], a
-	ld a, [wDebugRoomItemQuantity]
-	ld [hli], a
-	ld [hl], -1 ; terminator
-	ld hl, .CreatedNewItemText
-	jr .done
-
-.full
-	ld hl, .StockFullText
 .done
 	call CloseSRAM
 	call MenuTextbox

@@ -2943,9 +2943,6 @@ wKeyItems:: ds MAX_KEY_ITEMS + 1
 wNumBalls:: db
 wBalls:: ds MAX_BALLS * 2 + 1
 
-wNumPCItems:: db
-wPCItems:: ds MAX_PC_ITEMS * 2 + 1
-
 wPokegearFlags::
 ; bit 0: map
 ; bit 1: radio

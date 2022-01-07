@@ -131,13 +131,10 @@ PC_CheckPartyForPokemon:
 
 	; PlayersPCMenuData.PlayersPCMenuPointers indexes
 	const_def
-	const PLAYERSPCITEM_WITHDRAW_ITEM ; 0
-	const PLAYERSPCITEM_DEPOSIT_ITEM  ; 1
-	const PLAYERSPCITEM_TOSS_ITEM     ; 2
-	const PLAYERSPCITEM_MAIL_BOX      ; 3
-	const PLAYERSPCITEM_DECORATION    ; 4
-	const PLAYERSPCITEM_LOG_OFF       ; 5
-	const PLAYERSPCITEM_TURN_OFF      ; 6
+	const PLAYERSPCITEM_MAIL_BOX      ; 0
+	const PLAYERSPCITEM_DECORATION    ; 1
+	const PLAYERSPCITEM_LOG_OFF       ; 2
+	const PLAYERSPCITEM_TURN_OFF      ; 3
 
 BillsPC:
 	call PC_PlayChoosePCSound
@@ -191,11 +188,6 @@ PC_PlayShutdownSound:
 PC_PlayChoosePCSound:
 	ld de, SFX_CHOOSE_PC_OPTION
 	jr PC_WaitPlaySFX
-
-PC_PlaySwapItemsSound:
-	ld de, SFX_SWITCH_POKEMON
-	call PC_WaitPlaySFX
-	ld de, SFX_SWITCH_POKEMON
 
 PC_WaitPlaySFX:
 	push de
@@ -273,17 +265,11 @@ PlayersPCMenuData:
 
 .PlayersPCMenuPointers:
 ; entries correspond to PLAYERSPCITEM_* constants
-	dw PlayerWithdrawItemMenu, .WithdrawItem
-	dw PlayerDepositItemMenu,  .DepositItem
-	dw PlayerTossItemMenu,     .TossItem
 	dw PlayerMailBoxMenu,      .MailBox
 	dw PlayerDecorationMenu,   .Decoration
 	dw PlayerLogOffMenu,       .LogOff
 	dw PlayerLogOffMenu,       .TurnOff
 
-.WithdrawItem: db "WITHDRAW ITEM@"
-.DepositItem:  db "DEPOSIT ITEM@"
-.TossItem:     db "TOSS ITEM@"
 .MailBox:      db "MAIL BOX@"
 .Decoration:   db "DECORATION@"
 .TurnOff:      db "TURN OFF@"
@@ -293,19 +279,13 @@ PlayersPCMenuData:
 ; entries correspond to PLAYERSPC_* constants
 
 	; PLAYERSPC_NORMAL
-	db 5
-	db PLAYERSPCITEM_WITHDRAW_ITEM
-	db PLAYERSPCITEM_DEPOSIT_ITEM
-	db PLAYERSPCITEM_TOSS_ITEM
+	db 2
 	db PLAYERSPCITEM_MAIL_BOX
 	db PLAYERSPCITEM_LOG_OFF
 	db -1 ; end
 
 	; PLAYERSPC_HOUSE
-	db 6
-	db PLAYERSPCITEM_WITHDRAW_ITEM
-	db PLAYERSPCITEM_DEPOSIT_ITEM
-	db PLAYERSPCITEM_TOSS_ITEM
+	db 3
 	db PLAYERSPCITEM_MAIL_BOX
 	db PLAYERSPCITEM_DECORATION
 	db PLAYERSPCITEM_TURN_OFF
@@ -325,97 +305,6 @@ PlayersPCAskWhatDoText:
 	text_far _PlayersPCAskWhatDoText
 	text_end
 
-PlayerWithdrawItemMenu:
-	call LoadStandardMenuHeader
-	farcall ClearPCItemScreen
-.loop
-	call PCItemsJoypad
-	jr c, .quit
-	call .Submenu
-	jr .loop
-
-.quit
-	call CloseSubmenu
-	xor a
-	ret
-
-.Submenu:
-	; check if the item has a quantity
-	farcall _CheckTossableItem
-	ld a, [wItemAttributeValue]
-	and a
-	jr z, .askquantity
-
-	; items without quantity are always ×1
-	ld a, 1
-	ld [wItemQuantityChange], a
-	jr .withdraw
-
-.askquantity
-	ld hl, .PlayersPCHowManyWithdrawText
-	call MenuTextbox
-	farcall SelectQuantityToToss
-	call ExitMenu
-	call ExitMenu
-	jr c, .done
-
-.withdraw
-	ld a, [wItemQuantityChange]
-	ld [wPCItemQuantityChange], a
-	ld a, [wCurItemQuantity]
-	ld [wPCItemQuantity], a
-	ld hl, wNumItems
-	call ReceiveItem
-	jr nc, .PackFull
-	ld a, [wPCItemQuantityChange]
-	ld [wItemQuantityChange], a
-	ld a, [wPCItemQuantity]
-	ld [wCurItemQuantity], a
-	ld hl, wNumPCItems
-	call TossItem
-	predef PartyMonItemName
-	ld hl, .PlayersPCWithdrewItemsText
-	call MenuTextbox
-	xor a
-	ldh [hBGMapMode], a
-	call ExitMenu
-	ret
-
-.PackFull:
-	ld hl, .PlayersPCNoRoomWithdrawText
-	call MenuTextboxBackup
-	ret
-
-.done
-	ret
-
-.PlayersPCHowManyWithdrawText:
-	text_far _PlayersPCHowManyWithdrawText
-	text_end
-
-.PlayersPCWithdrewItemsText:
-	text_far _PlayersPCWithdrewItemsText
-	text_end
-
-.PlayersPCNoRoomWithdrawText:
-	text_far _PlayersPCNoRoomWithdrawText
-	text_end
-
-PlayerTossItemMenu:
-	call LoadStandardMenuHeader
-	farcall ClearPCItemScreen
-.loop
-	call PCItemsJoypad
-	jr c, .quit
-	ld de, wNumPCItems
-	farcall TossItemFromPC
-	jr .loop
-
-.quit
-	call CloseSubmenu
-	xor a
-	ret
-
 PlayerDecorationMenu:
 	farcall _PlayerDecorationMenu
 	ld a, c
@@ -429,225 +318,10 @@ PlayerLogOffMenu:
 	scf
 	ret
 
-PlayerDepositItemMenu:
-	call .CheckItemsInBag
-	jr c, .nope
-	call DisableSpriteUpdates
-	call LoadStandardMenuHeader
-	farcall DepositSellInitPackBuffers
-.loop
-	farcall DepositSellPack
-	ld a, [wPackUsedItem]
-	and a
-	jr z, .close
-	call .TryDepositItem
-	farcall CheckRegisteredItem
-	jr .loop
-
-.close
-	call CloseSubmenu
-
-.nope
-	xor a
-	ret
-
-.CheckItemsInBag:
-	farcall HasNoItems
-	ret nc
-	ld hl, .PlayersPCNoItemsText
-	call MenuTextboxBackup
-	scf
-	ret
-
-.PlayersPCNoItemsText:
-	text_far _PlayersPCNoItemsText
-	text_end
-
-.TryDepositItem:
-	ld a, [wSpriteUpdatesEnabled]
-	push af
-	ld a, FALSE
-	ld [wSpriteUpdatesEnabled], a
-	farcall CheckItemMenu
-	ld a, [wItemAttributeValue]
-	ld hl, .dw
-	rst JumpTable
-	pop af
-	ld [wSpriteUpdatesEnabled], a
-	ret
-
-.dw
-; entries correspond to ITEMMENU_* constants
-	dw .tossable ; ITEMMENU_NOUSE
-	dw .no_toss
-	dw .no_toss
-	dw .no_toss
-	dw .tossable ; ITEMMENU_CURRENT
-	dw .tossable ; ITEMMENU_PARTY
-	dw .tossable ; ITEMMENU_CLOSE
-
-.no_toss
-	ret
-
-.tossable
-	ld a, [wPCItemQuantityChange]
-	push af
-	ld a, [wPCItemQuantity]
-	push af
-	call .DepositItem
-	pop af
-	ld [wPCItemQuantity], a
-	pop af
-	ld [wPCItemQuantityChange], a
-	ret
-
-.DepositItem:
-	farcall _CheckTossableItem
-	ld a, [wItemAttributeValue]
-	and a
-	jr z, .AskQuantity
-	ld a, 1
-	ld [wItemQuantityChange], a
-	jr .ContinueDeposit
-
-.AskQuantity:
-	ld hl, .PlayersPCHowManyDepositText
-	call MenuTextbox
-	farcall SelectQuantityToToss
-	push af
-	call ExitMenu
-	call ExitMenu
-	pop af
-	jr c, .DeclinedToDeposit
-
-.ContinueDeposit:
-	ld a, [wItemQuantityChange]
-	ld [wPCItemQuantityChange], a
-	ld a, [wCurItemQuantity]
-	ld [wPCItemQuantity], a
-	ld hl, wNumPCItems
-	call ReceiveItem
-	jr nc, .NoRoomInPC
-	ld a, [wPCItemQuantityChange]
-	ld [wItemQuantityChange], a
-	ld a, [wPCItemQuantity]
-	ld [wCurItemQuantity], a
-	ld hl, wNumItems
-	call TossItem
-	predef PartyMonItemName
-	ld hl, .PlayersPCDepositItemsText
-	call PrintText
-	ret
-
-.NoRoomInPC:
-	ld hl, .PlayersPCNoRoomDepositText
-	call PrintText
-	ret
-
-.DeclinedToDeposit:
-	and a
-	ret
-
-.PlayersPCHowManyDepositText:
-	text_far _PlayersPCHowManyDepositText
-	text_end
-
-.PlayersPCDepositItemsText:
-	text_far _PlayersPCDepositItemsText
-	text_end
-
-.PlayersPCNoRoomDepositText:
-	text_far _PlayersPCNoRoomDepositText
-	text_end
-
 PlayerMailBoxMenu:
 	farcall _PlayerMailBoxMenu
 	xor a
 	ret
-
-PCItemsJoypad:
-	xor a
-	ld [wSwitchItem], a
-.loop
-	ld a, [wSpriteUpdatesEnabled]
-	push af
-	ld a, FALSE
-	ld [wSpriteUpdatesEnabled], a
-	ld hl, .PCItemsMenuData
-	call CopyMenuHeader
-	hlcoord 0, 0
-	ld b, 10
-	ld c, 18
-	call Textbox
-	ld a, [wPCItemsCursor]
-	ld [wMenuCursorPosition], a
-	ld a, [wPCItemsScrollPosition]
-	ld [wMenuScrollPosition], a
-	call ScrollingMenu
-	ld a, [wMenuScrollPosition]
-	ld [wPCItemsScrollPosition], a
-	ld a, [wMenuCursorY]
-	ld [wPCItemsCursor], a
-	pop af
-	ld [wSpriteUpdatesEnabled], a
-	ld a, [wSwitchItem]
-	and a
-	jr nz, .moving_stuff_around
-	ld a, [wMenuJoypad]
-	cp B_BUTTON
-	jr z, .b_1
-	cp A_BUTTON
-	jr z, .a_1
-	cp SELECT
-	jr z, .select_1
-	jr .next
-
-.moving_stuff_around
-	ld a, [wMenuJoypad]
-	cp B_BUTTON
-	jr z, .b_2
-	cp A_BUTTON
-	jr z, .a_select_2
-	cp SELECT
-	jr z, .a_select_2
-	jr .next
-
-.b_2
-	xor a
-	ld [wSwitchItem], a
-	jr .next
-
-.a_select_2
-	call PC_PlaySwapItemsSound
-.select_1
-	farcall SwitchItemsInBag
-.next
-	jp .loop
-
-.a_1
-	farcall ScrollingMenu_ClearLeftColumn
-	call PlaceHollowCursor
-	and a
-	ret
-
-.b_1
-	scf
-	ret
-
-.PCItemsMenuData:
-	db MENU_BACKUP_TILES ; flags
-	menu_coords 4, 1, 18, 10
-	dw .MenuData
-	db 1 ; default option
-
-.MenuData:
-	db SCROLLINGMENU_ENABLE_SELECT | SCROLLINGMENU_ENABLE_FUNCTION3 | SCROLLINGMENU_DISPLAY_ARROWS ; flags
-	db 4, 8 ; rows, columns
-	db SCROLLINGMENU_ITEMS_QUANTITY ; item format
-	dbw 0, wNumPCItems
-	dba PlaceMenuItemName
-	dba PlaceMenuItemQuantity
-	dba UpdateItemDescription
 
 PC_DisplayText:
 	call MenuTextbox
