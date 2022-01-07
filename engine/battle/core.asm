@@ -3476,7 +3476,7 @@ LoadEnemyMonToSwitchTo:
 	ld a, [wFirstUnownSeen]
 	and a
 	jr nz, .skip_unown
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	predef GetUnownLetter
 	ld a, [wUnownLetter]
 	ld [wFirstUnownSeen], a
@@ -3900,10 +3900,10 @@ InitBattleMon:
 	ld de, wBattleMonSpecies
 	ld bc, MON_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_ID
+	ld bc, MON_PERSONALITY - MON_ID
 	add hl, bc
-	ld de, wBattleMonDVs
-	ld bc, MON_POKERUS - MON_DVS
+	ld de, wBattleMonPersonality
+	ld bc, MON_POKERUS - MON_PERSONALITY
 	call CopyBytes
 	inc hl
 	inc hl
@@ -3935,11 +3935,11 @@ InitBattleMon:
 	ret
 
 BattleCheckPlayerShininess:
-	call GetPartyMonDVs
+	call GetPartyMonPersonality
 	jr BattleCheckShininess
 
 BattleCheckEnemyShininess:
-	call GetEnemyMonDVs
+	call GetEnemyMonPersonality
 
 BattleCheckShininess:
 	ld b, h
@@ -3947,25 +3947,25 @@ BattleCheckShininess:
 	callfar CheckShininess
 	ret
 
-GetPartyMonDVs:
-	ld hl, wBattleMonDVs
+GetPartyMonPersonality:
+	ld hl, wBattleMonPersonality
 	ld a, [wPlayerSubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	ret z
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld a, [wCurBattleMon]
 	jp GetPartyLocation
 
-GetEnemyMonDVs:
-	ld hl, wEnemyMonDVs
+GetEnemyMonPersonality:
+	ld hl, wEnemyMonPersonality
 	ld a, [wEnemySubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	ret z
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupPersonality
 	ld a, [wBattleMode]
 	dec a
 	ret z
-	ld hl, wOTPartyMon1DVs
+	ld hl, wOTPartyMon1Personality
 	ld a, [wCurOTMon]
 	jp GetPartyLocation
 
@@ -3986,10 +3986,10 @@ InitEnemyMon:
 	ld de, wEnemyMonSpecies
 	ld bc, MON_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_ID
+	ld bc, MON_PERSONALITY - MON_ID
 	add hl, bc
-	ld de, wEnemyMonDVs
-	ld bc, MON_POKERUS - MON_DVS
+	ld de, wEnemyMonPersonality
+	ld bc, MON_POKERUS - MON_PERSONALITY
 	call CopyBytes
 	inc hl
 	inc hl
@@ -4053,7 +4053,7 @@ SwitchPlayerMon:
 	ret
 
 SendOutPlayerMon:
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonPersonality
 	predef GetUnownLetter
 	hlcoord 1, 5
 	ld b, 7
@@ -4692,9 +4692,9 @@ PrintPlayerHUD:
 	push bc
 
 	ld a, [wCurBattleMon]
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	call GetPartyLocation
-	ld de, wTempMonDVs
+	ld de, wTempMonPersonality
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -4778,12 +4778,12 @@ DrawEnemyHUD:
 	ld l, c
 	dec hl
 
-	ld hl, wEnemyMonDVs
-	ld de, wTempMonDVs
+	ld hl, wEnemyMonPersonality
+	ld de, wTempMonPersonality
 	ld a, [wEnemySubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	jr z, .ok
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupPersonality
 .ok
 	ld a, [hli]
 	ld [de], a
@@ -6078,8 +6078,8 @@ LoadEnemyMon:
 	jr z, .InitDVs
 
 ; Unknown
-	ld hl, wEnemyBackupDVs
-	ld de, wEnemyMonDVs
+	ld hl, wEnemyBackupPersonality
+	ld de, wEnemyMonPersonality
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -6161,7 +6161,7 @@ LoadEnemyMon:
 
 .UpdateDVs:
 ; Input DVs in register bc
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	ld a, b
 	ld [hli], a
 	ld [hl], c
@@ -6179,7 +6179,7 @@ LoadEnemyMon:
 	jr nz, .Magikarp
 
 ; Get letter based on DVs
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	predef GetUnownLetter
 ; Can't use any letters that haven't been unlocked
 ; If combined with forced shiny battletype, causes an infinite loop
@@ -6200,7 +6200,7 @@ LoadEnemyMon:
 	jr nz, .Happiness
 
 ; Get Magikarp's length
-	ld de, wEnemyMonDVs
+	ld de, wEnemyMonPersonality
 	ld bc, wPlayerID
 	callfar CalcMagikarpLength
 
@@ -6255,7 +6255,7 @@ LoadEnemyMon:
 ; Fill stats
 	ld de, wEnemyMonMaxHP
 	ld b, FALSE
-	ld hl, wEnemyMonDVs - (MON_DVS - MON_STAT_EXP + 1)
+	ld hl, wEnemyMonPersonality - (MON_PERSONALITY - MON_STAT_EXP + 1)
 	predef CalcMonStats
 
 ; If we're in a trainer battle,
@@ -7955,7 +7955,7 @@ DropPlayerSub:
 	push af
 	ld a, [wBattleMonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonPersonality
 	predef GetUnownLetter
 	ld de, vTiles2 tile $31
 	predef GetMonBackpic
@@ -7992,7 +7992,7 @@ DropEnemySub:
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
 	call GetBaseData
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	predef GetUnownLetter
 	ld de, vTiles2
 	predef GetAnimatedFrontpic
@@ -8180,7 +8180,7 @@ InitEnemyWildmon:
 	ld de, wWildMonPP
 	ld bc, NUM_MOVES
 	call CopyBytes
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	predef GetUnownLetter
 	ld a, [wCurPartySpecies]
 	cp UNOWN

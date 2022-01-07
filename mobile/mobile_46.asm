@@ -7319,11 +7319,11 @@ Function11b7e5:
 	ld [wOTTrademonID], a
 	ld a, [$c60d + MON_ID + 1]
 	ld [wOTTrademonID + 1], a
-	ld hl, $c60d + MON_DVS ; dvs
+	ld hl, $c60d + MON_PERSONALITY ; dvs
 	ld a, [hli]
-	ld [wOTTrademonDVs], a
+	ld [wOTTrademonPersonality], a
 	ld a, [hl]
-	ld [wOTTrademonDVs + 1], a
+	ld [wOTTrademonPersonality + 1], a
 	ld bc, $c60d ; pokemon_data_start
 	farcall GetCaughtGender
 	ld a, c

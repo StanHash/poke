@@ -59,8 +59,8 @@ _UnownPrinter:
 	ld a, UNOWN
 	ld [wCurPartySpecies], a
 	xor a
-	ld [wTempMonDVs], a
-	ld [wTempMonDVs + 1], a
+	ld [wTempMonPersonality], a
+	ld [wTempMonPersonality + 1], a
 
 	ld b, SCGB_TRAINER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout

@@ -1,12 +1,12 @@
 HiddenPowerDamage:
 ; Override Hidden Power's type and power based on the user's DVs.
 
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonPersonality
 	ldh a, [hBattleTurn]
 	and a
-	jr z, .got_dvs
-	ld hl, wEnemyMonDVs
-.got_dvs
+	jr z, .got_personality
+	ld hl, wEnemyMonPersonality
+.got_personality
 
 ; Power:
 

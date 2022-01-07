@@ -203,11 +203,11 @@ RunTradeAnimScript:
 	call EnableLCD
 	call LoadTradeBallAndCableGFX
 	ld a, [wPlayerTrademonSpecies]
-	ld hl, wPlayerTrademonDVs
+	ld hl, wPlayerTrademonPersonality
 	ld de, vTiles0
 	call TradeAnim_GetFrontpic
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles0 tile $31
 	call TradeAnim_GetFrontpic
 	ld a, [wPlayerTrademonSpecies]
@@ -763,10 +763,10 @@ TradeAnim_ShowGivemonData:
 	call ShowPlayerTrademonStats
 	ld a, [wPlayerTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wPlayerTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wPlayerTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wPlayerTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wPlayerTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
@@ -788,10 +788,10 @@ TradeAnim_ShowGetmonData:
 	call ShowOTTrademonStats
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wOTTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wOTTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wOTTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wOTTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0

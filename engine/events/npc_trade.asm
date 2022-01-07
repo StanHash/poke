@@ -148,10 +148,10 @@ DoNPCTrade:
 	ld de, wPlayerTrademonID
 	call Trade_CopyTwoBytes
 
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call Trade_GetAttributeOfCurrentPartymon
-	ld de, wPlayerTrademonDVs
+	ld de, wPlayerTrademonPersonality
 	call Trade_CopyTwoBytes
 
 	ld hl, wPartyMon1Species
@@ -224,13 +224,13 @@ DoNPCTrade:
 
 	ld e, NPCTRADE_DVS
 	call GetTradeAttr
-	ld de, wOTTrademonDVs
+	ld de, wOTTrademonPersonality
 	call Trade_CopyTwoBytes
 
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call Trade_GetAttributeOfLastPartymon
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	call Trade_CopyTwoBytes
 
 	ld e, NPCTRADE_OT_ID

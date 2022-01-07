@@ -83,7 +83,7 @@ MON_ATK_EXP            rw
 MON_DEF_EXP            rw
 MON_SPD_EXP            rw
 MON_SPC_EXP            rw
-MON_DVS                rw
+MON_PERSONALITY        rw
 MON_PP                 rb NUM_MOVES
 MON_HAPPINESS          rb
 MON_POKERUS            rb

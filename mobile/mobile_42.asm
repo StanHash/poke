@@ -197,12 +197,12 @@ Function1080b7:
 	ld [hl], $00
 
 	ld a, [wPlayerTrademonSpecies]
-	ld hl, wPlayerTrademonDVs
+	ld hl, wPlayerTrademonPersonality
 	ld de, vTiles0 tile $30
 	call MobileTradeAnim_GetFrontpic
 
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles2 tile $31
 	call MobileTradeAnim_GetFrontpic
 
@@ -461,10 +461,10 @@ MobileTradeAnim_ShowPlayerMonToBeSent:
 	ld a, [wPlayerTrademonSpecies]
 	ld [wCurPartySpecies], a
 	call Function10895e
-	ld a, [wPlayerTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wPlayerTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wPlayerTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wPlayerTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
@@ -520,7 +520,7 @@ MobileTradeAnim_ShowOTMonFromTrade:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -553,10 +553,10 @@ MobileTradeAnim_ShowOTMonFromTrade:
 	ldh [hWY], a
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wOTTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wOTTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wOTTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wOTTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
@@ -583,7 +583,7 @@ MobileTradeAnim_ShowPlayerMonForGTS:
 	call MobileTradeAnim_DisplayMonToBeSent
 	ld a, [wPlayerTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wPlayerTrademonDVs
+	ld hl, wPlayerTrademonPersonality
 	call Function10898a
 	call DelayFrame
 	ld de, TradeBallGFX
@@ -594,10 +594,10 @@ MobileTradeAnim_ShowPlayerMonForGTS:
 	ld hl, vTiles0 tile $06
 	lb bc, BANK(TradePoofGFX), 12
 	call Request2bpp
-	ld a, [wPlayerTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wPlayerTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wPlayerTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wPlayerTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
@@ -653,7 +653,7 @@ MobileTradeAnim_ShowOTMonFromGTS:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -695,16 +695,16 @@ MobileTradeAnim_ShowOTMonFromGTS:
 	ldh [hWY], a
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wOTTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wOTTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wOTTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wOTTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
 	call DmgToCgbBGPals
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	call Function10898a
 	ld a, [wOTTrademonSpecies]
 	call Function108229
@@ -721,7 +721,7 @@ MobileTradeAnim_GetOddEgg:
 	call MobileTradeAnim_ClearBGMap
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles2
 	call Function108201
 	call EnableLCD
@@ -763,16 +763,16 @@ MobileTradeAnim_GetOddEgg:
 	ldh [hWY], a
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wOTTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wOTTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wOTTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wOTTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0
 	call DmgToCgbBGPals
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	call Function10898a
 	ld a, [wOTTrademonSpecies]
 	call Function108229

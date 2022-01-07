@@ -662,7 +662,7 @@ InitPartyMenuOBPals:
 
 GetBattlemonBackpicPalettePointer:
 	push de
-	farcall GetPartyMonDVs
+	farcall GetPartyMonPersonality
 	ld c, l
 	ld b, h
 	ld a, [wTempBattleMonSpecies]
@@ -672,7 +672,7 @@ GetBattlemonBackpicPalettePointer:
 
 GetEnemyFrontpicPalettePointer:
 	push de
-	farcall GetEnemyMonDVs
+	farcall GetEnemyMonPersonality
 	ld c, l
 	ld b, h
 	ld a, [wTempEnemyMonSpecies]

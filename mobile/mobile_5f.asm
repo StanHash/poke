@@ -283,9 +283,9 @@ Function17d0f3:
 	ld [wOTTrademonID + 1], a
 	ld hl, wc608 + 26
 	ld a, [hli]
-	ld [wOTTrademonDVs], a
+	ld [wOTTrademonPersonality], a
 	ld a, [hl]
-	ld [wOTTrademonDVs + 1], a
+	ld [wOTTrademonPersonality + 1], a
 	ld bc, wc608 + 5
 	farcall GetCaughtGender
 	ld a, c
@@ -396,7 +396,7 @@ Function17d1f1:
 	cp UNOWN
 	jr nz, .asm_17d223
 
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld a, [wPartyCount]
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -2347,7 +2347,7 @@ Function17ded9:
 	push hl
 	ld a, [wPartyCount]
 	dec a
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	call GetPartyLocation
 	ld d, h
 	ld e, l
@@ -2523,7 +2523,7 @@ Function17e026:
 	bit 4, b
 	jr z, .asm_17e0b4
 	push bc
-	ld de, sBoxMon1DVs
+	ld de, sBoxMon1Personality
 	ld a, [hli]
 	ld [de], a
 	inc de

@@ -334,7 +334,7 @@ LoadBoxMonListing: ; unreferenced
 	push hl
 	push bc
 	ld a, c
-	ld bc, MON_DVS
+	ld bc, MON_PERSONALITY
 	add hl, bc
 	ld bc, BOXMON_STRUCT_LENGTH
 	call AddNTimes

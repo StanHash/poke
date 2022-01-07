@@ -4,10 +4,10 @@ CheckBreedmonCompatibility:
 	jp nc, .done
 	ld a, [wBreedMon1Species]
 	ld [wCurPartySpecies], a
-	ld a, [wBreedMon1DVs]
-	ld [wTempMonDVs], a
-	ld a, [wBreedMon1DVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wBreedMon1Personality]
+	ld [wTempMonPersonality], a
+	ld a, [wBreedMon1Personality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld a, TEMPMON
 	ld [wMonType], a
 	predef GetGender
@@ -20,10 +20,10 @@ CheckBreedmonCompatibility:
 	push bc
 	ld a, [wBreedMon2Species]
 	ld [wCurPartySpecies], a
-	ld a, [wBreedMon2DVs]
-	ld [wTempMonDVs], a
-	ld a, [wBreedMon2DVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wBreedMon2Personality]
+	ld [wTempMonPersonality], a
+	ld a, [wBreedMon2Personality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld a, TEMPMON
 	ld [wMonType], a
 	predef GetGender
@@ -87,17 +87,17 @@ CheckBreedmonCompatibility:
 .CheckDVs:
 ; If Defense DVs match and the lower 3 bits of the Special DVs match,
 ; avoid breeding
-	ld a, [wBreedMon1DVs]
+	ld a, [wBreedMon1Personality]
 	and %1111
 	ld b, a
-	ld a, [wBreedMon2DVs]
+	ld a, [wBreedMon2Personality]
 	and %1111
 	cp b
 	ret nz
-	ld a, [wBreedMon1DVs + 1]
+	ld a, [wBreedMon1Personality + 1]
 	and %111
 	ld b, a
-	ld a, [wBreedMon2DVs + 1]
+	ld a, [wBreedMon2Personality + 1]
 	and %111
 	cp b
 	ret
@@ -565,10 +565,10 @@ GetHeritableMoves:
 	push af
 	ld a, [wBreedMon2Species]
 	ld [wCurPartySpecies], a
-	ld a, [wBreedMon2DVs]
-	ld [wTempMonDVs], a
-	ld a, [wBreedMon2DVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wBreedMon2Personality]
+	ld [wTempMonPersonality], a
+	ld a, [wBreedMon2Personality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld a, TEMPMON
 	ld [wMonType], a
 	predef GetGender
@@ -581,10 +581,10 @@ GetHeritableMoves:
 	push af
 	ld a, [wBreedMon1Species]
 	ld [wCurPartySpecies], a
-	ld a, [wBreedMon1DVs]
-	ld [wTempMonDVs], a
-	ld a, [wBreedMon1DVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wBreedMon1Personality]
+	ld [wTempMonPersonality], a
+	ld a, [wBreedMon1Personality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld a, TEMPMON
 	ld [wMonType], a
 	predef GetGender
@@ -624,7 +624,7 @@ GetEggFrontpic:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
-	ld a, MON_DVS
+	ld a, MON_PERSONALITY
 	call GetPartyParamLocation
 	predef GetUnownLetter
 	pop de
@@ -635,7 +635,7 @@ GetHatchlingFrontpic:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
-	ld a, MON_DVS
+	ld a, MON_PERSONALITY
 	call GetPartyParamLocation
 	predef GetUnownLetter
 	pop de

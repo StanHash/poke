@@ -91,7 +91,7 @@ Function170139: ; unreferenced
 	ld [wc608], a
 	ld a, l
 	ld [wc608 + 1], a
-	ld hl, wBT_OTTempMon1DVs
+	ld hl, wBT_OTTempMon1Personality
 	ld a, [wPlayerID]
 	ld [hli], a
 	ld a, [wPlayerID + 1]

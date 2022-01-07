@@ -136,30 +136,30 @@ GetGender:
 ; Figure out what type of monster struct we're looking at.
 
 ; 0: PartyMon
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld a, [wMonType]
 	and a
 	jr z, .PartyMon
 
 ; 1: OTPartyMon
-	ld hl, wOTPartyMon1DVs
+	ld hl, wOTPartyMon1Personality
 	dec a
 	jr z, .PartyMon
 
 ; 2: sBoxMon
-	ld hl, sBoxMon1DVs
+	ld hl, sBoxMon1Personality
 	ld bc, BOXMON_STRUCT_LENGTH
 	dec a
 	jr z, .sBoxMon
 
 ; 3: Unknown
-	ld hl, wTempMonDVs
+	ld hl, wTempMonPersonality
 	dec a
 	jr z, .DVs
 
 ; else: WildMon
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	jr .DVs
 
 ; Get our place in the party/box.

@@ -6029,12 +6029,12 @@ Function102a3b:
 	ld [wPlayerTrademonID + 1], a
 	ld a, [wcd4c]
 	dec a
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	call GetPartyLocation
 	ld a, [hli]
-	ld [wPlayerTrademonDVs], a
+	ld [wPlayerTrademonPersonality], a
 	ld a, [hl]
-	ld [wPlayerTrademonDVs + 1], a
+	ld [wPlayerTrademonPersonality + 1], a
 	ld a, [wcd4c]
 	dec a
 	ld hl, wPartyMon1Species
@@ -6074,12 +6074,12 @@ Function102a3b:
 	ld [wOTTrademonID + 1], a
 	ld a, [wcd4d]
 	dec a
-	ld hl, wOTPartyMon1DVs
+	ld hl, wOTPartyMon1Personality
 	call GetPartyLocation
 	ld a, [hli]
-	ld [wOTTrademonDVs], a
+	ld [wOTTrademonPersonality], a
 	ld a, [hl]
-	ld [wOTTrademonDVs + 1], a
+	ld [wOTTrademonPersonality + 1], a
 	ld a, [wcd4d]
 	dec a
 	ld hl, wOTPartyMon1Species
@@ -6405,7 +6405,7 @@ Function102d48:
 	ld a, [wcd4c]
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	call AddNTimes
 	predef GetUnownLetter
 	farcall UpdateUnownDex
