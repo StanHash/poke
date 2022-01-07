@@ -411,7 +411,7 @@ BattleAnim_ThrowPokeBall:
 	anim_obj ANIM_OBJ_BALL_POOF, 136, 64, $10
 	anim_wait 2
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_TARGET, $0
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 BattleAnim_SendOutMon:
@@ -424,7 +424,7 @@ BattleAnim_SendOutMon:
 	anim_sound 0, 0, SFX_BALL_POOF
 	anim_obj ANIM_OBJ_BETA_BALL_POOF, 48, 96, $0
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 128
+	anim_wait 32
 	anim_wait 4
 	anim_call BattleAnim_ShowMon_0
 	anim_ret
@@ -471,7 +471,7 @@ BattleAnim_SendOutMon:
 	anim_wait 4
 	anim_sound 0, 0, SFX_SHINE
 	anim_obj ANIM_OBJ_SHINY, 48, 96, $38
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 .Normal:
@@ -480,14 +480,14 @@ BattleAnim_SendOutMon:
 	anim_obj ANIM_OBJ_BALL_POOF, 44, 96, $0
 	anim_wait 4
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 BattleAnim_ReturnMon:
 	anim_sound 0, 0, SFX_BALL_POOF
 BattleAnimSub_Return:
 	anim_bgeffect ANIM_BG_RETURN_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 BattleAnim_Confused:
@@ -2040,7 +2040,7 @@ BattleAnim_Dig:
 	anim_wait 32
 .fail
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 BattleAnim_SandAttack:
@@ -2561,7 +2561,7 @@ BattleAnim_Substitute:
 	anim_raisesub
 	anim_obj ANIM_OBJ_BALL_POOF, 48, 96, $0
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 32
+	anim_wait 8
 	anim_ret
 
 .dropsub:
@@ -4143,7 +4143,7 @@ BattleAnim_Pursuit:
 	anim_obj ANIM_OBJ_BETA_PURSUIT, 132, 64, $1
 	anim_sound 0, 1, SFX_BALL_POOF
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_TARGET, $0
-	anim_wait 64
+	anim_wait 16
 	anim_incobj 3
 	anim_wait 16
 	anim_sound 0, 1, SFX_MEGA_PUNCH
@@ -4586,7 +4586,7 @@ BattleAnim_BeatUp:
 	anim_beatup
 	anim_sound 0, 0, SFX_BALL_POOF
 	anim_bgeffect ANIM_BG_ENTER_MON, $0, BG_EFFECT_USER, $0
-	anim_wait 16
+	anim_wait 4
 .current_mon
 	anim_1gfx ANIM_GFX_HIT
 	anim_call BattleAnim_TargetObj_1Row
