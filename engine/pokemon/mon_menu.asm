@@ -22,66 +22,6 @@ HasNoItems:
 	and a
 	ret
 
-TossItemFromPC:
-	push de
-	call PartyMonItemName
-	farcall _CheckTossableItem
-	ld a, [wItemAttributeValue]
-	and a
-	jr nz, .key_item
-	ld hl, .ItemsTossOutHowManyText
-	call MenuTextbox
-	farcall SelectQuantityToToss
-	push af
-	call CloseWindow
-	call ExitMenu
-	pop af
-	jr c, .quit
-	ld hl, .ItemsThrowAwayText
-	call MenuTextbox
-	call YesNoBox
-	push af
-	call ExitMenu
-	pop af
-	jr c, .quit
-	pop hl
-	ld a, [wCurItemQuantity]
-	call TossItem
-	call PartyMonItemName
-	ld hl, .ItemsDiscardedText
-	call MenuTextbox
-	call ExitMenu
-	and a
-	ret
-
-.key_item
-	call .CantToss
-.quit
-	pop hl
-	scf
-	ret
-
-.ItemsTossOutHowManyText:
-	text_far _ItemsTossOutHowManyText
-	text_end
-
-.ItemsThrowAwayText:
-	text_far _ItemsThrowAwayText
-	text_end
-
-.ItemsDiscardedText:
-	text_far _ItemsDiscardedText
-	text_end
-
-.CantToss:
-	ld hl, .ItemsTooImportantText
-	call MenuTextboxBackup
-	ret
-
-.ItemsTooImportantText:
-	text_far _ItemsTooImportantText
-	text_end
-
 CantUseItem:
 	ld hl, ItemsOakWarningText
 	call MenuTextboxWaitButton
