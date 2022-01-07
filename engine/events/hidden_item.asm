@@ -2,6 +2,7 @@ HiddenItemScript::
 	opentext
 	readmem wHiddenItemID
 	getitemname STRING_BUFFER_3, USE_SCRIPT_VAR
+	callasm .append_tmhm_move_name
 	writetext .PlayerFoundItemText
 	giveitem ITEM_FROM_MEM
 	iffalse .bag_full
@@ -26,6 +27,11 @@ HiddenItemScript::
 .ButNoSpaceText:
 	text_far _ButNoSpaceText
 	text_end
+
+.append_tmhm_move_name
+	ld de, wStringBuffer3 + STRLEN("TM##")
+	farcall AppendTMHMMoveName
+	ret
 
 SetMemEvent:
 	ld hl, wHiddenItemEvent

@@ -456,9 +456,37 @@ Script_verbosegiveitem:
 	ld de, wStringBuffer1
 	ld a, STRING_BUFFER_4
 	call CopyConvertedText
+	ld de, wStringBuffer4 + STRLEN("TM##")
+	call AppendTMHMMoveName
 	ld b, BANK(GiveItemScript)
 	ld de, GiveItemScript
 	jp ScriptCall
+
+AppendTMHMMoveName::
+; a = item ID
+	ld a, [wNamedObjectIndex]
+	cp TM01
+	ret c
+; save item name buffer
+	push de
+; a = TM/HM number
+	ld c, a
+	farcall GetTMHMNumber
+	ld a, c
+; a = move ID
+	ld [wTempTMHM], a
+	predef GetTMHMMove
+	ld a, [wTempTMHM]
+; wStringBuffer1 = move name
+	ld [wNamedObjectIndex], a
+	call GetMoveName
+; hl = item name buffer
+	pop hl
+; append wStringBuffer1 to item name buffer
+	ld [hl], " "
+	inc hl
+	ld de, wStringBuffer1
+	jp CopyName2
 
 GiveItemScript_DummyFunction:
 	ret
@@ -504,6 +532,8 @@ Script_verbosegiveitemvar:
 	ld de, wStringBuffer1
 	ld a, STRING_BUFFER_4
 	call CopyConvertedText
+	ld de, wStringBuffer4 + STRLEN("TM##")
+	call AppendTMHMMoveName
 	ld b, BANK(GiveItemScript)
 	ld de, GiveItemScript
 	jp ScriptCall
@@ -2351,11 +2381,3 @@ Script_checksave:
 	ld a, c
 	ld [wScriptVar], a
 	ret
-
-Script_checkver_duplicate: ; unreferenced
-	ld a, [.gs_version]
-	ld [wScriptVar], a
-	ret
-
-.gs_version:
-	db GS_VERSION
