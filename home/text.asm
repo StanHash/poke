@@ -564,7 +564,7 @@ TextScroll::
 	ld a, " "
 	ld bc, TEXTBOX_INNERW
 	call ByteFill
-	ld c, 2
+	ld c, 3
 	call DelayFrames
 	ret
 
