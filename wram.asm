@@ -2704,7 +2704,6 @@ SECTION "Enemy Party", WRAMX
 UNION
 wPokedexShowPointerAddr:: dw
 wPokedexShowPointerBank:: db
-	ds 3
 wd271:: dw ; mobile
 
 NEXTU
@@ -2715,7 +2714,6 @@ NEXTU
 wOTPartyData::
 wOTPlayerName:: ds NAME_LENGTH
 wOTPlayerID:: dw
-	ds 8
 wOTPartyCount::   db
 wOTPartySpecies:: ds PARTY_LENGTH
 wOTPartyEnd::     db ; older code doesn't check PartyCount
@@ -2754,8 +2752,6 @@ wDudeNumBalls:: db
 wDudeBalls:: ds 2 * 4 + 1
 ENDU
 
-	ds 4
-
 wd430:: ; mobile
 wBattleAction:: db
 
@@ -2766,7 +2762,6 @@ wMapEventStatus:: db
 wScriptFlags::
 ; bit 3: run deferred script
 	db
-	ds 1
 wScriptFlags2::
 ; bit 0: count steps
 ; bit 1: coord events
@@ -2782,7 +2777,6 @@ wScriptPos:: dw
 
 wScriptStackSize:: db
 wScriptStack:: ds 3 * 5
-	ds 1
 wScriptDelay:: db
 
 wDeferredScriptBank::
@@ -2791,14 +2785,11 @@ wScriptTextBank::
 wDeferredScriptAddr::
 wScriptTextAddr::
 	dw
-	ds 1
 wWildEncounterCooldown:: db
 
 wXYComparePointer:: dw
-	ds 4
 
 wBattleScriptFlags:: db
-	ds 1
 wPlayerSpriteSetupFlags::
 ; bit 7: if set, cancel wPlayerAction
 ; bit 6: RefreshMapSprites doesn't reload player sprite
@@ -2811,22 +2802,14 @@ wMapReentryScriptQueueFlag:: db
 wMapReentryScriptBank:: db
 wMapReentryScriptAddress:: dw
 
-	ds 4
-
 wTimeCyclesSinceLastCall:: db
 wReceiveCallDelay_MinsRemaining:: db
 wReceiveCallDelay_StartTime:: ds 3
 
-	ds 3
-
 wBugContestMinsRemaining:: db
 wBugContestSecsRemaining:: db
 
-	ds 2
-
 wMapStatusEnd::
-
-	ds 2
 
 wCrystalData::
 wPlayerGender::
@@ -2865,8 +2848,6 @@ wStartSecond:: db
 
 wRTC:: ds 4
 
-	ds 4
-
 wDST::
 ; bit 7: dst
 	db
@@ -2878,11 +2859,7 @@ wGameTimeMinutes:: db
 wGameTimeSeconds:: db
 wGameTimeFrames::  db
 
-	ds 2
-
 wCurDay:: db
-
-	ds 1
 
 wObjectFollow_Leader:: db
 wObjectFollow_Follower:: db
@@ -2899,8 +2876,6 @@ endr
 
 wCmdQueue:: ds CMDQUEUE_CAPACITY * CMDQUEUE_ENTRY_SIZE
 
-	ds 40
-
 wMapObjects::
 wPlayerObject:: map_object wPlayer ; player is map object 0
 ; wMap1Object - wMap15Object
@@ -2913,14 +2888,10 @@ wObjectMasks:: ds NUM_OBJECTS
 wVariableSprites:: ds $100 - SPRITE_VARS
 
 wEnteredMapFromContinue:: db
-	ds 2
 wTimeOfDayPal:: db
-	ds 4
 wTimeOfDayPalFlags:: db
 wTimeOfDayPalset:: db
 wCurTimeOfDay:: db
-
-	ds 1
 
 wSecretID:: dw
 wStatusFlags::
@@ -2997,8 +2968,6 @@ wTradeFlags:: flag_array NUM_NPC_TRADES
 wMooMooBerries:: db
 wUndergroundSwitchPositions:: db
 wFarfetchdPosition:: db
-
-	ds 13
 
 ; map scene ids
 wPokecenter2FSceneID::                            db
@@ -3081,8 +3050,6 @@ wMountMoonSquareSceneID::                         db
 wMobileTradeRoomSceneID::                         db
 wMobileBattleRoomSceneID::                        db
 
-	ds 49
-
 ; fight counts
 wJackFightCount::    db
 wBeverlyFightCount:: db ; unreferenced
@@ -3113,21 +3080,15 @@ wKenjiFightCount::   db ; unreferenced
 wParryFightCount::   db
 wErinFightCount::    db
 
-	ds 100
-
 wEventFlags:: flag_array NUM_EVENTS
 
 wCurBox:: db
-
-	ds 2
 
 wBoxNames:: ds BOX_NAME_LENGTH * NUM_BOXES
 
 wCelebiEvent::
 ; bit 2: forest is restless
 	db
-
-	ds 1
 
 wBikeFlags::
 ; bit 0: using strength
@@ -3152,8 +3113,6 @@ wCurMapSceneScriptsPointer:: dw
 wCurMapCallbackCount:: db
 wCurMapCallbacksPointer:: dw
 
-	ds 2
-
 ; Sprite id of each decoration
 wDecoBed::           db
 wDecoCarpet::        db
@@ -3173,23 +3132,16 @@ wDailyResetTimer:: dw
 wDailyFlags1:: db
 wDailyFlags2:: db
 wSwarmFlags:: db
-	ds 2
 wTimerEventStartDay:: db
-	ds 3
 
 wFruitTreeFlags:: flag_array NUM_FRUIT_TREES
 
-	ds 2
-
 wLuckyNumberDayTimer:: dw
-	ds 2
 wSpecialPhoneCallID:: db
-	ds 3
 wBugContestStartTime:: ds 4 ; day, hour, min, sec
 wUnusedTwoDayTimerOn:: db
 wUnusedTwoDayTimer:: db
 wUnusedTwoDayTimerStartDate:: db
-	ds 4
 wMobileOrCable_LastSelection:: db
 wdc41:: ds 1
 wdc42:: ds 8
@@ -3205,13 +3157,9 @@ wPlayerMonSelection:: ds 3
 wdc5f:: db
 wdc60:: db
 
-	ds 18
-
 wStepCount:: db
 wPoisonStepCount:: db
-	ds 2
 wHappinessStepCount:: db
-	ds 1
 
 wParkBallsRemaining::
 wSafariBallsRemaining:: db
@@ -3219,10 +3167,7 @@ wSafariTimeRemaining:: dw
 
 wPhoneList:: ds CONTACT_LIST_SIZE + 1
 
-	ds 22
-
 wLuckyNumberShowFlag:: db
-	ds 1
 wLuckyIDNumber:: dw
 
 wRepelEffect:: db ; If a Repel is in use, it contains the nr of steps it's still active
@@ -3244,8 +3189,6 @@ wDigMapNumber::  db
 wBackupWarpNumber:: db
 wBackupMapGroup::   db
 wBackupMapNumber::  db
-
-	ds 3
 
 wLastSpawnMapGroup:: db
 wLastSpawnMapNumber:: db
@@ -3286,8 +3229,6 @@ for n, 1, PARTY_LENGTH + 1
 wPartyMon{d:n}Nickname:: ds MON_NAME_LENGTH
 endr
 wPartyMonNicknamesEnd::
-
-	ds 22
 
 wPokedexCaught:: flag_array NUM_POKEMON
 wEndPokedexCaught::
