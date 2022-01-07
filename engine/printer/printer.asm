@@ -830,12 +830,12 @@ Printer_GetMonGender:
 	ld l, a
 	ld a, [wAddrOfBoxToPrint + 1]
 	ld h, a
-	ld bc, 2 + MONS_PER_BOX + MON_DVS
+	ld bc, 2 + MONS_PER_BOX + MON_PERSONALITY
 	add hl, bc
 	ld bc, BOXMON_STRUCT_LENGTH
 	ld a, [wWhichBoxMonToPrint]
 	call AddNTimes
-	ld de, wTempMonDVs
+	ld de, wTempMonPersonality
 	ld a, [hli]
 	ld [de], a
 	inc de

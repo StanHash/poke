@@ -167,7 +167,7 @@ endr
 
 	; Initialize stat experience.
 	xor a
-	ld b, MON_DVS - MON_STAT_EXP
+	ld b, MON_PERSONALITY - MON_STAT_EXP
 .loop
 	ld [de], a
 	inc de
@@ -271,10 +271,10 @@ endr
 	jr .initstats
 
 .copywildmonDVs
-	ld a, [wEnemyMonDVs]
+	ld a, [wEnemyMonPersonality]
 	ld [de], a
 	inc de
-	ld a, [wEnemyMonDVs + 1]
+	ld a, [wEnemyMonPersonality + 1]
 	ld [de], a
 	inc de
 
@@ -351,7 +351,7 @@ endr
 	ld a, [wCurPartySpecies]
 	cp UNOWN
 	jr nz, .done
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld a, [wPartyCount]
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -460,7 +460,7 @@ AddTempmonToParty:
 	ld a, [wCurPartySpecies]
 	cp UNOWN
 	jr nz, .done
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Personality
 	ld a, [wPartyCount]
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -1016,8 +1016,8 @@ SendMonIntoBox:
 	dec b
 	jr nz, .loop2
 
-	ld hl, wEnemyMonDVs
-	ld b, 2 + NUM_MOVES ; DVs and PP ; wEnemyMonHappiness - wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
+	ld b, 2 + NUM_MOVES ; DVs and PP ; wEnemyMonHappiness - wEnemyMonPersonality
 .loop3
 	ld a, [hli]
 	ld [de], a
@@ -1043,7 +1043,7 @@ SendMonIntoBox:
 	ld a, [wCurPartySpecies]
 	cp UNOWN
 	jr nz, .not_unown
-	ld hl, sBoxMon1DVs
+	ld hl, sBoxMon1Personality
 	predef GetUnownLetter
 	callfar UpdateUnownDex
 
@@ -1447,7 +1447,6 @@ CalcMonStatC:
 	jr nz, .not_spdef
 	dec hl
 	dec hl
-
 .not_spdef
 	sla c
 	ld a, d
@@ -1464,89 +1463,16 @@ CalcMonStatC:
 .no_stat_exp
 	srl c
 	pop hl
-	push bc
-	ld bc, MON_DVS - MON_HP_EXP + 1
-	add hl, bc
-	pop bc
-	ld a, c
-	cp STAT_ATK
-	jr z, .Attack
-	cp STAT_DEF
-	jr z, .Defense
-	cp STAT_SPD
-	jr z, .Speed
-	cp STAT_SATK
-	jr z, .Special
-	cp STAT_SDEF
-	jr z, .Special
-; DV_HP = (DV_ATK & 1) << 3 | (DV_DEF & 1) << 2 | (DV_SPD & 1) << 1 | (DV_SPC & 1)
-	push bc
-	ld a, [hl]
-	swap a
-	and 1
-	add a
-	add a
-	add a
-	ld b, a
-	ld a, [hli]
-	and 1
-	add a
-	add a
-	add b
-	ld b, a
-	ld a, [hl]
-	swap a
-	and 1
-	add a
-	add b
-	ld b, a
-	ld a, [hl]
-	and 1
-	add b
-	pop bc
-	jr .GotDV
-
-.Attack:
-	ld a, [hl]
-	swap a
-	and $f
-	jr .GotDV
-
-.Defense:
-	ld a, [hl]
-	and $f
-	jr .GotDV
-
-.Speed:
-	inc hl
-	ld a, [hl]
-	swap a
-	and $f
-	jr .GotDV
-
-.Special:
-	inc hl
-	ld a, [hl]
-	and $f
-
-.GotDV:
 	ld d, 0
-	add e
-	ld e, a
-	jr nc, .no_overflow_1
-	inc d
-
-.no_overflow_1
 	sla e
 	rl d
 	srl b
 	srl b
 	ld a, b
 	add e
-	jr nc, .no_overflow_2
+	jr nc, .no_overflow
 	inc d
-
-.no_overflow_2
+.no_overflow
 	ldh [hMultiplicand + 2], a
 	ld a, d
 	ldh [hMultiplicand + 1], a

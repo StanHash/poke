@@ -317,7 +317,7 @@ ContestScore:
 	call .AddContestStat
 
 	; DVs
-	ld a, [wContestMonDVs + 0]
+	ld a, [wContestMonPersonality + 0]
 	ld b, a
 	and %0010
 	add a
@@ -331,7 +331,7 @@ ContestScore:
 	add c
 	ld d, a
 
-	ld a, [wContestMonDVs + 1]
+	ld a, [wContestMonPersonality + 1]
 	ld b, a
 	and %0010
 	ld c, a

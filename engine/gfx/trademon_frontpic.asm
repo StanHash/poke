@@ -1,6 +1,6 @@
 GetTrademonFrontpic:
 	ld a, [wOTTrademonSpecies]
-	ld hl, wOTTrademonDVs
+	ld hl, wOTTrademonPersonality
 	ld de, vTiles2
 	push de
 	push af
@@ -20,10 +20,10 @@ AnimateTrademonFrontpic:
 	farcall ShowOTTrademonStats
 	ld a, [wOTTrademonSpecies]
 	ld [wCurPartySpecies], a
-	ld a, [wOTTrademonDVs]
-	ld [wTempMonDVs], a
-	ld a, [wOTTrademonDVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wOTTrademonPersonality]
+	ld [wTempMonPersonality], a
+	ld a, [wOTTrademonPersonality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld b, SCGB_PLAYER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
 	ld a, %11100100 ; 3,2,1,0

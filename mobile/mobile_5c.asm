@@ -15,9 +15,9 @@ Function170000:
 	ld [de], a
 	ld hl, $c648
 	ld a, [hli]
-	ld [wPlayerTrademonDVs], a
+	ld [wPlayerTrademonPersonality], a
 	ld a, [hl]
-	ld [wPlayerTrademonDVs + 1], a
+	ld [wPlayerTrademonPersonality + 1], a
 	ld hl, $c639
 	ld a, [hli]
 	ld [wPlayerTrademonID], a
@@ -54,9 +54,9 @@ Function17005a:
 	ld [de], a
 	ld hl, $a841
 	ld a, [hli]
-	ld [wOTTrademonDVs], a
+	ld [wOTTrademonPersonality], a
 	ld a, [hl]
-	ld [wOTTrademonDVs + 1], a
+	ld [wOTTrademonPersonality + 1], a
 	ld hl, $a832
 	ld a, [hli]
 	ld [wOTTrademonID], a

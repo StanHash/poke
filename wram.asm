@@ -505,7 +505,7 @@ wPayDayMoney:: ds 3
 wSafariMonAngerCount:: db ; unreferenced
 wSafariMonEating:: db
 	ds 1
-wEnemyBackupDVs:: dw ; used when enemy is transformed
+wEnemyBackupPersonality:: dw ; used when enemy is transformed
 wAlreadyDisobeyed:: db
 
 wDisabledMove:: db

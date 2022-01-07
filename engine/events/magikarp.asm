@@ -17,7 +17,7 @@ CheckMagikarpLength:
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
 	push hl
-	ld bc, MON_DVS
+	ld bc, MON_PERSONALITY
 	add hl, bc
 	ld d, h
 	ld e, l
@@ -94,7 +94,7 @@ CalcMagikarpLength:
 ; Return Magikarp's length (in feet and inches) at wMagikarpLength (big endian).
 ;
 ; input:
-;   de: wEnemyMonDVs
+;   de: wEnemyMonPersonality
 ;   bc: wPlayerID
 
 ; This function is poorly commented.

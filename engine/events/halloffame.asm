@@ -179,7 +179,7 @@ GetHallOfFameParty:
 	ld [de], a
 	inc de
 
-	ld hl, MON_DVS
+	ld hl, MON_PERSONALITY
 	add hl, bc
 	ld a, [hli]
 	ld [de], a
@@ -229,10 +229,10 @@ AnimateHOFMonEntrance:
 	inc hl
 	inc hl
 	ld a, [hli]
-	ld [wTempMonDVs], a
+	ld [wTempMonPersonality], a
 	ld a, [hli]
-	ld [wTempMonDVs + 1], a
-	ld hl, wTempMonDVs
+	ld [wTempMonPersonality + 1], a
+	ld hl, wTempMonPersonality
 	predef GetUnownLetter
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
@@ -438,9 +438,9 @@ DisplayHOFMon:
 	ld a, [hli]
 	ld [wTempMonID + 1], a
 	ld a, [hli]
-	ld [wTempMonDVs], a
+	ld [wTempMonPersonality], a
 	ld a, [hli]
-	ld [wTempMonDVs + 1], a
+	ld [wTempMonPersonality + 1], a
 	ld a, [hli]
 	ld [wTempMonLevel], a
 	ld de, wStringBuffer2
@@ -461,7 +461,7 @@ DisplayHOFMon:
 	ld a, [wTempMonSpecies]
 	ld [wCurPartySpecies], a
 	ld [wTextDecimalByte], a
-	ld hl, wTempMonDVs
+	ld hl, wTempMonPersonality
 	predef GetUnownLetter
 	xor a
 	ld [wBoxAlignment], a

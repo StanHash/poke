@@ -556,10 +556,10 @@ DayCare_InitBreeding:
 	ld hl, wEggMonOT
 	ld bc, NAME_LENGTH
 	call ByteFill
-	ld a, [wBreedMon1DVs]
-	ld [wTempMonDVs], a
-	ld a, [wBreedMon1DVs + 1]
-	ld [wTempMonDVs + 1], a
+	ld a, [wBreedMon1Personality]
+	ld [wTempMonPersonality], a
+	ld a, [wBreedMon1Personality + 1]
+	ld [wTempMonPersonality + 1], a
 	ld a, [wBreedMon1Species]
 	ld [wCurPartySpecies], a
 	ld a, $3
@@ -636,24 +636,24 @@ DayCare_InitBreeding:
 	ldh a, [hMultiplicand + 2]
 	ld [hl], a
 	xor a
-	ld b, wEggMonDVs - wEggMonStatExp
+	ld b, wEggMonPersonality - wEggMonStatExp
 	ld hl, wEggMonStatExp
 .loop2
 	ld [hli], a
 	dec b
 	jr nz, .loop2
-	ld hl, wEggMonDVs
+	ld hl, wEggMonPersonality
 	call Random
 	ld [hli], a
-	ld [wTempMonDVs], a
+	ld [wTempMonPersonality], a
 	call Random
 	ld [hld], a
-	ld [wTempMonDVs + 1], a
-	ld de, wBreedMon1DVs
+	ld [wTempMonPersonality + 1], a
+	ld de, wBreedMon1Personality
 	ld a, [wBreedMon1Species]
 	cp DITTO
 	jr z, .GotDVs
-	ld de, wBreedMon2DVs
+	ld de, wBreedMon2Personality
 	ld a, [wBreedMon2Species]
 	cp DITTO
 	jr z, .GotDVs
@@ -662,8 +662,8 @@ DayCare_InitBreeding:
 	push hl
 	farcall GetGender
 	pop hl
-	ld de, wBreedMon1DVs
-	ld bc, wBreedMon2DVs
+	ld de, wBreedMon1Personality
+	ld bc, wBreedMon2Personality
 	jr c, .SkipDVs
 	jr z, .ParentCheck2
 	ld a, [wBreedMotherOrNonDitto]

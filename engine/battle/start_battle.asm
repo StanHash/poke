@@ -163,11 +163,11 @@ ClearBattleRAM:
 	ld [hli], a
 	ld [hl], a
 
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonPersonality
 	ld [hli], a
 	ld [hl], a
 
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonPersonality
 	ld [hli], a
 	ld [hl], a
 
