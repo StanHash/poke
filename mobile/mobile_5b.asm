@@ -669,7 +669,7 @@ Function16cc02:
 
 Function16cc18:
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ld hl, vTiles1
 	ld de, MobileAdapterCheckGFX
 	lb bc, BANK(MobileAdapterCheckGFX), 46

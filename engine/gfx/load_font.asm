@@ -16,12 +16,12 @@ Get2bppOptionalHDMA: ; unreferenced
 	jp Get2bpp
 
 _LoadStandardFont::
-	ld a, [hVramTiles1Kind]
+	ldh a, [hVramTiles1Kind]
 	cp a, 1
 	ret z
 
 	ld a, 1
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 
 	ld de, Font
 	ld hl, vTiles1
