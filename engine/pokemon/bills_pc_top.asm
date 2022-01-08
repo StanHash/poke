@@ -83,7 +83,7 @@ _BillsPC:
 	db "WITHDRAW <PK><MN>@"
 	db "DEPOSIT <PK><MN>@"
 	db "CHANGE BOX@"
-	db "MOVE <PK><MN> W/O MAIL@"
+	db "MOVE <PK><MN>@"
 	db "SEE YA!@"
 
 .Jumptable:
@@ -97,8 +97,8 @@ _BillsPC:
 	db 5 ; # items
 	db 0 ; WITHDRAW
 	db 1 ; DEPOSIT
-	db 2 ; CHANGE BOX
 	db 3 ; MOVE PKMN
+	db 2 ; CHANGE BOX
 	db 4 ; SEE YA!
 	db -1
 
@@ -108,16 +108,9 @@ BillsPC_SeeYa:
 
 BillsPC_MovePKMNMenu:
 	call LoadStandardMenuHeader
-	farcall IsAnyMonHoldingMail
-	jr nc, .no_mail
-	ld hl, .PCMonHoldingMailText
-	call PrintText
-	jr .quit
-
-.no_mail
-	farcall StartMoveMonWOMail_SaveGame
+	farcall StartMoveMon_SaveGame
 	jr c, .quit
-	farcall _MovePKMNWithoutMail
+	farcall _MovePKMN
 	call ReturnToMapFromSubmenu
 	call ClearPCItemScreen
 
@@ -125,10 +118,6 @@ BillsPC_MovePKMNMenu:
 	call CloseWindow
 	and a
 	ret
-
-.PCMonHoldingMailText:
-	text_far _PCMonHoldingMailText
-	text_end
 
 BillsPC_DepositMenu:
 	call LoadStandardMenuHeader

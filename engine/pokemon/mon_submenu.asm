@@ -155,28 +155,18 @@ GetMonSubmenuItems:
 	call AddMonMenuItem
 	ld a, [wLinkMode]
 	and a
-	jr nz, .skip2
-	push hl
-	ld a, MON_ITEM
-	call GetPartyParamLocation
-	ld d, [hl]
-	farcall ItemIsMail
-	pop hl
-	ld a, MONMENUITEM_MAIL
-	jr c, .ok
+	jr nz, .skip_item
 	ld a, MONMENUITEM_ITEM
-
-.ok
 	call AddMonMenuItem
 
-.skip2
+.skip_item
 	ld a, [wMonSubmenuCount]
 	cp NUM_MONMENU_ITEMS
-	jr z, .ok2
+	jr z, .ok
 	ld a, MONMENUITEM_CANCEL
 	call AddMonMenuItem
 
-.ok2
+.ok
 	call TerminateMonSubmenu
 	ret
 

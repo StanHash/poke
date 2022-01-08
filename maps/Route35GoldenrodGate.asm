@@ -29,7 +29,6 @@ RandyScript:
 	playsound SFX_KEY_ITEM
 	waitsfx
 	givepoke SPEAROW, 10, NO_ITEM, TRUE, GiftSpearowName, GiftSpearowOTName
-	givepokemail GiftSpearowMail
 	setevent EVENT_GOT_KENYA
 .alreadyhavekenya
 	writetext Route35GoldenrodGateRandyWeirdTreeBlockingRoadText
@@ -61,11 +60,6 @@ RandyScript:
 .bagfull
 	closetext
 	end
-
-GiftSpearowMail:
-	db FLOWER_MAIL
-	db   "DARK CAVE leads"
-	next "to another road@"
 
 GiftSpearowName:
 	db "KENYA@"

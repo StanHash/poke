@@ -171,7 +171,7 @@ ItemEffects:
 	dw NoEffect            ; ITEM_9B
 	dw SacredAshEffect     ; SACRED_ASH
 	dw PokeBallEffect      ; HEAVY_BALL
-	dw NoEffect            ; FLOWER_MAIL
+	dw NoEffect            ; ITEM_9E
 	dw PokeBallEffect      ; LEVEL_BALL
 	dw PokeBallEffect      ; LURE_BALL
 	dw PokeBallEffect      ; FAST_BALL
@@ -196,15 +196,15 @@ ItemEffects:
 	assert_table_length ITEM_B3
 ; The items past ITEM_B3 do not have effect entries:
 ;	BRICK_PIECE
-;	SURF_MAIL
-;	LITEBLUEMAIL
-;	PORTRAITMAIL
-;	LOVELY_MAIL
-;	EON_MAIL
-;	MORPH_MAIL
-;	BLUESKY_MAIL
-;	MUSIC_MAIL
-;	MIRAGE_MAIL
+;	ITEM_B5
+;	ITEM_B6
+;	ITEM_B7
+;	ITEM_B8
+;	ITEM_B9
+;	ITEM_BA
+;	ITEM_BB
+;	ITEM_BC
+;	ITEM_BD
 ;	ITEM_BE
 ; They all have the ITEMMENU_NOUSE attribute so they can't be used anyway.
 ; NoEffect would be appropriate, with the table then being NUM_ITEMS long.

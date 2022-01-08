@@ -343,31 +343,6 @@ Mobile_CopyDefaultNickname:
 .DefaultNickname:
 	db "？？？？？"
 
-Mobile_CopyDefaultMail:
-	ld a, "@"
-	ld hl, wc647
-	ld bc, MAIL_MSG_LENGTH + 1
-	call ByteFill
-	ld hl, .DefaultMessage
-	ld de, wc647
-	ld bc, 6
-	call CopyBytes
-	ret
-
-.DefaultMessage:
-	db "こんにちは@"
-
-Mobile_CopyDefaultMailAuthor:
-	ld a, "@"
-	ld de, wc668
-	ld bc, 5
-	call ByteFill
-	ld hl, Mobile5F_PlayersName
-	ld de, wc668
-	ld bc, 5
-	call CopyBytes
-	ret
-
 CheckStringContainsLessThanBNextCharacters:
 .loop
 	ld a, [de]

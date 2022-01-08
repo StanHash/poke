@@ -51,12 +51,6 @@ MAX_KEY_ITEMS EQU 25
 
 MAX_ITEM_STACK EQU 99
 
-; mail
-MAIL_LINE_LENGTH   EQU $10
-MAIL_MSG_LENGTH    EQU $20
-MAILBOX_CAPACITY   EQU 10
-MAIL_STRUCT_LENGTH EQU $2f ; mailmsg struct
-
 ; held item effects
 	const_def
 	const HELD_NONE

@@ -195,11 +195,6 @@ Route31MailRecipientScript:
 .TryGiveKenya:
 	writetext Text_Route31SleepyManGotMail
 	promptbutton
-	checkpokemail ReceivedSpearowMailText
-	ifequal POKEMAIL_WRONG_MAIL, .WrongMail
-	ifequal POKEMAIL_REFUSED, .Refused
-	ifequal POKEMAIL_NO_MAIL, .NoMail
-	ifequal POKEMAIL_LAST_MON, .LastMon
 	; POKEMAIL_CORRECT
 	writetext Text_Route31HandOverMailMon
 	promptbutton
@@ -239,10 +234,6 @@ Route31MailRecipientScript:
 	waitbutton
 	closetext
 	end
-
-ReceivedSpearowMailText:
-	db   "DARK CAVE leads"
-	next "to another road@"
 
 Route31YoungsterScript:
 	jumptextfaceplayer Route31YoungsterText

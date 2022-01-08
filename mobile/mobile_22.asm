@@ -2064,7 +2064,6 @@ Function89d0d:
 	ldh [rSVBK], a
 
 	call SetPalettes
-	farcall PrintMail
 	call Mobile22_SetBGMapMode1
 	ld c, 24
 	call DelayFrames

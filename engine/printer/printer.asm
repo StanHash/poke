@@ -275,53 +275,6 @@ PrintUnownStamp:
 	ld [wPrinterQueueLength], a
 	ret
 
-PrintMailAndExit:
-	call PrintMail
-	call Printer_ExitPrinter
-	ret
-
-PrintMail:
-	ld a, [wPrinterQueueLength]
-	push af
-	xor a
-	ldh [hPrinter], a
-	call Printer_PlayMusic
-
-	ldh a, [rIE]
-	push af
-	xor a
-	ldh [rIF], a
-	ld a, (1 << SERIAL) | (1 << VBLANK)
-	ldh [rIE], a
-
-	xor a
-	ldh [hBGMapMode], a
-
-	ln a, 1, 3 ; to be loaded to wPrinterMargins
-	call Printer_PrepareTilemapForPrint
-	ld hl, hVBlank
-	ld a, [hl]
-	push af
-	ld [hl], 4 ; vblank mode that calls AskSerial
-
-	ld a, 18 / 2
-	ld [wPrinterQueueLength], a
-	call SendScreenToPrinter
-
-	pop af
-	ldh [hVBlank], a
-	call Printer_CleanUpAfterSend
-	call Printer_CopyBufferToTilemap
-
-	xor a
-	ldh [rIF], a
-	pop af
-	ldh [rIE], a
-
-	pop af
-	ld [wPrinterQueueLength], a
-	ret
-
 PrintPartymon:
 	ld a, [wPrinterQueueLength]
 	push af

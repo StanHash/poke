@@ -250,15 +250,6 @@ Gen2ToGen2LinkComms:
 	ld bc, 200
 	call Serial_ExchangeBytes
 
-	ld a, [wLinkMode]
-	cp LINK_TRADECENTER
-	jr nz, .not_trading
-	ld hl, wLinkPlayerMail
-	ld de, wLinkOTMail
-	ld bc, wLinkPlayerMailEnd - wLinkPlayerMail
-	call ExchangeBytes
-
-.not_trading
 	xor a
 	ldh [rIF], a
 	ld a, (1 << JOYPAD) | (1 << SERIAL) | (1 << TIMER) | (1 << VBLANK)
@@ -305,116 +296,6 @@ Gen2ToGen2LinkComms:
 	dec c
 	jr nz, .loop1
 
-	ld a, [wLinkMode]
-	cp LINK_TRADECENTER
-	jp nz, .skip_mail
-	ld hl, wLinkOTMail
-.loop2
-	ld a, [hli]
-	cp SERIAL_MAIL_PREAMBLE_BYTE
-	jr nz, .loop2
-.loop3
-	ld a, [hli]
-	cp SERIAL_NO_DATA_BYTE
-	jr z, .loop3
-	cp SERIAL_MAIL_PREAMBLE_BYTE
-	jr z, .loop3
-	dec hl
-	ld de, wLinkOTMail
-	ld bc, wLinkDataEnd - wLinkOTMail ; should be wLinkOTMailEnd - wLinkOTMail
-	call CopyBytes
-	ld hl, wLinkOTMail
-	ld bc, (MAIL_MSG_LENGTH + 1) * PARTY_LENGTH
-.loop4
-	ld a, [hl]
-	cp SERIAL_MAIL_REPLACEMENT_BYTE
-	jr nz, .okay1
-	ld [hl], SERIAL_NO_DATA_BYTE
-.okay1
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop4
-	ld de, wOTPlayerMailPatchSet
-.loop5
-	ld a, [de]
-	inc de
-	cp SERIAL_PATCH_LIST_PART_TERMINATOR
-	jr z, .start_copying_mail
-	ld hl, wLinkOTMailMetadata
-	dec a
-	ld b, 0
-	ld c, a
-	add hl, bc
-	ld [hl], SERIAL_NO_DATA_BYTE
-	jr .loop5
-
-.start_copying_mail
-	ld hl, wLinkOTMail
-	ld de, wLinkReceivedMail
-	ld b, PARTY_LENGTH
-.copy_mail_loop
-	push bc
-	ld bc, MAIL_MSG_LENGTH + 1
-	call CopyBytes
-	ld a, LOW(MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1))
-	add e
-	ld e, a
-	ld a, HIGH(MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1))
-	adc d
-	ld d, a
-	pop bc
-	dec b
-	jr nz, .copy_mail_loop
-	ld de, wLinkReceivedMail
-	ld b, PARTY_LENGTH
-.copy_author_loop
-	push bc
-	ld a, LOW(MAIL_MSG_LENGTH + 1)
-	add e
-	ld e, a
-	ld a, HIGH(MAIL_MSG_LENGTH + 1)
-	adc d
-	ld d, a
-	ld bc, MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)
-	call CopyBytes
-	pop bc
-	dec b
-	jr nz, .copy_author_loop
-	ld b, PARTY_LENGTH
-	ld de, wLinkReceivedMail
-.fix_mail_loop
-	push bc
-	push de
-	farcall IsMailEuropean
-	ld a, c
-	or a
-	jr z, .next
-	sub $3
-	jr nc, .skip
-	farcall ConvertEnglishMailToFrenchGerman
-	jr .next
-
-.skip
-	cp $2
-	jr nc, .next
-	farcall ConvertEnglishMailToSpanishItalian
-
-.next
-	pop de
-	ld hl, MAIL_STRUCT_LENGTH
-	add hl, de
-	ld d, h
-	ld e, l
-	pop bc
-	dec b
-	jr nz, .fix_mail_loop
-	ld de, wLinkReceivedMailEnd
-	xor a
-	ld [de], a
-
-.skip_mail
 	ld hl, wLinkPlayerName
 	ld de, wOTPlayerName
 	ld bc, NAME_LENGTH
@@ -873,116 +754,8 @@ Link_PrepPartyData_Gen2:
 	cp LINK_TRADECENTER
 	ret nz
 
-; Fill 5 bytes at wLinkPlayerMailPreamble with $20
-	ld de, wLinkPlayerMailPreamble
-	ld a, SERIAL_MAIL_PREAMBLE_BYTE
-	call Link_CopyMailPreamble
-
-; Copy all the mail messages to wLinkPlayerMailMessages
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	ld hl, sPartyMail
-	ld b, PARTY_LENGTH
-.loop2
-	push bc
-	ld bc, MAIL_MSG_LENGTH + 1
-	call CopyBytes
-	ld bc, MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)
-	add hl, bc
-	pop bc
-	dec b
-	jr nz, .loop2
-; Copy the mail data to wLinkPlayerMailMetadata
-	ld hl, sPartyMail
-	ld b, PARTY_LENGTH
-.loop3
-	push bc
-	ld bc, MAIL_MSG_LENGTH + 1
-	add hl, bc
-	ld bc, MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)
-	call CopyBytes
-	pop bc
-	dec b
-	jr nz, .loop3
-	ld b, PARTY_LENGTH
-	ld de, sPartyMail
-	ld hl, wLinkPlayerMailMessages
-.loop4
-	push bc
-	push hl
-	push de
-	push hl
-	farcall IsMailEuropean
-	pop de
-	ld a, c
-	or a
-	jr z, .next
-	sub $3
-	jr nc, .italian_spanish
-	farcall ConvertFrenchGermanMailToEnglish
-	jr .next
-.italian_spanish
-	cp $2
-	jr nc, .next
-	farcall ConvertSpanishItalianMailToEnglish
-.next
-	pop de
-	ld hl, MAIL_STRUCT_LENGTH
-	add hl, de
-	ld d, h
-	ld e, l
-	pop hl
-	ld bc, MAIL_MSG_LENGTH + 1
-	add hl, bc
-	pop bc
-	dec b
-	jr nz, .loop4
-	call CloseSRAM
-
-	ld hl, wLinkPlayerMailMessages
-	ld bc, (MAIL_MSG_LENGTH + 1) * PARTY_LENGTH
-.loop5
-	ld a, [hl]
-	cp SERIAL_NO_DATA_BYTE
-	jr nz, .skip2
-	ld [hl], SERIAL_MAIL_REPLACEMENT_BYTE
-.skip2
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop5
-
-	ld hl, wLinkPlayerMailMetadata
-	ld de, wLinkPlayerMailPatchSet
-	ld b, (MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)) * PARTY_LENGTH
-	ld c, 0
-.loop6
-	inc c
-	ld a, [hl]
-	cp SERIAL_NO_DATA_BYTE
-	jr nz, .skip3
-	ld [hl], SERIAL_PATCH_REPLACEMENT_BYTE
-	ld a, c
-	ld [de], a
-	inc de
-.skip3
-	inc hl
-	dec b
-	jr nz, .loop6
-
 	ld a, SERIAL_PATCH_LIST_PART_TERMINATOR
 	ld [de], a
-	ret
-
-Link_CopyMailPreamble:
-; fill 5 bytes with the value of a, starting at de
-	ld c, SERIAL_MAIL_PREAMBLE_LENGTH
-.loop
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .loop
 	ret
 
 Link_ConvertPartyStruct1to2:
@@ -1755,45 +1528,6 @@ LinkTrade:
 	jp InitTradeMenuDisplay_Delay
 
 .do_trade
-	ld hl, sPartyMail
-	ld a, [wCurTradePartyMon]
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	ld d, h
-	ld e, l
-	ld bc, MAIL_STRUCT_LENGTH
-	add hl, bc
-	ld a, [wCurTradePartyMon]
-	ld c, a
-.copy_mail
-	inc c
-	ld a, c
-	cp PARTY_LENGTH
-	jr z, .copy_player_data
-	push bc
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-	pop bc
-	jr .copy_mail
-
-.copy_player_data
-	ld hl, sPartyMail
-	ld a, [wPartyCount]
-	dec a
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	push hl
-	ld hl, wLinkPlayerMail
-	ld a, [wCurOTTradePartyMon]
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	pop de
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-	call CloseSRAM
-
 ; Buffer player data
 ; nickname
 	ld hl, wPlayerName
@@ -2071,7 +1805,6 @@ CheckTimeCapsuleCompatibility:
 ; 0: Party is okay
 ; 1: At least one Pokémon was introduced in Gen 2
 ; 2: At least one Pokémon has a move that was introduced in Gen 2
-; 3: At least one Pokémon is holding mail
 
 ; If any party Pokémon was introduced in the Gen 2 games, don't let it in.
 	ld hl, wPartySpecies
@@ -2079,30 +1812,13 @@ CheckTimeCapsuleCompatibility:
 .loop
 	ld a, [hli]
 	cp -1
-	jr z, .checkitem
+	jr z, .check_moves
 	cp JOHTO_POKEMON
 	jr nc, .mon_too_new
 	dec b
 	jr nz, .loop
 
-; If any party Pokémon is holding mail, don't let it in.
-.checkitem
-	ld a, [wPartyCount]
-	ld b, a
-	ld hl, wPartyMon1Item
-.itemloop
-	push hl
-	push bc
-	ld d, [hl]
-	farcall ItemIsMail
-	pop bc
-	pop hl
-	jr c, .mon_has_mail
-	ld de, PARTYMON_STRUCT_LENGTH
-	add hl, de
-	dec b
-	jr nz, .itemloop
-
+.check_moves
 ; If any party Pokémon has a move that was introduced in the Gen 2 games, don't let it in.
 	ld hl, wPartyMon1Moves
 	ld a, [wPartyCount]
@@ -2136,11 +1852,6 @@ CheckTimeCapsuleCompatibility:
 	pop bc
 	call GetIncompatibleMonName
 	ld a, $2
-	jr .done
-
-.mon_has_mail
-	call GetIncompatibleMonName
-	ld a, $3
 
 .done
 	ld [wScriptVar], a

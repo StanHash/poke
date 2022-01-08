@@ -211,7 +211,7 @@ _ChangeBoxSaveText::
 	cont "will be saved. OK?"
 	done
 
-_MoveMonWOMailSaveText::
+_MoveMonSaveText::
 	text "Each time you move"
 	line "a #MON, data"
 	cont "will be saved. OK?"

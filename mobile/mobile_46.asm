@@ -6937,30 +6937,6 @@ Function11b483:
 	dec a
 	and a
 	jr nz, .loop7
-	ld de, MAIL_STRUCT_LENGTH
-	ld hl, sPartyMail
-	pop af
-.loop8
-	and a
-	jr z, .okay4
-	add hl, de
-	dec a
-	jr .loop8
-
-.okay4
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	ld a, MAIL_STRUCT_LENGTH
-.loop9
-	push af
-	ld a, [hli]
-	ld [bc], a
-	inc bc
-	pop af
-	dec a
-	and a
-	jr nz, .loop9
-	call CloseSRAM
 	jp Function11ad8a
 
 .InitRAM:
@@ -7194,11 +7170,6 @@ Function11b6b4:
 	ld a, HIGH($c642)
 	ld [wMobileMonNicknamePointer + 1], a
 
-	ld a, LOW($c647) ; Mail
-	ld [wMobileMonMailPointer], a
-	ld a, HIGH($c647)
-	ld [wMobileMonMailPointer + 1], a
-
 	ld a, $46
 	ld [$c628], a
 
@@ -7226,41 +7197,8 @@ Function11b6b4:
 	ld de, $c642
 	lb bc, 1, 5
 	farcall CheckStringContainsLessThanBNextCharacters
-	jr nc, .error_check_mail
-	farcall Mobile_CopyDefaultNickname
-
-.error_check_mail
-	ld de, $c647
-	ld c, MAIL_MSG_LENGTH + 1
-	farcall CheckStringForErrors
-	jr nc, .length_check_mail
-	farcall Mobile_CopyDefaultMail
-
-.length_check_mail
-	ld de, $c647
-	lb bc, 2, MAIL_MSG_LENGTH + 1
-	farcall CheckStringContainsLessThanBNextCharacters
-	jr c, .fix_mail
-	ld a, b
-	cp $2
-	jr nz, .mail_ok
-
-.fix_mail
-	farcall Mobile_CopyDefaultMail
-
-.mail_ok
-	ld de, $c668
-	ld c, $5
-	farcall CheckStringForErrors
-	jr nc, .length_check_author
-	farcall Mobile_CopyDefaultMailAuthor
-
-.length_check_author
-	ld de, $c668
-	lb bc, 1, 5
-	farcall CheckStringContainsLessThanBNextCharacters
 	jr nc, .author_okay
-	farcall Mobile_CopyDefaultMailAuthor
+	farcall Mobile_CopyDefaultNickname
 
 .author_okay
 	ld a, [$c60e]
@@ -7496,10 +7434,6 @@ Function11b93b:
 	ld a, HIGH($c646)
 	ld [wMobileMonNicknamePointer + 1], a
 
-	ld a, LOW($c64b)
-	ld [wMobileMonMailPointer], a
-	ld a, HIGH($c64b)
-	ld [wMobileMonMailPointer + 1], a
 	call AddMobileMonToParty
 	farcall SaveAfterLinkTrade
 	ret
@@ -7584,27 +7518,6 @@ AddMobileMonToParty:
 	call CopyBytes
 	ld a, "@"
 	ld [de], a
-
-	ld hl, sPartyMail
-	ld bc, MAIL_STRUCT_LENGTH
-	ld a, [wMobileMonSpecies]
-.loop5
-	add hl, bc
-	dec a
-	and a
-	jr nz, .loop5
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	ld e, l
-	ld d, h
-	ld a, [wMobileMonMailPointer]
-	ld l, a
-	ld a, [wMobileMonMailPointer + 1]
-	ld h, a
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-
-	call CloseSRAM
 	ret
 
 Function11ba38:

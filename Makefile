@@ -111,12 +111,6 @@ gfx/pokemon/egg/unused_front.2bpp: rgbgfx += -h
 gfx/new_game/shrink1.2bpp: rgbgfx += -h
 gfx/new_game/shrink2.2bpp: rgbgfx += -h
 
-gfx/mail/dragonite.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/large_note.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/surf_mail_border.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/flower_mail_border.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/litebluemail_border.1bpp: tools/gfx += --remove-whitespace
-
 gfx/pokedex/pokedex.2bpp: tools/gfx += --trim-whitespace
 gfx/pokedex/pokedex_sgb.2bpp: tools/gfx += --trim-whitespace
 gfx/pokedex/question_mark.2bpp: rgbgfx += -h

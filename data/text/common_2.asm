@@ -854,63 +854,6 @@ _BreedShowsInterestText::
 	text "."
 	prompt
 
-_EmptyMailboxText::
-	text "There's no MAIL"
-	line "here."
-	prompt
-
-_MailClearedPutAwayText::
-	text "The cleared MAIL"
-	line "was put away."
-	prompt
-
-_MailPackFullText::
-	text "The PACK is full."
-	prompt
-
-_MailMessageLostText::
-	text "The MAIL's message"
-	line "will be lost. OK?"
-	done
-
-_MailAlreadyHoldingItemText::
-	text "It's already hold-"
-	line "ing an item."
-	prompt
-
-_MailEggText::
-	text "An EGG can't hold"
-	line "any MAIL."
-	prompt
-
-_MailMovedFromBoxText::
-	text "The MAIL was moved"
-	line "from the MAILBOX."
-	prompt
-
-_YesPromptText:: ; unreferenced
-	text "Yes"
-	prompt
-
-_NoPromptText:: ; unreferenced
-	text "No"
-	prompt
-
-_AnimationTypeText:: ; unreferenced
-	text_decimal wcf64, 1, 3
-	text " @"
-	text_ram wStringBuffer1
-	text_start
-	line "Animation type @"
-	text_ram wStringBuffer2
-	text_end
-
-	text_end ; unreferenced
-
-_MonNumberText:: ; unreferenced
-	text "#MON number?"
-	done
-
 _WasSentToBillsPCText::
 	text_ram wStringBuffer1
 	text " was"
@@ -925,14 +868,6 @@ _PCGottaHavePokemonText::
 _PCWhatText::
 	text "What?"
 	done
-
-_PCMonHoldingMailText::
-	text "There is a #MON"
-	line "holding MAIL."
-
-	para "Please remove the"
-	line "MAIL."
-	prompt
 
 _PCNoSingleMonText::
 	text "You don't have a"
@@ -1438,11 +1373,6 @@ _PokemonHoldItemText::
 	text "."
 	prompt
 
-_PokemonRemoveMailText::
-	text "Please remove the"
-	line "MAIL first."
-	prompt
-
 _PokemonNotHoldingText::
 	text_ram wMonOrItemNameBuffer
 	text " isn't"
@@ -1477,38 +1407,6 @@ _PokemonAskSwapItemText::
 _ItemCantHeldText::
 	text "This item can't be"
 	line "held."
-	prompt
-
-_MailLoseMessageText::
-	text "The MAIL will lose"
-	line "its message. OK?"
-	done
-
-_MailDetachedText::
-	text "MAIL detached from"
-	line "@"
-	text_ram wStringBuffer1
-	text "."
-	prompt
-
-_MailNoSpaceText::
-	text "There's no space"
-	line "for removing MAIL."
-	prompt
-
-_MailAskSendToPCText::
-	text "Send the removed"
-	line "MAIL to your PC?"
-	done
-
-_MailboxFullText::
-	text "Your PC's MAILBOX"
-	line "is full."
-	prompt
-
-_MailSentToPCText::
-	text "The MAIL was sent"
-	line "to your PC."
 	prompt
 
 _PokemonNotEnoughHPText::

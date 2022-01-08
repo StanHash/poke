@@ -31,7 +31,6 @@ SaveAfterLinkTrade:
 	call SaveChecksum
 	call SaveBackupPokemonData
 	call SaveBackupChecksum
-	farcall BackupPartyMonMail
 	farcall SaveRTC
 	call ResumeGameLogic
 	ret
@@ -70,7 +69,7 @@ Link_SaveGame:
 .refused
 	ret
 
-MoveMonWOMail_SaveGame:
+MoveMon_SaveGame:
 	call PauseGameLogic
 	push de
 	call SaveBox
@@ -81,7 +80,7 @@ MoveMonWOMail_SaveGame:
 	call ResumeGameLogic
 	ret
 
-MoveMonWOMail_InsertMon_SaveGame:
+MoveMon_InsertMon_SaveGame:
 	call PauseGameLogic
 	push de
 	call SaveBox
@@ -102,7 +101,6 @@ MoveMonWOMail_InsertMon_SaveGame:
 	call SaveBackupPlayerData
 	call SaveBackupPokemonData
 	call SaveBackupChecksum
-	farcall BackupPartyMonMail
 	farcall BackupMobileEventIndex
 	farcall SaveRTC
 	call LoadBox
@@ -110,8 +108,8 @@ MoveMonWOMail_InsertMon_SaveGame:
 	ld de, SFX_SAVE
 	jp PlaySFX
 
-StartMoveMonWOMail_SaveGame:
-	ld hl, MoveMonWOMailSaveText
+StartMoveMon_SaveGame:
+	ld hl, MoveMonSaveText
 	call MenuTextbox
 	call YesNoBox
 	call ExitMenu
@@ -245,7 +243,6 @@ SaveGameData:
 	call SaveBackupPokemonData
 	call SaveBackupChecksum
 	call UpdateStackTop
-	farcall BackupPartyMonMail
 	farcall BackupMobileEventIndex
 	farcall SaveRTC
 	ld a, BANK(sBattleTowerChallengeState)
@@ -532,7 +529,6 @@ TryLoadSaveFile:
 	call LoadPlayerData
 	call LoadPokemonData
 	call LoadBox
-	farcall RestorePartyMonMail
 	farcall RestoreMobileEventIndex
 	farcall RestoreMysteryGift
 	call ValidateBackupSave
@@ -549,7 +545,6 @@ TryLoadSaveFile:
 	call LoadBackupPlayerData
 	call LoadBackupPokemonData
 	call LoadBox
-	farcall RestorePartyMonMail
 	farcall RestoreMobileEventIndex
 	farcall RestoreMysteryGift
 	call ValidateSave
@@ -1068,6 +1063,6 @@ ChangeBoxSaveText:
 	text_far _ChangeBoxSaveText
 	text_end
 
-MoveMonWOMailSaveText:
-	text_far _MoveMonWOMailSaveText
+MoveMonSaveText:
+	text_far _MoveMonSaveText
 	text_end

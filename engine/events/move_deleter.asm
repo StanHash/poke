@@ -45,7 +45,7 @@ MoveDeletion:
 	ret
 
 .egg
-	ld hl, .MailEggText
+	ld hl, .EggText
 	call PrintText
 	ret
 
@@ -71,7 +71,7 @@ MoveDeletion:
 	text_far _DeleterForgotMoveText
 	text_end
 
-.MailEggText:
+.EggText:
 	text_far _DeleterEggText
 	text_end
 

@@ -22,14 +22,6 @@ STRING_BUFFER_LENGTH EQU 19
 	const HAVE_AMOUNT ; 1
 	const HAVE_LESS   ; 2
 
-; checkpokemail return values
-	const_def
-	const POKEMAIL_WRONG_MAIL ; 0
-	const POKEMAIL_CORRECT    ; 1
-	const POKEMAIL_REFUSED    ; 2
-	const POKEMAIL_NO_MAIL    ; 3
-	const POKEMAIL_LAST_MON   ; 4
-
 ; askforphonenumber return values
 	const_def
 	const PHONE_CONTACT_GOT     ; 0

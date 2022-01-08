@@ -131,10 +131,9 @@ PC_CheckPartyForPokemon:
 
 	; PlayersPCMenuData.PlayersPCMenuPointers indexes
 	const_def
-	const PLAYERSPCITEM_MAIL_BOX      ; 0
-	const PLAYERSPCITEM_DECORATION    ; 1
-	const PLAYERSPCITEM_LOG_OFF       ; 2
-	const PLAYERSPCITEM_TURN_OFF      ; 3
+	const PLAYERSPCITEM_DECORATION    ; 0
+	const PLAYERSPCITEM_LOG_OFF       ; 1
+	const PLAYERSPCITEM_TURN_OFF      ; 2
 
 BillsPC:
 	call PC_PlayChoosePCSound
@@ -265,12 +264,10 @@ PlayersPCMenuData:
 
 .PlayersPCMenuPointers:
 ; entries correspond to PLAYERSPCITEM_* constants
-	dw PlayerMailBoxMenu,      .MailBox
 	dw PlayerDecorationMenu,   .Decoration
 	dw PlayerLogOffMenu,       .LogOff
 	dw PlayerLogOffMenu,       .TurnOff
 
-.MailBox:      db "MAIL BOX@"
 .Decoration:   db "DECORATION@"
 .TurnOff:      db "TURN OFF@"
 .LogOff:       db "LOG OFF@"
@@ -279,14 +276,12 @@ PlayersPCMenuData:
 ; entries correspond to PLAYERSPC_* constants
 
 	; PLAYERSPC_NORMAL
-	db 2
-	db PLAYERSPCITEM_MAIL_BOX
+	db 1
 	db PLAYERSPCITEM_LOG_OFF
 	db -1 ; end
 
 	; PLAYERSPC_HOUSE
-	db 3
-	db PLAYERSPCITEM_MAIL_BOX
+	db 2
 	db PLAYERSPCITEM_DECORATION
 	db PLAYERSPCITEM_TURN_OFF
 	db -1 ; end
@@ -316,11 +311,6 @@ PlayerDecorationMenu:
 PlayerLogOffMenu:
 	xor a
 	scf
-	ret
-
-PlayerMailBoxMenu:
-	farcall _PlayerMailBoxMenu
-	xor a
 	ret
 
 PC_DisplayText:

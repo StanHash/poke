@@ -906,8 +906,6 @@ wBillsPC_LoadedBox:: db ; 0 if party, 1 - 14 if box, 15 if active box
 wBillsPC_BackupScrollPosition:: db
 wBillsPC_BackupCursorPosition:: db
 wBillsPC_BackupLoadedBox:: db
-wBillsPC_MonHasMail:: db
-	ds 5
 wBillsPCDataEnd::
 
 
@@ -996,33 +994,6 @@ wLinkOTPartyMonTypes::
 for n, 1, PARTY_LENGTH + 1
 wLinkOTPartyMon{d:n}Type:: dw
 endr
-
-
-SECTION UNION "Overworld Map", WRAM0
-
-; link mail data
-	ds 500
-wLinkPlayerMail::
-wLinkPlayerMailPreamble:: ds SERIAL_MAIL_PREAMBLE_LENGTH
-wLinkPlayerMailMessages:: ds (MAIL_MSG_LENGTH + 1) * PARTY_LENGTH
-wLinkPlayerMailMetadata:: ds (MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)) * PARTY_LENGTH
-wLinkPlayerMailPatchSet:: ds 103
-wLinkPlayerMailEnd::
-	ds 10
-wLinkOTMail::
-wLinkOTMailMessages:: ds (MAIL_MSG_LENGTH + 1) * PARTY_LENGTH
-wLinkOTMailMetadata:: ds (MAIL_STRUCT_LENGTH - (MAIL_MSG_LENGTH + 1)) * PARTY_LENGTH
-wOTPlayerMailPatchSet:: ds 103 + SERIAL_MAIL_PREAMBLE_LENGTH
-wLinkOTMailEnd::
-	ds 10
-
-
-SECTION UNION "Overworld Map", WRAM0
-
-; received link mail data
-	ds 500
-wLinkReceivedMail:: ds MAIL_STRUCT_LENGTH * PARTY_LENGTH
-wLinkReceivedMailEnd:: db
 
 
 SECTION UNION "Overworld Map", WRAM0
@@ -1835,12 +1806,6 @@ wSeerCaughtGender:: db
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
-; mail temp storage
-wTempMail:: mailmsg wTempMail
-
-
-SECTION UNION "Miscellaneous WRAM 1", WRAMX
-
 ; bug-catching contest
 wBugContestResults::
 	bugcontestwinner wBugContestFirstPlace
@@ -1971,14 +1936,8 @@ wSwitchItemBuffer:: ds 2 ; may store 1 or 2 bytes
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
 ; switching pokemon in party
-; may store NAME_LENGTH, PARTYMON_STRUCT_LENGTH, or MAIL_STRUCT_LENGTH bytes
+; may store NAME_LENGTH, or PARTYMON_STRUCT_LENGTH bytes
 wSwitchMonBuffer:: ds 48
-
-
-SECTION UNION "Miscellaneous WRAM 1", WRAMX
-
-; giving pokemon mail
-wMonMailMessageBuffer:: ds MAIL_MSG_LENGTH + 1
 
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
@@ -2290,13 +2249,6 @@ NEXTU
 ; elevator data
 wCurElevatorCount:: db
 wCurElevatorFloors:: ds 15
-
-NEXTU
-; mailbox data
-wCurMessageScrollPosition:: db
-wCurMessageIndex:: db
-wMailboxCount:: db
-wMailboxItems:: ds MAILBOX_CAPACITY
 ENDU
 
 wListPointer:: dw
@@ -2527,11 +2479,6 @@ NEXTU
 ; withdraw/deposit items
 wPCItemQuantityChange:: db
 wPCItemQuantity:: db
-
-NEXTU
-; mail
-wCurMailAuthorID:: dw
-wCurMailIndex:: db
 
 NEXTU
 ; kurt

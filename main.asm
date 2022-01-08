@@ -176,7 +176,6 @@ SECTION "bank11", ROMX
 INCLUDE "engine/events/fruit_trees.asm"
 INCLUDE "engine/battle/ai/move.asm"
 INCLUDE "engine/pokedex/pokedex_2.asm"
-INCLUDE "engine/pokemon/mail.asm"
 
 
 SECTION "Crystal Features 1", ROMX
@@ -364,7 +363,6 @@ INCLUDE "engine/events/checkforhiddenitems.asm"
 INCLUDE "engine/events/treemons.asm"
 INCLUDE "engine/events/fishing_gfx.asm"
 INCLUDE "engine/pokegear/radio.asm"
-INCLUDE "engine/pokemon/mail_2.asm"
 
 
 SECTION "Phone Scripts 2", ROMX
@@ -651,11 +649,6 @@ INCLUDE "engine/events/diploma.asm"
 INCLUDE "engine/pokedex/pokedex_3.asm"
 INCLUDE "engine/events/catch_tutorial_input.asm"
 INCLUDE "engine/pokegear/townmap_convertlinebreakcharacters.asm"
-
-
-SECTION "European Mail", ROMX
-
-INCLUDE "engine/pokemon/european_mail.asm"
 
 
 SECTION "Debug Room", ROMX

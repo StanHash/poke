@@ -8,7 +8,7 @@ _SwitchPartyMons:
 	ld [wSwitchMonTo], a
 	cp b
 	jr z, .skip
-	call .SwapMonAndMail
+	call .SwapMon
 	ld a, [wSwitchMonFrom]
 	call .ClearSprite
 	ld a, [wSwitchMonTo]
@@ -39,7 +39,7 @@ _SwitchPartyMons:
 	call WaitPlaySFX
 	ret
 
-.SwapMonAndMail:
+.SwapMon:
 	push hl
 	push de
 	push bc
@@ -108,29 +108,6 @@ _SwitchPartyMons:
 	pop de
 	ld hl, wSwitchMonBuffer
 	call .CopyName
-	ld hl, sPartyMail
-	ld a, [wSwitchMonTo]
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	push hl
-	ld de, wSwitchMonBuffer
-	ld bc, MAIL_STRUCT_LENGTH
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	call CopyBytes
-	ld hl, sPartyMail
-	ld a, [wSwitchMonFrom]
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	pop de
-	push hl
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-	pop de
-	ld hl, wSwitchMonBuffer
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-	call CloseSRAM
 	pop bc
 	pop de
 	pop hl

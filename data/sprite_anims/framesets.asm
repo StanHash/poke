@@ -3,10 +3,8 @@ SpriteAnimFrameData:
 	table_width 2, SpriteAnimFrameData
 	dw .Frameset_00
 	dw .Frameset_PartyMon
-	dw .Frameset_PartyMonWithMail
 	dw .Frameset_PartyMonWithItem
 	dw .Frameset_PartyMonFast
-	dw .Frameset_PartyMonWithMailFast
 	dw .Frameset_PartyMonWithItemFast
 	dw .Frameset_GSTitleTrail
 	dw .Frameset_TextEntryCursor
@@ -78,11 +76,6 @@ SpriteAnimFrameData:
 	frame SPRITE_ANIM_OAMSET_RED_WALK_2,  8
 	dorestart
 
-.Frameset_PartyMonWithMail:
-	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_1,  8
-	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_2,  8
-	dorestart
-
 .Frameset_PartyMonWithItem:
 	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_ITEM_1,  8
 	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_ITEM_2,  8
@@ -91,11 +84,6 @@ SpriteAnimFrameData:
 .Frameset_PartyMonFast:
 	frame SPRITE_ANIM_OAMSET_RED_WALK_1,  4
 	frame SPRITE_ANIM_OAMSET_RED_WALK_2,  4
-	dorestart
-
-.Frameset_PartyMonWithMailFast:
-	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_1,  4
-	frame SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_2,  4
 	dorestart
 
 .Frameset_PartyMonWithItemFast:

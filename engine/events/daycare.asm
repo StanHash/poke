@@ -10,7 +10,6 @@
 	const DAYCARETEXT_LAST_MON
 	const DAYCARETEXT_LAST_ALIVE_MON
 	const DAYCARETEXT_COME_BACK_LATER
-	const DAYCARETEXT_REMOVE_MAIL
 	const DAYCARETEXT_GENIUSES
 	const DAYCARETEXT_ASK_WITHDRAW
 	const DAYCARETEXT_WITHDRAW
@@ -132,9 +131,6 @@ DayCareAskDepositPokemon:
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld a, [wCurPartyMon]
 	call AddNTimes
-	ld d, [hl]
-	farcall ItemIsMail
-	jr c, .HoldingMail
 	ld hl, wPartyMonNicknames
 	ld a, [wCurPartyMon]
 	call GetNickname
@@ -158,11 +154,6 @@ DayCareAskDepositPokemon:
 
 .OutOfUsableMons:
 	ld a, DAYCARETEXT_LAST_ALIVE_MON
-	scf
-	ret
-
-.HoldingMail:
-	ld a, DAYCARETEXT_REMOVE_MAIL
 	scf
 	ret
 
@@ -283,7 +274,6 @@ PrintDayCareText:
 	dw .OnlyOneMonText ; 07
 	dw .LastHealthyMonText ; 08
 	dw .ComeBackLaterText ; 09
-	dw .RemoveMailText ; 0a
 	dw .AreWeGeniusesText ; 0b
 	dw .YourMonHasGrownText ; 0c
 	dw .PerfectHeresYourMonText ; 0d
@@ -320,10 +310,6 @@ PrintDayCareText:
 
 .CantAcceptEggText:
 	text_far _CantAcceptEggText
-	text_end
-
-.RemoveMailText:
-	text_far _RemoveMailText
 	text_end
 
 .LastHealthyMonText:

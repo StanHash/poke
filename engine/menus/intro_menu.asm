@@ -215,8 +215,6 @@ endc
 
 	farcall InitDecorations
 
-	farcall DeletePartyMonMail
-
 	farcall DeleteMobileEventIndex
 
 	call ResetGameTime

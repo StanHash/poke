@@ -111,8 +111,6 @@ ScriptCommandTable:
 	dw Script_checkpoke                  ; 2c
 	dw Script_givepoke                   ; 2d
 	dw Script_giveegg                    ; 2e
-	dw Script_givepokemail               ; 2f
-	dw Script_checkpokemail              ; 30
 	dw Script_checkevent                 ; 31
 	dw Script_clearevent                 ; 32
 	dw Script_setevent                   ; 33
@@ -1720,34 +1718,6 @@ Script_getstring:
 	rst FarCall
 	ld de, wStringBuffer2
 	jp GetStringBuffer
-
-Script_givepokemail:
-	call GetScriptByte
-	ld l, a
-	call GetScriptByte
-	ld h, a
-	ld a, [wScriptBank]
-	call GetFarByte
-	ld b, a
-	push bc
-	inc hl
-	ld bc, MAIL_MSG_LENGTH
-	ld de, wMonMailMessageBuffer
-	ld a, [wScriptBank]
-	call FarCopyBytes
-	pop bc
-	farcall GivePokeMail
-	ret
-
-Script_checkpokemail:
-	call GetScriptByte
-	ld e, a
-	call GetScriptByte
-	ld d, a
-	ld a, [wScriptBank]
-	ld b, a
-	farcall CheckPokeMail
-	ret
 
 Script_giveitem:
 	call GetScriptByte

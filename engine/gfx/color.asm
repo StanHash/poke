@@ -394,51 +394,6 @@ LoadStatsScreenPals:
 	ld a, $1
 	ret
 
-LoadMailPalettes:
-	ld l, e
-	ld h, 0
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	ld de, .MailPals
-	add hl, de
-	call CheckCGB
-	jr nz, .cgb
-	push hl
-	ld hl, PalPacket_Pal01
-	ld de, wSGBPals
-	ld bc, PALPACKET_LENGTH
-	call CopyBytes
-	pop hl
-	inc hl
-	inc hl
-	ld a, [hli]
-	ld [wSGBPals + 3], a
-	ld a, [hli]
-	ld [wSGBPals + 4], a
-	ld a, [hli]
-	ld [wSGBPals + 5], a
-	ld a, [hli]
-	ld [wSGBPals + 6], a
-	ld hl, wSGBPals
-	call PushSGBPals
-	ld hl, BlkPacket_AllPal0
-	call PushSGBPals
-	ret
-
-.cgb
-	ld de, wBGPals1
-	ld bc, 1 palettes
-	ld a, BANK(wBGPals1)
-	call FarCopyWRAM
-	call ApplyPals
-	call WipeAttrmap
-	call ApplyAttrmap
-	ret
-
-.MailPals:
-INCLUDE "gfx/mail/mail.pal"
-
 INCLUDE "engine/gfx/cgb_layouts.asm"
 
 CopyFourPalettes:

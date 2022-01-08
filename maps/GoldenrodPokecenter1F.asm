@@ -91,7 +91,7 @@ GoldenrodPokecenter1FPokefanF:
 	writetext GoldenrodPokecenter1FAskGiveAwayAnEonMailText
 	yesorno
 	iffalse .NoEonMail
-	takeitem EON_MAIL
+	takeitem ITEM_B9
 	iffalse .NoEonMail
 	writetext GoldenrodPokecenter1FPlayerGaveAwayTheEonMailText
 	waitbutton
@@ -111,7 +111,7 @@ GoldenrodPokecenter1FPokefanF:
 	end
 
 .NoRoom:
-	giveitem EON_MAIL
+	giveitem ITEM_B9
 	writetext GoldenrodPokecenter1FPokefanFAnotherTimeThenText
 	waitbutton
 	closetext

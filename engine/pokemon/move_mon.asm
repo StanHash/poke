@@ -1326,47 +1326,10 @@ RemoveMonFromPartyOrBox:
 	ld bc, sBoxMonNicknamesEnd
 .party7
 	call CopyDataUntil
-	; Mail time!
 .finish
 	ld a, [wPokemonWithdrawDepositParameter]
 	and a
-	jp nz, CloseSRAM
-	ld a, [wLinkMode]
-	and a
-	ret nz
-	; Shift mail
-	ld a, BANK(sPartyMail)
-	call OpenSRAM
-	; If this is the last mon in our party, no need to shift mail.
-	ld hl, wPartyCount
-	ld a, [wCurPartyMon]
-	cp [hl]
-	jr z, .close_sram
-	; Shift our mail messages up.
-	ld hl, sPartyMail
-	ld bc, MAIL_STRUCT_LENGTH
-	call AddNTimes
-	push hl
-	add hl, bc
-	pop de
-	ld a, [wCurPartyMon]
-	ld b, a
-.loop2
-	push bc
-	push hl
-	ld bc, MAIL_STRUCT_LENGTH
-	call CopyBytes
-	pop hl
-	push hl
-	ld bc, MAIL_STRUCT_LENGTH
-	add hl, bc
-	pop de
-	pop bc
-	inc b
-	ld a, [wPartyCount]
-	cp b
-	jr nz, .loop2
-.close_sram
+	ret z
 	jp CloseSRAM
 
 ComputeNPCTrademonStats:

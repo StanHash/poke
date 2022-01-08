@@ -320,18 +320,6 @@ giveegg: MACRO
 	db \2 ; level
 ENDM
 
-	const givepokemail_command ; $2f
-givepokemail: MACRO
-	db givepokemail_command
-	dw \1 ; pointer
-ENDM
-
-	const checkpokemail_command ; $30
-checkpokemail: MACRO
-	db checkpokemail_command
-	dw \1 ; pointer
-ENDM
-
 	const checkevent_command ; $31
 checkevent: MACRO
 	db checkevent_command

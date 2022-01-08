@@ -26,7 +26,6 @@ DoAnimFrame:
 	dw AnimSeq_SlotsGolem
 	dw AnimSeq_SlotsChansey
 	dw AnimSeq_SlotsChanseyEgg
-	dw AnimSeq_MailCursor
 	dw AnimSeq_UnusedCursor
 	dw AnimSeq_MemoryGameCursor
 	dw AnimSeq_PokegearArrow
@@ -215,10 +214,6 @@ AnimSeq_GSIntroHoOhLugia:
 
 AnimSeq_NamingScreenCursor:
 	callfar NamingScreen_AnimateCursor
-	ret
-
-AnimSeq_MailCursor:
-	callfar ComposeMail_AnimateCursor
 	ret
 
 AnimSeq_GameFreakLogo:

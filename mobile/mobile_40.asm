@@ -2403,7 +2403,6 @@ Unknown_100fc0:
 	db -1 ; end
 
 Unknown_100feb:
-	macro_100fc0 sPartyMail,           MAIL_STRUCT_LENGTH * PARTY_LENGTH
 	db -1 ; end
 
 Unknown_100ff3:

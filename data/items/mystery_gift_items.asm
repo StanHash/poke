@@ -12,9 +12,9 @@ MysteryGiftItems:
 	db DIRE_HIT
 	db X_SPECIAL
 	db X_ACCURACY
-	db EON_MAIL
-	db MORPH_MAIL
-	db MUSIC_MAIL
+	db ITEM_B9
+	db ITEM_BA
+	db ITEM_BC
 	db MIRACLEBERRY
 	db GOLD_BERRY
 	db REVIVE
@@ -34,6 +34,6 @@ MysteryGiftItems:
 	db HP_UP
 	db PP_UP
 	db RARE_CANDY
-	db BLUESKY_MAIL
-	db MIRAGE_MAIL
+	db ITEM_BB
+	db ITEM_BD
 .End
