@@ -1,5 +1,5 @@
-GetUnownLetter:
-; Return Unown letter in wUnownLetter based on DVs at hl
+GetAltForme:
+; Return Unown letter in wAltForme based on DVs at hl
 
 ; Take the middle 2 bits of each DV and place them in order:
 ;	atk  def  spd  spc
@@ -37,7 +37,7 @@ GetUnownLetter:
 	ldh [hDividend], a
 	ldh [hDividend + 1], a
 	ldh [hDividend + 2], a
-	ld a, $ff / NUM_UNOWN + 1
+	ld a, $ff / NUM_ALT_FORME + 1
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
@@ -45,7 +45,7 @@ GetUnownLetter:
 ; Increment to get 1-26
 	ldh a, [hQuotient + 3]
 	inc a
-	ld [wUnownLetter], a
+	ld [wAltForme], a
 	ret
 
 GetMonFrontpic:
@@ -112,7 +112,7 @@ GetFrontpicPointer:
 	jr .ok
 .unown
 	ld hl, UnownPicPointers
-	ld a, [wUnownLetter]
+	ld a, [wAltForme]
 	ld d, BANK(UnownPicPointers)
 .ok
 	dec a
@@ -197,7 +197,7 @@ GetMonBackpic:
 
 	ld a, [wCurPartySpecies]
 	ld b, a
-	ld a, [wUnownLetter]
+	ld a, [wAltForme]
 	ld c, a
 	ldh a, [rSVBK]
 	push af

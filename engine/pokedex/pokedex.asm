@@ -11,8 +11,6 @@
 	const DEXSTATE_UPDATE_OPTION_SCR
 	const DEXSTATE_SEARCH_RESULTS_SCR
 	const DEXSTATE_UPDATE_SEARCH_RESULTS_SCR
-	const DEXSTATE_UNOWN_MODE
-	const DEXSTATE_UPDATE_UNOWN_MODE
 	const DEXSTATE_EXIT
 
 POKEDEX_SCX EQU 5
@@ -200,8 +198,6 @@ Pokedex_RunJumptable:
 	dw Pokedex_UpdateOptionScreen
 	dw Pokedex_InitSearchResultsScreen
 	dw Pokedex_UpdateSearchResultsScreen
-	dw Pokedex_InitUnownMode
-	dw Pokedex_UpdateUnownMode
 	dw Pokedex_Exit
 
 Pokedex_IncrementDexPointer:
@@ -515,14 +511,7 @@ Pokedex_InitOptionScreen:
 	ret
 
 Pokedex_UpdateOptionScreen:
-	ld a, [wUnlockedUnownMode]
-	and a
-	jr nz, .okay
-	ld de, .NoUnownModeArrowCursorData
-	jr .okay2
-.okay
 	ld de, .ArrowCursorData
-.okay2
 	call Pokedex_MoveArrowCursor
 	call c, Pokedex_DisplayModeDescription
 	ld hl, hJoyPressed
@@ -546,24 +535,16 @@ Pokedex_UpdateOptionScreen:
 	ld [wJumptableIndex], a
 	ret
 
-.NoUnownModeArrowCursorData:
+.ArrowCursorData:
 	db D_UP | D_DOWN, 3
 	dwcoord 2,  4 ; NEW
 	dwcoord 2,  6 ; OLD
 	dwcoord 2,  8 ; ABC
 
-.ArrowCursorData:
-	db D_UP | D_DOWN, 4
-	dwcoord 2,  4 ; NEW
-	dwcoord 2,  6 ; OLD
-	dwcoord 2,  8 ; ABC
-	dwcoord 2, 10 ; UNOWN
-
 .MenuActionJumptable:
 	dw .MenuAction_NewMode
 	dw .MenuAction_OldMode
 	dw .MenuAction_ABCMode
-	dw .MenuAction_UnownMode
 
 .MenuAction_NewMode:
 	ld b, DEXMODE_NEW
@@ -593,12 +574,6 @@ Pokedex_UpdateOptionScreen:
 .skip_changing_mode
 	call Pokedex_BlackOutBG
 	ld a, DEXSTATE_MAIN_SCR
-	ld [wJumptableIndex], a
-	ret
-
-.MenuAction_UnownMode:
-	call Pokedex_BlackOutBG
-	ld a, DEXSTATE_UNOWN_MODE
 	ld [wJumptableIndex], a
 	ret
 
@@ -785,113 +760,6 @@ Pokedex_UpdateSearchResultsScreen:
 	ldh [hSCX], a
 	ld a, $a7
 	ldh [hWX], a
-	ret
-
-Pokedex_InitUnownMode:
-	call Pokedex_LoadUnownFont
-	call Pokedex_DrawUnownModeBG
-	xor a
-	ld [wDexCurUnownIndex], a
-	call Pokedex_LoadUnownFrontpicTiles
-	call Pokedex_UnownModePlaceCursor
-	farcall PrintUnownWord
-	call WaitBGMap
-	ld a, SCGB_POKEDEX_UNOWN_MODE
-	call Pokedex_GetSGBLayout
-	call Pokedex_IncrementDexPointer
-	ret
-
-Pokedex_UpdateUnownMode:
-	ld hl, hJoyPressed
-	ld a, [hl]
-	and A_BUTTON | B_BUTTON
-	jr nz, .a_b
-	call Pokedex_UnownModeHandleDPadInput
-	ret
-
-.a_b
-	call Pokedex_BlackOutBG
-	ld a, DEXSTATE_OPTION_SCR
-	ld [wJumptableIndex], a
-	call DelayFrame
-	call Pokedex_CheckSGB
-	jr nz, .decompress
-	farcall LoadSGBPokedexGFX2
-	jr .done
-
-.decompress
-	ld hl, PokedexLZ
-	ld de, vTiles2 tile $31
-	lb bc, BANK(PokedexLZ), 58
-	call DecompressRequest2bpp
-
-.done
-	ret
-
-Pokedex_UnownModeHandleDPadInput:
-	ld hl, hJoyLast
-	ld a, [hl]
-	and D_RIGHT
-	jr nz, .right
-	ld a, [hl]
-	and D_LEFT
-	jr nz, .left
-	ret
-
-.right
-	ld a, [wDexUnownCount]
-	ld e, a
-	ld hl, wDexCurUnownIndex
-	ld a, [hl]
-	inc a
-	cp e
-	ret nc
-	ld a, [hl]
-	inc [hl]
-	jr .update
-
-.left
-	ld hl, wDexCurUnownIndex
-	ld a, [hl]
-	and a
-	ret z
-	ld a, [hl]
-	dec [hl]
-
-.update
-	push af
-	xor a
-	ldh [hBGMapMode], a
-	pop af
-	call Pokedex_UnownModeEraseCursor
-	call Pokedex_LoadUnownFrontpicTiles
-	call Pokedex_UnownModePlaceCursor
-	farcall PrintUnownWord
-	ld a, $1
-	ldh [hBGMapMode], a
-	call DelayFrame
-	call DelayFrame
-	ret
-
-Pokedex_UnownModeEraseCursor:
-	ld c, " "
-	jr Pokedex_UnownModeUpdateCursorGfx
-
-Pokedex_UnownModePlaceCursor:
-	ld a, [wDexCurUnownIndex]
-	ld c, FIRST_UNOWN_CHAR + NUM_UNOWN ; diamond cursor
-
-Pokedex_UnownModeUpdateCursorGfx:
-	ld e, a
-	ld d, 0
-	ld hl, UnownModeLetterAndCursorCoords + 2
-rept 4
-	add hl, de
-endr
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld [hl], c
 	ret
 
 Pokedex_NextOrPreviousDexEntry:
@@ -1309,9 +1177,9 @@ Pokedex_DrawUnownModeBG:
 	call Pokedex_PlaceFrontpicAtHL
 	ld de, 0
 	ld b, 0
-	ld c, NUM_UNOWN
+	ld c, NUM_ALT_FORME
 .loop
-	ld hl, wUnownDex
+	ld hl, wAltFormeDex
 	add hl, de
 	ld a, [hl]
 	and a
@@ -2331,8 +2199,8 @@ Pokedex_LoadSelectedMonTiles:
 	call Pokedex_GetSelectedMon
 	call Pokedex_CheckSeen
 	jr z, .QuestionMark
-	ld a, [wFirstUnownSeen]
-	ld [wUnownLetter], a
+	ld a, 1 ; TODO: alt forme
+	ld [wAltForme], a
 	ld a, [wTempSpecies]
 	ld [wCurPartySpecies], a
 	call GetBaseData
@@ -2425,32 +2293,32 @@ Pokedex_LoadUnownFont:
 	ld a, BANK(UnownFont)
 	call FarCopyBytes
 	ld hl, sScratch + $188
-	ld bc, (NUM_UNOWN + 1) tiles
+	ld bc, (NUM_ALT_FORME + 1) tiles
 	call Pokedex_InvertTiles
 	ld de, sScratch + $188
 	ld hl, vTiles2 tile FIRST_UNOWN_CHAR
-	lb bc, BANK(Pokedex_LoadUnownFont), NUM_UNOWN + 1
+	lb bc, BANK(Pokedex_LoadUnownFont), NUM_ALT_FORME + 1
 	call Request2bpp
 	call CloseSRAM
 	ret
 
 Pokedex_LoadUnownFrontpicTiles:
-	ld a, [wUnownLetter]
+	ld a, [wAltForme]
 	push af
 	ld a, [wDexCurUnownIndex]
 	ld e, a
 	ld d, 0
-	ld hl, wUnownDex
+	ld hl, wAltFormeDex
 	add hl, de
 	ld a, [hl]
-	ld [wUnownLetter], a
+	ld [wAltForme], a
 	ld a, UNOWN
 	ld [wCurPartySpecies], a
 	call GetBaseData
 	ld de, vTiles2 tile $00
 	predef GetMonFrontpic
 	pop af
-	ld [wUnownLetter], a
+	ld [wAltForme], a
 	ret
 
 _NewPokedexEntry:

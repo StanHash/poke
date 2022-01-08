@@ -111,7 +111,7 @@ _GetVarAction::
 	jp .loadstringbuffer2
 
 .count_unown
-	ld hl, wUnownDex
+	ld hl, wAltFormeDex
 	ld b, 0
 .loop
 	ld a, [hli]
@@ -119,7 +119,7 @@ _GetVarAction::
 	ret z
 	inc b
 	ld a, b
-	cp NUM_UNOWN
+	cp NUM_ALT_FORME
 	jr c, .loop
 	ret
 

@@ -822,7 +822,7 @@ OTString:
 
 StatsScreen_PlaceFrontpic:
 	ld hl, wTempMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	call StatsScreen_GetAnimationParam
 	jr c, .egg
 	and a

@@ -2570,7 +2570,7 @@ wForcedSwitch:: db
 
 wTrainerClass:: db
 
-wUnownLetter:: db
+wAltForme:: db
 
 wMoveSelectionMenuType:: db
 
@@ -3178,9 +3178,7 @@ wEndPokedexCaught::
 wPokedexSeen:: flag_array NUM_POKEMON
 wEndPokedexSeen::
 
-wUnownDex:: ds NUM_UNOWN
-wUnlockedUnowns:: db
-wFirstUnownSeen:: db
+wAltFormeDex:: ds NUM_ALT_FORME
 
 wDayCareMan::
 ; bit 7: active

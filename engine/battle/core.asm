@@ -3469,19 +3469,6 @@ LoadEnemyMonToSwitchTo:
 	ld [wTempEnemyMonSpecies], a
 	ld [wCurPartySpecies], a
 	call LoadEnemyMon
-
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .skip_unown
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .skip_unown
-	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
-.skip_unown
-
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	ld [wEnemyHPAtTimeOfPlayerSwitch], a
@@ -4052,7 +4039,7 @@ SwitchPlayerMon:
 
 SendOutPlayerMon:
 	ld hl, wBattleMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	hlcoord 1, 5
 	ld b, 7
 	ld c, 8
@@ -6171,20 +6158,8 @@ LoadEnemyMon:
 
 ; Species-specfic:
 
-; Unown
-	ld a, [wTempEnemyMonSpecies]
-	cp UNOWN
-	jr nz, .Magikarp
+; Magikarp
 
-; Get letter based on DVs
-	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
-; Can't use any letters that haven't been unlocked
-; If combined with forced shiny battletype, causes an infinite loop
-	call CheckUnownLetter
-	jr c, .GenerateDVs ; try again
-
-.Magikarp:
 ; These filters are untranslated.
 ; They expect at wMagikarpLength a 2-byte value in mm,
 ; but the value is in feet and inches (one byte each).
@@ -6471,55 +6446,6 @@ CheckSleepingTreeMon:
 	ret
 
 INCLUDE "data/wild/treemons_asleep.asm"
-
-CheckUnownLetter:
-; Return carry if the Unown letter hasn't been unlocked yet
-
-	ld a, [wUnlockedUnowns]
-	ld c, a
-	ld de, 0
-
-.loop
-
-; Don't check this set unless it's been unlocked
-	srl c
-	jr nc, .next
-
-; Is our letter in the set?
-	ld hl, UnlockedUnownLetterSets
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-
-	push de
-	ld a, [wUnownLetter]
-	ld de, 1
-	push bc
-	call IsInArray
-	pop bc
-	pop de
-
-	jr c, .match
-
-.next
-; Make sure we haven't gone past the end of the table
-	inc e
-	inc e
-	ld a, e
-	cp UnlockedUnownLetterSets.End - UnlockedUnownLetterSets
-	jr c, .loop
-
-; Hasn't been unlocked, or the letter is invalid
-	scf
-	ret
-
-.match
-; Valid letter
-	and a
-	ret
-
-INCLUDE "data/wild/unlocked_unowns.asm"
 
 SwapBattlerLevels: ; unreferenced
 	push bc
@@ -7953,7 +7879,7 @@ DropPlayerSub:
 	ld a, [wBattleMonSpecies]
 	ld [wCurPartySpecies], a
 	ld hl, wBattleMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles2 tile $31
 	predef GetMonBackpic
 	pop af
@@ -7990,7 +7916,7 @@ DropEnemySub:
 	ld [wCurPartySpecies], a
 	call GetBaseData
 	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles2
 	predef GetAnimatedFrontpic
 	pop af
@@ -8177,17 +8103,6 @@ InitEnemyWildmon:
 	ld de, wWildMonPP
 	ld bc, NUM_MOVES
 	call CopyBytes
-	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
-	ld a, [wCurPartySpecies]
-	cp UNOWN
-	jr nz, .skip_unown
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .skip_unown
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
-.skip_unown
 	ld de, vTiles2
 	predef GetAnimatedFrontpic
 	xor a

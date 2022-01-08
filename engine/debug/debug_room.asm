@@ -336,8 +336,8 @@ DebugRoomMenu_PokedexComp:
 	set STATUSFLAGS_UNOWN_DEX_F, [hl]
 	ld a, UNOWN_A
 	ld [sGameData + (wFirstUnownSeen - wGameData)], a
-	ld hl, sGameData + (wUnownDex - wGameData)
-	ld b, NUM_UNOWN
+	ld hl, sGameData + (wAltFormeDex - wGameData)
+	ld b, NUM_ALT_FORME
 .loop2
 	ld [hli], a
 	inc a
@@ -358,8 +358,8 @@ DebugRoomMenu_PokedexClr:
 	ld bc, wEndPokedexSeen - wPokedexCaught
 	xor a
 	call ByteFill
-	ld hl, sGameData + (wUnownDex - wGameData)
-	ld bc, NUM_UNOWN
+	ld hl, sGameData + (wAltFormeDex - wGameData)
+	ld bc, NUM_ALT_FORME
 	xor a
 	call ByteFill
 	call CloseSRAM

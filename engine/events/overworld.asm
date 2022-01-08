@@ -282,14 +282,9 @@ FlashFunction:
 	ld de, ENGINE_ZEPHYRBADGE
 	farcall CheckBadge
 	jr c, .nozephyrbadge
-	push hl
-	farcall SpecialAerodactylChamber
-	pop hl
-	jr c, .useflash
 	ld a, [wTimeOfDayPalset]
 	cp DARKNESS_PALSET
 	jr nz, .notadarkcave
-.useflash
 	call UseFlash
 	ld a, $81
 	ret
@@ -805,7 +800,6 @@ EscapeRopeOrDig:
 	ret
 
 .escaperope
-	farcall SpecialKabutoChamber
 	ld hl, .UsedEscapeRopeScript
 	call QueueScript
 	ld a, $81

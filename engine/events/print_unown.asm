@@ -2,7 +2,7 @@ UNOWNSTAMP_BOLD_A EQU "♂" ; $ef
 UNOWNSTAMP_BOLD_B EQU "♀" ; $f5
 
 _UnownPrinter:
-	ld a, [wUnownDex]
+	ld a, [wAltFormeDex]
 	and a
 	ret z
 
@@ -112,7 +112,7 @@ _UnownPrinter:
 	ld a, [hl]
 	and a
 	jr nz, .wrap_around_left
-	ld [hl], NUM_UNOWN + 1
+	ld [hl], NUM_ALT_FORME + 1
 .wrap_around_left
 	dec [hl]
 	jr .return
@@ -120,7 +120,7 @@ _UnownPrinter:
 .press_right
 	ld hl, wJumptableIndex
 	ld a, [hl]
-	cp NUM_UNOWN
+	cp NUM_ALT_FORME
 	jr c, .wrap_around_right
 	ld [hl], -1
 .wrap_around_right
@@ -132,10 +132,10 @@ _UnownPrinter:
 
 .UpdateUnownFrontpic:
 	ld a, [wJumptableIndex]
-	cp NUM_UNOWN
+	cp NUM_ALT_FORME
 	jr z, .vacant
 	inc a
-	ld [wUnownLetter], a
+	ld [wAltForme], a
 	ld a, UNOWN
 	ld [wCurPartySpecies], a
 	xor a

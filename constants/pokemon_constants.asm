@@ -274,7 +274,6 @@ NUM_POKEMON EQU const_value - 1
 
 ; Unown forms
 ; indexes for:
-; - UnownWords (see data/pokemon/unown_words.asm)
 ; - UnownPicPointers (see data/pokemon/unown_pic_pointers.asm)
 ; - UnownAnimationPointers (see gfx/pokemon/unown_anim_pointers.asm)
 ; - UnownAnimationIdlePointers (see gfx/pokemon/unown_idle_pointers.asm)
@@ -307,4 +306,4 @@ NUM_POKEMON EQU const_value - 1
 	const UNOWN_X ; 24
 	const UNOWN_Y ; 25
 	const UNOWN_Z ; 26
-NUM_UNOWN EQU const_value - 1 ; 26
+NUM_ALT_FORME EQU const_value - 1 ; 26

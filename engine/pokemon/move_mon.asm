@@ -356,8 +356,8 @@ endr
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
-	predef GetUnownLetter
-	callfar UpdateUnownDex
+	predef GetAltForme
+	callfar UpdateAltFormeDex
 
 .done
 	scf ; When this function returns, the carry flag indicates success vs failure.
@@ -465,13 +465,8 @@ AddTempmonToParty:
 	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
-	predef GetUnownLetter
-	callfar UpdateUnownDex
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .done
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
+	predef GetAltForme
+	callfar UpdateAltFormeDex
 .done
 
 	and a
@@ -1044,8 +1039,8 @@ SendMonIntoBox:
 	cp UNOWN
 	jr nz, .not_unown
 	ld hl, sBoxMon1Personality
-	predef GetUnownLetter
-	callfar UpdateUnownDex
+	predef GetAltForme
+	callfar UpdateAltFormeDex
 
 .not_unown
 	ld hl, sBoxMon1Moves

@@ -56,7 +56,6 @@ RuinsOfAlphAerodactylChamberPuzzle:
 .PuzzleComplete:
 	setevent EVENT_RUINS_OF_ALPH_INNER_CHAMBER_TOURISTS
 	setevent EVENT_SOLVED_AERODACTYL_PUZZLE
-	setflag ENGINE_UNLOCKED_UNOWNS_S_TO_W
 	setmapscene RUINS_OF_ALPH_INNER_CHAMBER, SCENE_RUINSOFALPHINNERCHAMBER_STRANGE_PRESENCE
 	earthquake 30
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -81,8 +80,6 @@ RuinsOfAlphAerodactylChamberDescriptionSign:
 RuinsOfAlphAerodactylChamberWallPatternLeft:
 	opentext
 	writetext RuinsOfAlphAerodactylChamberWallPatternLeftText
-	setval UNOWNWORDS_LIGHT
-	special DisplayUnownWords
 	closetext
 	end
 
@@ -91,8 +88,6 @@ RuinsOfAlphAerodactylChamberWallPatternRight:
 	iftrue .WallOpen
 	opentext
 	writetext RuinsOfAlphAerodactylChamberWallPatternRightText
-	setval UNOWNWORDS_LIGHT
-	special DisplayUnownWords
 	closetext
 	end
 

@@ -331,7 +331,7 @@ DebugColor_InitScreen:
 
 ; mon
 	ld a, UNOWN_A
-	ld [wUnownLetter], a
+	ld [wAltForme], a
 	call GetPokemonName
 	hlcoord 4, 1
 	call PlaceString

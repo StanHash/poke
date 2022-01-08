@@ -626,7 +626,7 @@ GetEggFrontpic:
 	call GetBaseData
 	ld a, MON_PERSONALITY
 	call GetPartyParamLocation
-	predef GetUnownLetter
+	predef GetAltForme
 	pop de
 	predef_jump GetMonFrontpic
 
@@ -637,7 +637,7 @@ GetHatchlingFrontpic:
 	call GetBaseData
 	ld a, MON_PERSONALITY
 	call GetPartyParamLocation
-	predef GetUnownLetter
+	predef GetAltForme
 	pop de
 	predef_jump GetAnimatedFrontpic
 

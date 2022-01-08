@@ -61,7 +61,7 @@ RuinsOfAlphResearchCenterScientist3Script:
 	faceplayer
 	opentext
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .PrinterAvailable
+	ifequal NUM_ALT_FORME, .PrinterAvailable
 	writetext RuinsOfAlphResearchCenterScientist3Text
 	waitbutton
 	closetext
@@ -77,7 +77,7 @@ RuinsOfAlphResearchCenterScientist1Script:
 	faceplayer
 	opentext
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .GotAllUnown
+	ifequal NUM_ALT_FORME, .GotAllUnown
 	checkflag ENGINE_UNOWN_DEX
 	iftrue .GotUnownDex
 	checkevent EVENT_MADE_UNOWN_APPEAR_IN_RUINS
@@ -110,7 +110,7 @@ RuinsOfAlphResearchCenterScientist2Script:
 	faceplayer
 	opentext
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .GotAllUnown
+	ifequal NUM_ALT_FORME, .GotAllUnown
 	checkevent EVENT_MADE_UNOWN_APPEAR_IN_RUINS
 	iftrue .UnownAppeared
 	writetext RuinsOfAlphResearchCenterScientist2Text
@@ -135,7 +135,7 @@ RuinsOfAlphResearchCenterComputer:
 	checkevent EVENT_RUINS_OF_ALPH_RESEARCH_CENTER_SCIENTIST
 	iftrue .SkipChecking
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .GotAllUnown
+	ifequal NUM_ALT_FORME, .GotAllUnown
 .SkipChecking:
 	writetext RuinsOfAlphResearchCenterComputerText
 	waitbutton
@@ -153,7 +153,7 @@ RuinsOfAlphResearchCenterPrinter:
 	checkevent EVENT_RUINS_OF_ALPH_RESEARCH_CENTER_SCIENTIST
 	iftrue .SkipChecking
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .PrinterAvailable
+	ifequal NUM_ALT_FORME, .PrinterAvailable
 .SkipChecking:
 	writetext RuinsOfAlphResearchCenterPrinterText_DoesntWork
 	waitbutton
@@ -356,7 +356,7 @@ RuinsOfAlphResearchCenterComputerText_GotAllUnown:
 	text "Mystery #MON"
 	line "Name: UNOWN"
 
-	para "A total of {d:NUM_UNOWN}"
+	para "A total of {d:NUM_ALT_FORME}"
 	line "kinds found."
 	done
 

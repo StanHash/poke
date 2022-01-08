@@ -906,7 +906,7 @@ BattleAnimCmd_Transform:
 	ld a, [wTempBattleMonSpecies]
 	ld [wCurPartySpecies], a
 	ld hl, wBattleMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles0 tile $00
 	predef GetMonFrontpic
 	jr .done
@@ -915,7 +915,7 @@ BattleAnimCmd_Transform:
 	ld a, [wTempEnemyMonSpecies]
 	ld [wCurPartySpecies], a
 	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles0 tile $00
 	predef GetMonBackpic
 
@@ -1137,14 +1137,14 @@ BattleAnimCmd_BeatUp:
 	jr z, .player
 
 	ld hl, wBattleMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles2 tile $00
 	predef GetMonFrontpic
 	jr .done
 
 .player
 	ld hl, wEnemyMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	ld de, vTiles2 tile $31
 	predef GetMonBackpic
 

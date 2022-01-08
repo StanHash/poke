@@ -26,4 +26,4 @@ UnownBitmasksPointers:
 	dw UnownXBitmasks
 	dw UnownYBitmasks
 	dw UnownZBitmasks
-	assert_table_length NUM_UNOWN
+	assert_table_length NUM_ALT_FORME

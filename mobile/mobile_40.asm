@@ -6406,13 +6406,8 @@ Function102d48:
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld hl, wPartyMon1Personality
 	call AddNTimes
-	predef GetUnownLetter
-	farcall UpdateUnownDex
-	ld a, [wFirstUnownSeen]
-	and a
-	jr nz, .asm_102d98
-	ld a, [wUnownLetter]
-	ld [wFirstUnownSeen], a
+	predef GetAltForme
+	farcall UpdateAltFormeDex
 
 .asm_102d98
 	and a

@@ -795,7 +795,7 @@ INCBIN "gfx/unown_puzzle/tile_borders.2bpp"
 
 LoadUnownPuzzlePiecesGFX:
 	ld a, [wScriptVar]
-	maskbits NUM_UNOWN_PUZZLES
+	maskbits NUM_ALT_FORME_PUZZLES
 	ld e, a
 	ld d, 0
 	ld hl, .LZPointers

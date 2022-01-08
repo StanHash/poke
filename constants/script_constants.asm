@@ -297,7 +297,7 @@ BUG_CONTESTANT_SIZE EQU 4
 	const UNOWNPUZZLE_OMANYTE    ; 1
 	const UNOWNPUZZLE_AERODACTYL ; 2
 	const UNOWNPUZZLE_HO_OH      ; 3
-NUM_UNOWN_PUZZLES EQU const_value
+NUM_ALT_FORME_PUZZLES EQU const_value
 
 ; DisplayUnownWords setval arguments
 ; UnownWalls and MenuHeaders_UnownWalls indexes (see data/events/unown_walls.asm)

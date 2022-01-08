@@ -1061,7 +1061,7 @@ PCMonInfo:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	ld hl, wTempMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	call GetBaseData
 	ld de, vTiles2 tile $00
 	predef GetMonFrontpic
@@ -1664,7 +1664,7 @@ StatsScreenDPad:
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	ld hl, wTempMonPersonality
-	predef GetUnownLetter
+	predef GetAltForme
 	call GetBaseData
 	call BillsPC_CopyMon
 .pressed_a_b_right_left

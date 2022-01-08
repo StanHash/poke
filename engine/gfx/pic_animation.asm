@@ -315,8 +315,8 @@ PokeAnim_InitPicAttributes:
 	call GetFarWRAMByte
 	ld [wPokeAnimSpecies], a
 
-	ld a, BANK(wUnownLetter)
-	ld hl, wUnownLetter
+	ld a, BANK(wAltForme)
+	ld hl, wAltForme
 	call GetFarWRAMByte
 	ld [wPokeAnimUnownLetter], a
 

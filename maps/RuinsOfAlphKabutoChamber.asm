@@ -63,7 +63,6 @@ RuinsOfAlphKabutoChamberPuzzle:
 .PuzzleComplete:
 	setevent EVENT_RUINS_OF_ALPH_INNER_CHAMBER_TOURISTS
 	setevent EVENT_SOLVED_KABUTO_PUZZLE
-	setflag ENGINE_UNLOCKED_UNOWNS_A_TO_K
 	setevent EVENT_RUINS_OF_ALPH_KABUTO_CHAMBER_RECEPTIONIST
 	setmapscene RUINS_OF_ALPH_INNER_CHAMBER, SCENE_RUINSOFALPHINNERCHAMBER_STRANGE_PRESENCE
 	earthquake 30
@@ -84,7 +83,7 @@ RuinsOfAlphKabutoChamberScientistScript:
 	faceplayer
 	opentext
 	readvar VAR_UNOWNCOUNT
-	ifequal NUM_UNOWN, .AllUnownCaught
+	ifequal NUM_ALT_FORME, .AllUnownCaught
 	checkevent EVENT_WALL_OPENED_IN_KABUTO_CHAMBER
 	iftrue .WallOpen
 	checkevent EVENT_SOLVED_KABUTO_PUZZLE
@@ -119,8 +118,6 @@ RuinsOfAlphKabutoChamberDescriptionSign:
 RuinsOfAlphKabutoChamberWallPatternLeft:
 	opentext
 	writetext RuinsOfAlphKabutoChamberWallPatternLeftText
-	setval UNOWNWORDS_ESCAPE
-	special DisplayUnownWords
 	closetext
 	end
 
@@ -129,8 +126,6 @@ RuinsOfAlphKabutoChamberWallPatternRight:
 	iftrue .WallOpen
 	opentext
 	writetext RuinsOfAlphKabutoChamberWallPatternRightText
-	setval UNOWNWORDS_ESCAPE
-	special DisplayUnownWords
 	closetext
 	end
 
