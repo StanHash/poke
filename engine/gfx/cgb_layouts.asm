@@ -37,7 +37,6 @@ CGBLayoutJumptable:
 	dw _CGB_Pokedex
 	dw _CGB_SlotMachine
 	dw _CGB_BetaTitleScreen
-	dw _CGB_GSIntro
 	dw _CGB_Diploma
 	dw _CGB_MapPals
 	dw _CGB_PartyMenu
@@ -55,7 +54,6 @@ CGBLayoutJumptable:
 	dw _CGB_PokedexUnownMode
 	dw _CGB_BillsPC
 	dw _CGB_UnownPuzzle
-	dw _CGB_GamefreakLogo
 	dw _CGB_PlayerOrMonFrontpicPals
 	dw _CGB_TradeTube
 	dw _CGB_TrainerOrMonFrontpicPals
@@ -437,39 +435,6 @@ _CGB_BetaTitleScreen:
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
 	ret
-
-_CGB_GSIntro:
-	ld b, 0
-	ld hl, .Jumptable
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp hl
-
-.Jumptable:
-	dw .ShellderLaprasScene
-	dw .JigglypuffPikachuScene
-	dw .StartersCharizardScene
-
-.ShellderLaprasScene:
-	ld hl, .ShellderLaprasBGPalette
-	ld de, wBGPals1
-	call LoadHLPaletteIntoDE
-	ld hl, .ShellderLaprasOBPals
-	ld de, wOBPals1
-	ld bc, 2 palettes
-	ld a, BANK(wOBPals1)
-	call FarCopyWRAM
-	call WipeAttrmap
-	ret
-
-.ShellderLaprasBGPalette:
-INCLUDE "gfx/intro/gs_shellder_lapras_bg.pal"
-
-.ShellderLaprasOBPals:
-INCLUDE "gfx/intro/gs_shellder_lapras_ob.pal"
 
 .JigglypuffPikachuScene:
 	ld de, wBGPals1
@@ -870,25 +835,6 @@ _CGB_MagnetTrain: ; unused
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
 	ret
-
-_CGB_GamefreakLogo:
-	ld de, wBGPals1
-	ld a, PREDEFPAL_GAMEFREAK_LOGO_BG
-	call GetPredefPal
-	call LoadHLPaletteIntoDE
-	ld hl, .GamefreakDittoPalette
-	ld de, wOBPals1
-	call LoadHLPaletteIntoDE
-	ld hl, .GamefreakDittoPalette
-	ld de, wOBPals1 palette 1
-	call LoadHLPaletteIntoDE
-	call WipeAttrmap
-	call ApplyAttrmap
-	call ApplyPals
-	ret
-
-.GamefreakDittoPalette:
-INCLUDE "gfx/splash/ditto.pal"
 
 _CGB_PlayerOrMonFrontpicPals:
 	ld de, wBGPals1
