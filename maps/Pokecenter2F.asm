@@ -297,78 +297,6 @@ Script_TimeCapsuleClosed:
 	end
 
 LinkReceptionistScript_TimeCapsule:
-	checkevent EVENT_MET_BILL
-	iftrue Script_TimeCapsuleClosed
-	checkflag ENGINE_TIME_CAPSULE
-	iftrue Script_TimeCapsuleClosed
-	special SetBitsForTimeCapsuleRequest
-	faceplayer
-	opentext
-	writetext Text_TimeCapsuleReceptionistIntro
-	yesorno
-	iffalse .Cancel
-	special CheckTimeCapsuleCompatibility
-	ifequal $1, .MonTooNew
-	ifequal $2, .MonMoveTooNew
-	ifequal $3, .MonHasMail
-	writetext Text_PleaseWait
-	special WaitForLinkedFriend
-	iffalse .FriendNotReady
-	writetext Text_MustSaveGame
-	yesorno
-	iffalse .DidNotSave
-	special TryQuickSave
-	iffalse .DidNotSave
-	writetext Text_PleaseWait
-	special CheckLinkTimeout_Receptionist
-	iffalse .LinkTimedOut
-	readmem wOtherPlayerLinkMode
-	iffalse .OK
-	special CheckBothSelectedSameRoom
-	writetext Text_IncompatibleRooms
-	special CloseLink
-	closetext
-	end
-
-.OK:
-	special EnterTimeCapsule
-	writetext Text_PleaseComeIn
-	waitbutton
-	closetext
-	scall TimeCapsuleScript_CheckPlayerGender
-	warpcheck
-	end
-
-.FriendNotReady:
-	special WaitForOtherPlayerToExit
-	writetext YourFriendIsNotReadyText
-	closetext
-	end
-
-.LinkTimedOut:
-	writetext Text_LinkTimedOut
-	sjump .Cancel
-
-.DidNotSave:
-	writetext Text_PleaseComeAgain
-.Cancel:
-	special WaitForOtherPlayerToExit
-	closetext
-	end
-
-.MonTooNew:
-	writetext Text_RejectNewMon
-	closetext
-	end
-
-.MonMoveTooNew:
-	writetext Text_RejectMonWithNewMove
-	closetext
-	end
-
-.MonHasMail:
-	writetext Text_RejectMonWithMail
-	closetext
 	end
 
 Script_LeftCableTradeCenter:
@@ -556,29 +484,6 @@ TimeCapsuleScript_CheckPlayerGender:
 	end
 
 Script_LeftTimeCapsule:
-	special WaitForOtherPlayerToExit
-	checkflag ENGINE_KRIS_IN_CABLE_CLUB
-	iftrue .Female
-	applymovement POKECENTER2F_TIME_CAPSULE_RECEPTIONIST, Pokecenter2FMovementData_ReceptionistStepsLeftLooksRight
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesTwoStepsDown
-	applymovement POKECENTER2F_TIME_CAPSULE_RECEPTIONIST, Pokecenter2FMovementData_ReceptionistStepsRightLooksDown_2
-	sjump .Done
-
-.Female:
-	applymovement POKECENTER2F_TIME_CAPSULE_RECEPTIONIST, Pokecenter2FMovementData_ReceptionistStepsLeftLooksRight
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepDown
-	clearflag ENGINE_KRIS_IN_CABLE_CLUB
-	playsound SFX_TINGLE
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
-	setval (PAL_NPC_BLUE << 4)
-	special SetPlayerPalette
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
-	special UpdatePlayerSprite
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepDown
-	applymovement POKECENTER2F_TIME_CAPSULE_RECEPTIONIST, Pokecenter2FMovementData_ReceptionistStepsRightLooksDown_2
-.Done:
-	setscene SCENE_DEFAULT
-	setmapscene TIME_CAPSULE, SCENE_DEFAULT
 	end
 
 Pokecenter2FLinkRecordSign:
@@ -1027,7 +932,6 @@ Pokecenter2F_MapEvents:
 	warp_event  0,  7, POKECENTER_2F, -1
 	warp_event  5,  0, TRADE_CENTER, 1
 	warp_event  9,  0, COLOSSEUM, 1
-	warp_event 13,  2, TIME_CAPSULE, 1
 	warp_event  6,  0, MOBILE_TRADE_ROOM, 1
 	warp_event 10,  0, MOBILE_BATTLE_ROOM, 1
 
