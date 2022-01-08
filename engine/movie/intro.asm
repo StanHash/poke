@@ -1,6 +1,6 @@
 CrystalIntro:
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ldh a, [rSVBK]
 	push af
 	ld a, BANK(wGBCPalettes)

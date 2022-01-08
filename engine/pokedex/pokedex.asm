@@ -2433,7 +2433,7 @@ Pokedex_LoadGFX:
 Pokedex_LoadInvertedFont:
 	call LoadStandardFont
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ld hl, vTiles1
 	ld bc, $80 tiles
 

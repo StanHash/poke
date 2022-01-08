@@ -74,7 +74,7 @@ Function17c000:
 	call CopyBytes
 
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ldh [rVBK], a
 
 	call EnableLCD
@@ -617,7 +617,7 @@ Function17d370:
 	ld bc, $48 tiles
 	call CopyBytes
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ld hl, vTiles2 tile $7f
 	ld bc, 1 tiles
 	call ByteFill
@@ -665,7 +665,7 @@ Function17d405:
 	ld bc, $48 tiles
 	call CopyBytes
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ld hl, vTiles2 tile $7f
 	ld bc, 1 tiles
 	call ByteFill

@@ -48,7 +48,7 @@ PrintDexEntry:
 	lb bc, BANK(FontInversed), $80
 	call Request1bpp
 	xor a
-	ld [hVramTiles1Kind], a
+	ldh [hVramTiles1Kind], a
 	ldh [hPrinter], a
 	call Printer_PlayMusic
 
