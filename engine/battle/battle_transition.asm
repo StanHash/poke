@@ -1,9 +1,9 @@
 ; BattleTransitionJumptable.Jumptable indexes
 BATTLETRANSITION_CAVE             EQU $01
-BATTLETRANSITION_CAVE_STRONGER    EQU $09
-BATTLETRANSITION_NO_CAVE          EQU $10
-BATTLETRANSITION_NO_CAVE_STRONGER EQU $18
-BATTLETRANSITION_FINISH           EQU $20
+BATTLETRANSITION_CAVE_STRONGER    EQU $08
+BATTLETRANSITION_NO_CAVE          EQU $0e
+BATTLETRANSITION_NO_CAVE_STRONGER EQU $15
+BATTLETRANSITION_FINISH           EQU $1c
 BATTLETRANSITION_END              EQU $80
 
 BATTLETRANSITION_SQUARE EQU "8" ; $fe
@@ -162,43 +162,39 @@ BattleTransitionJumptable:
 	dw StartTrainerBattle_SetUpBGMap ; 02
 	dw StartTrainerBattle_Flash ; 03
 	dw StartTrainerBattle_Flash ; 04
-	dw StartTrainerBattle_Flash ; 05
-	dw StartTrainerBattle_NextScene ; 06
-	dw StartTrainerBattle_SetUpForWavyOutro ; 07
-	dw StartTrainerBattle_SineWave ; 08
+	dw StartTrainerBattle_NextScene ; 05
+	dw StartTrainerBattle_SetUpForWavyOutro ; 06
+	dw StartTrainerBattle_SineWave ; 07
 
 	; BATTLETRANSITION_CAVE_STRONGER
-	dw StartTrainerBattle_LoadPokeBallGraphics ; 09
-	dw StartTrainerBattle_SetUpBGMap ; 0a
+	dw StartTrainerBattle_LoadPokeBallGraphics ; 08
+	dw StartTrainerBattle_SetUpBGMap ; 09
+	dw StartTrainerBattle_Flash ; 0a
 	dw StartTrainerBattle_Flash ; 0b
-	dw StartTrainerBattle_Flash ; 0c
-	dw StartTrainerBattle_Flash ; 0d
-	dw StartTrainerBattle_NextScene ; 0e
+	dw StartTrainerBattle_NextScene ; 0c
 	; There is no setup for this one
-	dw StartTrainerBattle_ZoomToBlack ; 0f
+	dw StartTrainerBattle_ZoomToBlack ; 0d
 
 	; BATTLETRANSITION_NO_CAVE
-	dw StartTrainerBattle_LoadPokeBallGraphics ; 10
-	dw StartTrainerBattle_SetUpBGMap ; 11
-	dw StartTrainerBattle_Flash ; 12
-	dw StartTrainerBattle_Flash ; 13
-	dw StartTrainerBattle_Flash ; 14
-	dw StartTrainerBattle_NextScene ; 15
-	dw StartTrainerBattle_SetUpForSpinOutro ; 16
-	dw StartTrainerBattle_SpinToBlack ; 17
+	dw StartTrainerBattle_LoadPokeBallGraphics ; 0e
+	dw StartTrainerBattle_SetUpBGMap ; 0f
+	dw StartTrainerBattle_Flash ; 10
+	dw StartTrainerBattle_Flash ; 11
+	dw StartTrainerBattle_NextScene ; 12
+	dw StartTrainerBattle_SetUpForSpinOutro ; 13
+	dw StartTrainerBattle_SpinToBlack ; 14
 
 	; BATTLETRANSITION_NO_CAVE_STRONGER
-	dw StartTrainerBattle_LoadPokeBallGraphics ; 18
-	dw StartTrainerBattle_SetUpBGMap ; 19
-	dw StartTrainerBattle_Flash ; 1a
-	dw StartTrainerBattle_Flash ; 1b
-	dw StartTrainerBattle_Flash ; 1c
-	dw StartTrainerBattle_NextScene ; 1d
-	dw StartTrainerBattle_SetUpForRandomScatterOutro ; 1e
-	dw StartTrainerBattle_SpeckleToBlack ; 1f
+	dw StartTrainerBattle_LoadPokeBallGraphics ; 15
+	dw StartTrainerBattle_SetUpBGMap ; 16
+	dw StartTrainerBattle_Flash ; 17
+	dw StartTrainerBattle_Flash ; 18
+	dw StartTrainerBattle_NextScene ; 19
+	dw StartTrainerBattle_SetUpForRandomScatterOutro ; 1a
+	dw StartTrainerBattle_SpeckleToBlack ; 1b
 
 	; BATTLETRANSITION_FINISH
-	dw StartTrainerBattle_Finish ; 20
+	dw StartTrainerBattle_Finish ; 1c
 
 ; transition animations
 	const_def

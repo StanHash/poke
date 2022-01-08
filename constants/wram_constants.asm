@@ -30,16 +30,16 @@ JOYPAD_DISABLE_MON_FAINT_F    EQU 6
 JOYPAD_DISABLE_SGB_TRANSFER_F EQU 7
 
 ; wOptions1::
-TEXT_DELAY_MASK EQU %111
-	const_def 4
-	const NO_TEXT_SCROLL ; 4
-	const STEREO         ; 5
-	const BATTLE_SHIFT   ; 6
-	const BATTLE_SCENE   ; 7
+TEXT_DELAY_MASK EQU %11
+	const_def 2
+	const NO_TEXT_SCROLL ; 2
+	const STEREO         ; 3
+	const BATTLE_SHIFT   ; 4
+	const BATTLE_SCENE   ; 5
 
-TEXT_DELAY_INSTANT EQU %000 ; 0
-TEXT_DELAY_FAST    EQU %001 ; 1
-TEXT_DELAY_SLOW    EQU %010 ; 3
+TEXT_DELAY_INSTANT EQU %00 ; 0
+TEXT_DELAY_FAST    EQU %01 ; 1
+TEXT_DELAY_SLOW    EQU %10 ; 2
 
 ; wTextboxFrame::
 	const_def
