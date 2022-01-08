@@ -110,7 +110,6 @@ MAPOBJECT_COLOR            rb ; 8
 MAPOBJECT_RANGE            rb ; 9
 MAPOBJECT_SCRIPT_POINTER   rw ; a
 MAPOBJECT_EVENT_FLAG       rw ; c
-                           rb_skip 2
 MAPOBJECT_LENGTH EQU _RS
 NUM_OBJECTS EQU 16
 PLAYER_OBJECT EQU 0
