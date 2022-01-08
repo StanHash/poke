@@ -959,26 +959,6 @@ wLinkPlayerPartyMon{d:n}Nickname:: ds MON_NAME_LENGTH
 endr
 
 NEXTU
-; time capsule party data
-wTimeCapsulePlayerData::
-; wTimeCapsulePartyMon1 - wTimeCapsulePartyMon6
-for n, 1, PARTY_LENGTH + 1
-wTimeCapsulePartyMon{d:n}:: red_party_struct wTimeCapsulePartyMon{d:n}
-endr
-
-wTimeCapsulePartyMonOTs::
-; wTimeCapsulePartyMon1OT - wTimeCapsulePartyMon6OT
-for n, 1, PARTY_LENGTH + 1
-wTimeCapsulePartyMon{d:n}OT:: ds NAME_LENGTH
-endr
-
-wTimeCapsulePartyMonNicknames::
-; wTimeCapsulePartyMon1Nickname - wTimeCapsulePartyMon6Nickname
-for n, 1, PARTY_LENGTH + 1
-wTimeCapsulePartyMon{d:n}Nickname:: ds MON_NAME_LENGTH
-endr
-
-NEXTU
 ; link patch lists
 wLinkPatchList1:: ds SERIAL_PATCH_LIST_LENGTH
 wLinkPatchList2:: ds SERIAL_PATCH_LIST_LENGTH
@@ -2639,6 +2619,9 @@ wBaseDefense:: db
 wBaseSpeed:: db
 wBaseSpecialAttack:: db
 wBaseSpecialDefense:: db
+wBaseEVs::
+wBaseHPAtkDefSpdEVs:: db
+wBaseSpAtkSpDefEVs:: db
 wBaseType::
 wBaseType1:: db
 wBaseType2:: db
@@ -2648,9 +2631,7 @@ wBaseItems::
 wBaseItem1:: db
 wBaseItem2:: db
 wBaseGender:: db
-wBaseUnknown1:: db
 wBaseEggSteps:: db
-wBaseUnknown2:: db
 wBasePicSize:: db
 wBaseUnusedFrontpic:: dw
 wBaseUnusedBackpic:: dw

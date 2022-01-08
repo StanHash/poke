@@ -1,4 +1,9 @@
 ; used in data/pokemon/base_stats/*.asm
+evs: MACRO
+	db (\1 << 6) | (\2 << 4) | (\3 << 2) | \4
+	db (\5 << 6) | (\6 << 4)
+ENDM
+
 tmhm: MACRO
 ; initialize bytes to 0
 for n, (NUM_TM_HM_TUTOR + 7) / 8

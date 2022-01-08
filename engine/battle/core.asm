@@ -6255,7 +6255,7 @@ LoadEnemyMon:
 ; Fill stats
 	ld de, wEnemyMonMaxHP
 	ld b, FALSE
-	ld hl, wEnemyMonPersonality - (MON_PERSONALITY - MON_STAT_EXP + 1)
+	ld hl, wEnemyMonPersonality - (MON_PERSONALITY - MON_EVS + 1)
 	predef CalcMonStats
 
 ; If we're in a trainer battle,
@@ -7027,60 +7027,55 @@ GiveExperiencePoints:
 	pop bc
 	jp z, .next_mon
 
-; give stat exp
-	ld hl, MON_STAT_EXP + 1
+; Give EVs
+; e = 0 for no Pokerus, 1 for Pokerus
+	ld e, 0
+	ld hl, MON_POKERUS
 	add hl, bc
-	ld d, h
-	ld e, l
-	ld hl, wEnemyMonBaseStats - 1
-	push bc
-	ld c, NUM_EXP_STATS
-.stat_exp_loop
-	inc hl
-	ld a, [de]
-	add [hl]
-	ld [de], a
-	jr nc, .no_carry_stat_exp
-	dec de
-	ld a, [de]
-	inc a
-	jr z, .stat_exp_maxed_out
-	ld [de], a
-	inc de
-
-.no_carry_stat_exp
-	push hl
-	push bc
-	ld a, MON_POKERUS
-	call GetPartyParamLocation
 	ld a, [hl]
 	and a
-	pop bc
-	pop hl
-	jr z, .stat_exp_awarded
-	ld a, [de]
+	jr z, .no_pokerus
+	inc e
+.no_pokerus
+	ld hl, MON_EVS
+	add hl, bc
+	push bc
+	ld a, [wEnemyMonSpecies]
+	ld [wCurSpecies], a
+	call GetBaseData
+; EV yield format: %hhaaddss %ttff0000
+; h = hp, a = atk, d = def, s = spd
+; t = sat, f = sdf, 0 = unused bits
+	ld a, [wBaseHPAtkDefSpdEVs]
+	ld b, a
+	ld c, NUM_STATS ; six EVs
+.ev_loop
+	rlc b
+	rlc b
+	ld a, b
+	and %11
+	bit 0, e
+	jr z, .no_pokerus_boost
+	add a
+.no_pokerus_boost
 	add [hl]
-	ld [de], a
-	jr nc, .stat_exp_awarded
-	dec de
-	ld a, [de]
-	inc a
-	jr z, .stat_exp_maxed_out
-	ld [de], a
-	inc de
-	jr .stat_exp_awarded
-
-.stat_exp_maxed_out
-	ld a, $ff
-	ld [de], a
-	inc de
-	ld [de], a
-
-.stat_exp_awarded
-	inc de
-	inc de
+	jr c, .ev_overflow
+	cp MAX_EV + 1
+	jr c, .got_ev
+.ev_overflow
+	ld a, MAX_EV
+.got_ev
+	ld [hli], a
 	dec c
-	jr nz, .stat_exp_loop
+	jr z, .evs_done
+; Use the second byte for Sp.Atk and Sp.Def
+	ld a, c
+	cp 2 ; two stats left, Sp.Atk and Sp.Def
+	jr nz, .ev_loop
+	ld a, [wBaseSpAtkSpDefEVs]
+	ld b, a
+	jr .ev_loop
+.evs_done
 	xor a
 	ldh [hMultiplicand + 0], a
 	ldh [hMultiplicand + 1], a
@@ -7233,7 +7228,7 @@ GiveExperiencePoints:
 	add hl, bc
 	ld d, h
 	ld e, l
-	ld hl, MON_STAT_EXP - 1
+	ld hl, MON_EVS - 1
 	add hl, bc
 	push bc
 	ld b, TRUE
@@ -7389,9 +7384,7 @@ GiveExperiencePoints:
 	ret c
 
 	ld [wTempByteValue], a
-	ld hl, wEnemyMonBaseStats
-	ld c, wEnemyMonEnd - wEnemyMonBaseStats
-.base_stat_division_loop
+	ld hl, wEnemyMonBaseExp
 	xor a
 	ldh [hDividend + 0], a
 	ld a, [hl]
@@ -7401,9 +7394,7 @@ GiveExperiencePoints:
 	ld b, 2
 	call Divide
 	ldh a, [hQuotient + 3]
-	ld [hli], a
-	dec c
-	jr nz, .base_stat_division_loop
+	ld [hl], a
 	ret
 
 BoostExp:
