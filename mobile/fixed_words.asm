@@ -2958,11 +2958,6 @@ EZChat_GetSeenPokemonByKana:
 	ld [wcd2e], a
 	ld [hl], a
 
-	ld a, LOW(EZChat_SortedPokemon)
-	ld [wcd2f], a
-	ld a, HIGH(EZChat_SortedPokemon)
-	ld [wcd30], a
-
 	ld a, LOW(wc6a8)
 	ld [wcd31], a
 	ld a, HIGH(wc6a8)
@@ -3029,7 +3024,7 @@ EZChat_GetSeenPokemonByKana:
 	or b
 	jr nz, .loop1
 
-; recover the pointer from wcd2f (default: EZChat_SortedPokemon)
+; recover the pointer from wcd2f
 	ld a, [wcd2f]
 	ld l, a
 	ld a, [wcd30]
@@ -3224,8 +3219,6 @@ EZChat_GetCategoryWordsByKana:
 	pop af
 	ldh [rSVBK], a
 	ret
-
-INCLUDE "data/pokemon/ezchat_order.asm"
 
 SelectStartGFX:
 INCBIN "gfx/mobile/select_start.2bpp"
