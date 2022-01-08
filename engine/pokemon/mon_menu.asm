@@ -416,8 +416,6 @@ MonMailAction:
 ; selecting the mail only allows you to
 ; read the mail.
 	ld a, [wLinkMode]
-	cp LINK_TIMECAPSULE
-	jr z, .read
 	cp LINK_TRADECENTER
 	jr z, .read
 

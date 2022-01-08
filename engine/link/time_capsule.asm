@@ -1,69 +1,5 @@
 ; These functions seem to be related to backwards compatibility
 
-ValidateOTTrademon:
-	ld a, [wCurOTTradePartyMon]
-	ld hl, wOTPartyMon1Species
-	call GetPartyLocation
-	push hl
-	ld a, [wCurOTTradePartyMon]
-	inc a
-	ld c, a
-	ld b, 0
-	ld hl, wOTPartyCount
-	add hl, bc
-	ld a, [hl]
-	pop hl
-	cp EGG
-	jr z, .matching_or_egg
-	cp [hl]
-	jr nz, .abnormal
-
-.matching_or_egg
-	ld b, h
-	ld c, l
-	ld hl, MON_LEVEL
-	add hl, bc
-	ld a, [hl]
-	cp MAX_LEVEL + 1
-	jr nc, .abnormal
-	ld a, [wLinkMode]
-	cp LINK_TIMECAPSULE
-	jr nz, .normal
-	ld hl, wOTPartySpecies
-	ld a, [wCurOTTradePartyMon]
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-
-	; Magnemite and Magneton's types changed
-	; from Electric to Electric/Steel.
-	cp MAGNEMITE
-	jr z, .normal
-	cp MAGNETON
-	jr z, .normal
-
-	ld [wCurSpecies], a
-	call GetBaseData
-	ld hl, wLinkOTPartyMonTypes
-	add hl, bc
-	add hl, bc
-	ld a, [wBaseType1]
-	cp [hl]
-	jr nz, .abnormal
-	inc hl
-	ld a, [wBaseType2]
-	cp [hl]
-	jr nz, .abnormal
-
-.normal
-	and a
-	ret
-
-.abnormal
-	scf
-	ret
-
 CheckAnyOtherAliveMonsForTrade:
 	ld a, [wCurTradePartyMon]
 	ld d, a
@@ -140,5 +76,3 @@ PlaceTradePartnerNamesAndParty:
 	pop bc
 	inc c
 	jr .loop
-
-INCLUDE "data/pokemon/gen1_base_special.asm"
