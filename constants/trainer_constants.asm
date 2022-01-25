@@ -16,7 +16,7 @@ ENDM
 ; - TrainerPicPointers (see data/trainers/pic_pointers.asm)
 ; - TrainerPalettes (see data/trainers/palettes.asm)
 ; - BTTrainerClassSprites (see data/trainers/sprites.asm)
-; - BTTrainerClassGenders (see data/trainers/genders.asm)
+; - TrainerClassGenders (see data/trainers/genders.asm)
 ; trainer constants are Trainers indexes, for the sub-tables of TrainerGroups (see data/trainers/parties.asm)
 CHRIS EQU __trainer_class__
 	trainerclass TRAINER_NONE ; 0

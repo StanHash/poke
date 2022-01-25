@@ -530,6 +530,7 @@ INCLUDE "mobile/mobile_46.asm"
 SECTION "Battle Tower", ROMX
 
 INCLUDE "engine/events/battle_tower/trainer_text.asm"
+INCLUDE "data/trainers/genders.asm"
 
 
 SECTION "bank5B", ROMX
