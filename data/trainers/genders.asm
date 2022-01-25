@@ -1,8 +1,6 @@
-; Used by BattleTowerText
-
-BTTrainerClassGenders:
+TrainerClassGenders:
 ; entries correspond to trainer classes
-	table_width 1, BTTrainerClassGenders
+	table_width 1, TrainerClassGenders
 	db MALE   ; FALKNER
 	db FEMALE ; WHITNEY
 	db FEMALE ; BUGSY
@@ -69,4 +67,5 @@ BTTrainerClassGenders:
 	db MALE   ; BLUE
 	db MALE   ; OFFICER
 	db FEMALE ; GRUNTF
-	assert_table_length NUM_TRAINER_CLASSES - 1 ; exclude MYSTICALMAN
+	db MALE   ; MYSTICALMAN
+	assert_table_length NUM_TRAINER_CLASSES

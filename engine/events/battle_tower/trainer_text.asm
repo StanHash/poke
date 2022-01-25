@@ -12,7 +12,7 @@ BattleTowerText::
 	dec a
 	ld e, a
 	ld d, 0
-	ld hl, BTTrainerClassGenders
+	ld hl, TrainerClassGenders
 	add hl, de
 	ld a, [hl]
 	and a
@@ -75,8 +75,6 @@ BattleTowerText::
 	ret
 
 INCLUDE "mobile/fixed_words.asm"
-
-INCLUDE "data/trainers/genders.asm"
 
 BTMaleTrainerTexts:
 	dw .Greetings
