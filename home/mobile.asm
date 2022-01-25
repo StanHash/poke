@@ -1,5 +1,6 @@
-Function3e32::
-Function3e60::
+
+MobileAPI::
+ReturnMobileAPI::
 MobileReceive::
 MobileTimer::
 Function3eea::
