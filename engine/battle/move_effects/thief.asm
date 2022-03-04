@@ -86,7 +86,7 @@ BattleCommand_Thief:
 	jp StdBattleTextbox
 
 .playeritem
-	ld a, 1
+	ld a, MON_ITEM
 	call BattlePartyAttr
 	ld d, h
 	ld e, l
@@ -94,7 +94,7 @@ BattleCommand_Thief:
 	ret
 
 .enemyitem
-	ld a, 1
+	ld a, MON_ITEM
 	call OTPartyAttr
 	ld d, h
 	ld e, l

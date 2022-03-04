@@ -2166,7 +2166,10 @@ wBattleMenuCursorPosition:: db
 
 	ds 1
 
-wCurBattleMon:: db
+wCurBattleMon:: 
+; index of the player's mon currently in battle (0-5)
+	db
+
 wCurMoveNum:: db
 
 wLastPocket:: db
@@ -2246,9 +2249,7 @@ wMartItemID::
 wCurPartySpecies:: db
 
 wCurPartyMon::
-; contains which monster in a party
-; is being dealt with at the moment
-; 0-5
+; index of mon's party location (0-5)
 	db
 
 wWhichHPBar::
