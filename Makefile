@@ -43,7 +43,7 @@ clean: tidy
 	find gfx/pokemon -mindepth 1 ! -path "gfx/pokemon/unown/*" \( -name "bitmask.asm" -o -name "frames.asm" -o -name "front.animated.tilemap" -o -name "front.dimensions" \) -delete
 
 tidy:
-	rm -f $(rom) $(rom_obj) $(rom:.gbc=.map) $(rom:.gbc=.sym) rgbdscheck.o
+	$(RM) $(rom) $(rom_obj) $(rom:.gbc=.map) $(rom:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
 
 tools:
