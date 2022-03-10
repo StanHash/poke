@@ -46,22 +46,7 @@ MeetMomScript:
 	clearevent EVENT_PLAYERS_HOUSE_MOM_2
 	writetext MomGivesPokegearText
 	promptbutton
-	special SetDayOfWeek
-.SetDayOfWeek:
-	writetext IsItDSTText
-	yesorno
-	iffalse .WrongDay
-	special InitialSetDSTFlag
-	yesorno
-	iffalse .SetDayOfWeek
-	sjump .DayOfWeekDone
-
-.WrongDay:
-	special InitialClearDSTFlag
-	yesorno
-	iffalse .SetDayOfWeek
-.DayOfWeekDone:
-	writetext ComeHomeForDSTText
+	writetext DoYouKnowHowToUsePhoneText
 	yesorno
 	iffalse .ExplainPhone
 	sjump .KnowPhone
@@ -237,27 +222,10 @@ MomGivesPokegearText:
 	para "It's essential if"
 	line "you want to be a"
 	cont "good trainer."
-
-	para "Oh, the day of the"
-	line "week isn't set."
-
-	para "You mustn't forget"
-	line "that!"
 	done
 
-IsItDSTText:
-	text "Is it Daylight"
-	line "Saving Time now?"
-	done
-
-ComeHomeForDSTText:
-	text "Come home to"
-	line "adjust your clock"
-
-	para "for Daylight"
-	line "Saving Time."
-
-	para "By the way, do you"
+DoYouKnowHowToUsePhoneText:
+	text "By the way, do you"
 	line "know how to use"
 	cont "the PHONE?"
 	done

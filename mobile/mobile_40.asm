@@ -985,13 +985,13 @@ IncrementMobileInactivityTimerByCFrames:
 	ret
 
 Function100665:
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wcd36
 	ldh a, [hHours]
 	ld [hli], a
 	ldh a, [hMinutes]
 	ld [hli], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [hl], a
 	ret
 
@@ -1053,14 +1053,14 @@ String1006ca:
 	db "１じかんいじょう@"
 
 Function1006d3:
-	call UpdateTime
+	call GetTimeOfDay
 	ld de, wcd34
 	ld hl, wcd38
 
 Function1006dc:
 	ld a, [hld]
 	ld c, a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	sub c
 	jr nc, .asm_1006e5
 	add $3c
@@ -1116,12 +1116,12 @@ MobileBattleFixTimer:
 Function100720:
 	xor a
 	ld [wcd6a], a
-	call UpdateTime
+	call GetTimeOfDay
 	ldh a, [hHours]
 	ld [wcd72], a
 	ldh a, [hMinutes]
 	ld [wcd73], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [wcd74], a
 	ld a, BANK(sMobileBattleTimer)
 	ld hl, sMobileBattleTimer
@@ -1138,12 +1138,12 @@ Function100720:
 	ret
 
 Function100754:
-	call UpdateTime
+	call GetTimeOfDay
 	ldh a, [hHours]
 	ld [wcd72], a
 	ldh a, [hMinutes]
 	ld [wcd73], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [wcd74], a
 	ld a, [wcd6d]
 	ld [wcd6b], a
@@ -1243,7 +1243,7 @@ Function10079c:
 	ret
 
 Function1007f6:
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wcd74
 	ld de, wcd71
 	call Function1006dc
@@ -1258,7 +1258,7 @@ Function1007f6:
 	ld [wcd72], a
 	ldh a, [hMinutes]
 	ld [wcd73], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [wcd74], a
 	ret
 

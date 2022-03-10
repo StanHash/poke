@@ -49,7 +49,7 @@ NewGame_ClearTilemapEtc:
 	ret
 
 MysteryGift:
-	call UpdateTime
+	call GetTimeOfDay
 	farcall DoMysteryGiftIfDayHasPassed
 	farcall DoMysteryGift
 	ret
@@ -335,7 +335,7 @@ LoadOrRegenerateLuckyIDNumber:
 
 Continue:
 	farcall TryLoadSaveFile
-	jr c, .FailToLoad
+	ret c
 	farcall _LoadData
 	call LoadStandardMenuHeader
 	call DisplaySaveInfoOnContinue
@@ -344,17 +344,10 @@ Continue:
 	ld c, 20
 	call DelayFrames
 	call ConfirmContinue
-	jr nc, .Check1Pass
-	call CloseWindow
-	jr .FailToLoad
+	jr nc, .CheckPass
+	jp CloseWindow
 
-.Check1Pass:
-	call Continue_CheckRTC_RestartClock
-	jr nc, .Check2Pass
-	call CloseWindow
-	jr .FailToLoad
-
-.Check2Pass:
+.CheckPass:
 	ld a, $8
 	ld [wMusicFade], a
 	ld a, LOW(MUSIC_NONE)
@@ -369,16 +362,12 @@ Continue:
 	call DelayFrames
 	farcall JumpRoamMons
 	farcall CopyMysteryGiftReceivedDecorationsToPC
-	farcall ClockContinue
 	ld a, [wSpawnAfterChampion]
 	cp SPAWN_LANCE
 	jr z, .SpawnAfterE4
 	ld a, MAPSETUP_CONTINUE
 	ldh [hMapEntryMethod], a
 	jp FinishContinueFunction
-
-.FailToLoad:
-	ret
 
 .SpawnAfterE4:
 	ld a, SPAWN_NEW_BARK
@@ -442,21 +431,6 @@ ConfirmContinue:
 .PressA:
 	ret
 
-Continue_CheckRTC_RestartClock:
-	call CheckRTCStatus
-	and %10000000 ; Day count exceeded 16383
-	jr z, .pass
-	farcall RestartClock
-	ld a, c
-	and a
-	jr z, .pass
-	scf
-	ret
-
-.pass
-	xor a
-	ret
-
 FinishContinueFunction:
 .loop
 	xor a
@@ -478,21 +452,12 @@ FinishContinueFunction:
 	jr .loop
 
 DisplaySaveInfoOnContinue:
-	call CheckRTCStatus
-	and %10000000
-	jr z, .clock_ok
 	lb de, 4, 8
-	call DisplayContinueDataWithRTCError
-	ret
-
-.clock_ok
-	lb de, 4, 8
-	call DisplayNormalContinueData
-	ret
+	jr DisplayNormalContinueData
 
 DisplaySaveInfoOnSave:
 	lb de, 4, 0
-	jr DisplayNormalContinueData
+	; fallthrough
 
 DisplayNormalContinueData:
 	call Continue_LoadMenuHeader
@@ -630,7 +595,9 @@ Continue_DisplayGameTime:
 	jp PrintNum
 
 OakSpeech:
-	farcall InitClock
+	; TODO: remove real time component of the game
+	; replace with some in game time
+	call ResetTime
 	call RotateFourPalettesLeft
 	call ClearTilemap
 
@@ -962,8 +929,6 @@ Intro_PlacePlayerSprite:
 	const TITLESCREENOPTION_MAIN_MENU
 	const TITLESCREENOPTION_DELETE_SAVE_DATA
 	const TITLESCREENOPTION_RESTART
-	const TITLESCREENOPTION_UNUSED
-	const TITLESCREENOPTION_RESET_CLOCK
 NUM_TITLESCREENOPTIONS EQU const_value
 
 IntroSequence:
@@ -1025,8 +990,6 @@ StartTitleScreen:
 	dw Intro_MainMenu
 	dw DeleteSaveData
 	dw IntroSequence
-	dw IntroSequence
-	dw ResetClock
 
 .TitleScreen:
 	farcall _TitleScreen
@@ -1044,18 +1007,6 @@ RunTitleScreen:
 
 .done_title
 	scf
-	ret
-
-UnusedTitlePerspectiveScroll: ; unreferenced
-; Similar behavior to Intro_PerspectiveScrollBG.
-	ldh a, [hVBlankCounter]
-	and $7
-	ret nz
-	ld hl, wLYOverrides + $5f
-	ld a, [hl]
-	dec a
-	ld bc, 2 * SCREEN_WIDTH
-	call ByteFill
 	ret
 
 TitleScreenScene:
@@ -1163,38 +1114,7 @@ TitleScreenMain:
 	cp  D_UP + B_BUTTON + SELECT
 	jr z, .delete_save_data
 
-; To bring up the clock reset dialog:
-
-; Hold Down + B + Select to initiate the sequence.
-	ldh a, [hClockResetTrigger]
-	cp $34
-	jr z, .check_clock_reset
-
-	ld a, [hl]
-	and D_DOWN + B_BUTTON + SELECT
-	cp  D_DOWN + B_BUTTON + SELECT
-	jr nz, .check_start
-
-	ld a, $34
-	ldh [hClockResetTrigger], a
-	jr .check_start
-
-; Keep Select pressed, and hold Left + Up.
-; Then let go of Select.
-.check_clock_reset
-	bit SELECT_F, [hl]
-	jr nz, .check_start
-
-	xor a
-	ldh [hClockResetTrigger], a
-
-	ld a, [hl]
-	and D_LEFT + D_UP
-	cp  D_LEFT + D_UP
-	jr z, .reset_clock
-
 ; Press Start or A to start the game.
-.check_start
 	ld a, [hl]
 	and START | A_BUTTON
 	jr nz, .incave
@@ -1231,15 +1151,6 @@ TitleScreenMain:
 	inc [hl]
 	ret
 
-.reset_clock
-	ld a, TITLESCREENOPTION_RESET_CLOCK
-	ld [wTitleScreenSelectedOption], a
-
-; Return to the intro sequence.
-	ld hl, wJumptableIndex
-	set 7, [hl]
-	ret
-
 TitleScreenEnd:
 ; Wait until the music is done fading.
 
@@ -1261,61 +1172,6 @@ TitleScreenEnd:
 DeleteSaveData:
 	farcall _DeleteSaveData
 	jp Init
-
-ResetClock:
-	farcall _ResetClock
-	jp Init
-
-UpdateTitleTrailSprite: ; unreferenced
-	; If bit 0 or 1 of [wTitleScreenTimer] is set, we don't need to be here.
-	ld a, [wTitleScreenTimer]
-	and %00000011
-	ret nz
-	ld bc, wSpriteAnim10
-	ld hl, SPRITEANIMSTRUCT_FRAME
-	add hl, bc
-	ld l, [hl]
-	ld h, 0
-	add hl, hl
-	add hl, hl
-	ld de, .TitleTrailCoords
-	add hl, de
-	; If bit 2 of [wTitleScreenTimer] is set, get the second coords; else, get the first coords
-	ld a, [wTitleScreenTimer]
-	and %00000100
-	srl a
-	srl a
-	ld e, a
-	ld d, 0
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	and a
-	ret z
-	ld e, a
-	ld d, [hl]
-	ld a, SPRITE_ANIM_INDEX_GS_TITLE_TRAIL
-	call InitSpriteAnimStruct
-	ret
-
-.TitleTrailCoords:
-trail_coords: MACRO
-rept _NARG / 2
-_dx = 4
-if \1 == 0 && \2 == 0
-_dx = 0
-endc
-	dbpixel \1, \2, _dx, 0
-	shift 2
-endr
-ENDM
-	; frame 0 y, x; frame 1 y, x
-	trail_coords 11, 10,  0,  0
-	trail_coords 11, 13, 11, 11
-	trail_coords 11, 13, 11, 15
-	trail_coords 11, 17, 11, 15
-	trail_coords  0,  0, 11, 15
-	trail_coords  0,  0, 11, 11
 
 Copyright:
 	call ClearTilemap

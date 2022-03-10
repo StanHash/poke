@@ -5,22 +5,9 @@ hFarByte::
 hTempBank:: db
 hSRAMBank:: db
 
-hRTCDayHi::   db
-hRTCDayLo::   db
-hRTCHours::   db
-hRTCMinutes:: db
-hRTCSeconds:: db
-
-	ds 2
-
 hHours:: db
-	ds 1
 hMinutes:: db
-	ds 1
-hSeconds:: db
-	ds 1
-
-	ds 1
+hMinutesDecimal:: db
 
 hVBlankCounter:: db
 
@@ -173,7 +160,6 @@ hSystemBooted:: db
 if DEF(_DEBUG)
 hDebugRoomMenuPage::
 endc
-hClockResetTrigger:: db
 
 hHasAlignedBGMap:: db
 

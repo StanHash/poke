@@ -638,16 +638,6 @@ SECTION UNION "Miscellaneous", WRAM0
 
 ; This union spans 200 bytes.
 UNION
-; timeset temp storage
-wTimeSetBuffer::
-	ds 20
-wInitHourBuffer:: db
-	ds 9
-wInitMinuteBuffer:: db
-	ds 19
-wTimeSetBufferEnd::
-
-NEXTU
 ; hall of fame temp struct
 wHallOfFameTemp:: hall_of_fame wHallOfFameTemp
 
@@ -1769,7 +1759,7 @@ wOptionsEnd::
 
 ; Time buffer, for counting the amount of time since
 ; an event began.
-wSecondsSince:: db
+wMinutesDecimalSince:: db
 wMinutesSince:: db
 wHoursSince:: db
 wDaysSince:: db
@@ -2527,15 +2517,6 @@ wTreeMonCoordScore:: db
 wTreeMonOTIDScore::  db
 
 NEXTU
-; restart clock
-wRestartClockCurDivision::   db
-wRestartClockPrevDivision::  db
-wRestartClockUpArrowYCoord:: db
-wRestartClockDay::  db
-wRestartClockHour:: db
-wRestartClockMin::  db
-
-NEXTU
 ; link
 	ds 9
 wLinkBattleRNPreamble:: ds SERIAL_RN_PREAMBLE_LENGTH
@@ -2830,11 +2811,7 @@ wStartHour::   db
 wStartMinute:: db
 wStartSecond:: db
 
-wRTC:: ds 4
-
-wDST::
-; bit 7: dst
-	db
+wInGameTimeBackup:: ds 4
 
 wGameTime:: ; used only for BANK(wGameTime)
 wGameTimeCap::     db

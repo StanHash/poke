@@ -6803,7 +6803,7 @@ Mobile46_InitJumptable:
 	ld [wcf64], a
 	ld [wcf65], a
 	ld [wcf66], a
-	call UpdateTime
+	call GetTimeOfDay
 	ret
 
 Mobile46_RunJumptable:
@@ -7040,13 +7040,14 @@ Function11b570:
 	push de
 	pop hl
 
-	ldh a, [hRTCMinutes]
+	xor a
+	; ldh a, [hRTCMinutes]
 	ld [hli], a
-	ldh a, [hRTCHours]
+	; ldh a, [hRTCHours]
 	ld [hli], a
-	ldh a, [hRTCDayLo]
+	; ldh a, [hRTCDayLo]
 	ld [hli], a
-	ldh a, [hRTCDayHi]
+	; ldh a, [hRTCDayHi]
 	ld [hl], a
 
 	call CloseSRAM
@@ -7074,7 +7075,7 @@ Function11b5e7:
 Function11b5e8:
 	ld a, $0
 	call OpenSRAM
-	ld hl, wRTC
+	ld hl, wInGameTimeBackup
 	ld de, $c608
 	ld bc, 4
 	call CopyBytes
@@ -7383,32 +7384,37 @@ Function11b879:
 	and a
 	ret z
 	ld hl, wcd4c
-	ldh a, [hRTCDayHi]
+	xor a
+	; ldh a, [hRTCDayHi]
 	cp [hl]
 	ret nz
 	dec hl
-	ldh a, [hRTCDayLo]
+	xor a
+	; ldh a, [hRTCDayLo]
 	cp [hl]
 	ret nz
 	ld hl, wcd4a
-	ldh a, [hRTCHours]
+	xor a
+	; ldh a, [hRTCHours]
 	cp [hl]
 	jr nc, .asm_11b8d8
 	ld a, $18
 	sub [hl]
-	ld hl, hRTCHours
-	add [hl]
+	; ld hl, hRTCHours
+	; add a, [hl]
 	ld [wcd4c], a
-	ldh a, [hRTCMinutes]
+	xor a
+	; ldh a, [hRTCMinutes]
 	ld [wcd4b], a
 	xor a
 	ld [wcd4a], a
 	jr .asm_11b8e2
 
 .asm_11b8d8
-	ldh a, [hRTCMinutes]
+	xor a
+	; ldh a, [hRTCMinutes]
 	ld [wcd4b], a
-	ldh a, [hRTCHours]
+	; ldh a, [hRTCHours]
 	ld [wcd4c], a
 
 .asm_11b8e2

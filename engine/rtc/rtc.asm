@@ -1,36 +1,13 @@
-StopRTC: ; unreferenced
-	ld a, SRAM_ENABLE
-	ld [MBC3SRamEnable], a
-	call LatchClock
-	ld a, RTC_DH
-	ld [MBC3SRamBank], a
-	ld a, [MBC3RTC]
-	set 6, a ; halt
-	ld [MBC3RTC], a
-	call CloseSRAM
-	ret
 
-StartRTC:
-	ld a, SRAM_ENABLE
-	ld [MBC3SRamEnable], a
-	call LatchClock
-	ld a, RTC_DH
-	ld [MBC3SRamBank], a
-	ld a, [MBC3RTC]
-	res 6, a ; halt
-	ld [MBC3RTC], a
-	call CloseSRAM
-	ret
-
-GetTimeOfDay::
+_GetTimeOfDay::
 ; get time of day based on the current hour
 	ldh a, [hHours] ; hour
-	ld hl, TimesOfDay
+	ld hl, .TimesOfDay
 
 .check
 ; if we're within the given time period,
 ; get the corresponding time of day
-	cp [hl]
+	cp a, [hl]
 	jr c, .match
 ; else, get the next entry
 	inc hl
@@ -45,7 +22,7 @@ GetTimeOfDay::
 	ld [wTimeOfDay], a
 	ret
 
-TimesOfDay:
+.TimesOfDay:
 ; hours for the time of day
 ; 0400-0959 morn | 1000-1759 day | 1800-0359 nite
 	db MORN_HOUR, NITE_F
@@ -54,144 +31,87 @@ TimesOfDay:
 	db MAX_HOUR,  NITE_F
 	db -1, MORN_F
 
-BetaTimesOfDay: ; unreferenced
-	db 20, NITE_F
-	db 40, MORN_F
-	db 60, DAY_F
-	db -1, MORN_F
+_ResetTime::
+	ld a, 10
+	ldh [hHours], a
+	xor a
+	ldh [hMinutes], a
+	ldh [hMinutesDecimal], a
+	ld [wCurDay], a
+	ret
 
-StageRTCTimeForSave:
-	call UpdateTime
-	ld hl, wRTC
+BackupInGameTime::
+	ld hl, wInGameTimeBackup
 	ld a, [wCurDay]
 	ld [hli], a
 	ldh a, [hHours]
 	ld [hli], a
 	ldh a, [hMinutes]
 	ld [hli], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [hli], a
 	ret
 
-SaveRTC:
-	ld a, SRAM_ENABLE
-	ld [MBC3SRamEnable], a
-	call LatchClock
-	ld hl, MBC3RTC
-	ld a, RTC_DH
-	ld [MBC3SRamBank], a
-	res 7, [hl]
-	ld a, BANK(sRTCStatusFlags)
-	ld [MBC3SRamBank], a
-	xor a
-	ld [sRTCStatusFlags], a
-	call CloseSRAM
+RestoreInGameTime::
+	ld hl, wInGameTimeBackup
+	ld a, [hli]
+	ld [wCurDay], a
+	ld a, [hli]
+	ldh [hHours], a
+	ld a, [hli]
+	ldh [hMinutes], a
+	ld a, [hli]
+	ldh [hMinutesDecimal], a
 	ret
 
-StartClock::
-	call GetClock
-	call _FixDays
-	call FixDays
-	jr nc, .skip_set
-	; bit 5: Day count exceeds 139
-	; bit 6: Day count exceeds 255
-	call RecordRTCStatus ; set flag on sRTCStatusFlags
+AdvanceTime::
+	; increment minutes decimal
+	ld hl, hMinutesDecimal
+	inc [hl]
+	ret nz
 
-.skip_set
-	call StartRTC
-	ret
+	; if minutes decimal overflow
+	; increment minutes
 
-_FixDays:
-	ld hl, hRTCDayHi
-	bit 7, [hl]
-	jr nz, .set_bit_7
-	bit 6, [hl]
-	jr nz, .set_bit_7
-	xor a
-	ret
-
-.set_bit_7
-	; Day count exceeds 16383
-	ld a, %10000000
-	call RecordRTCStatus ; set bit 7 on sRTCStatusFlags
-	ret
-
-ClockContinue:
-	call CheckRTCStatus
-	ld c, a
-	and %11000000 ; Day count exceeded 255 or 16383
-	jr nz, .time_overflow
-
-	ld a, c
-	and %00100000 ; Day count exceeded 139
-	jr z, .dont_update
-
-	call UpdateTime
-	ld a, [wRTC + 0]
-	ld b, a
-	ld a, [wCurDay]
-	cp b
-	jr c, .dont_update
-
-.time_overflow
-	farcall ClearDailyTimers
-	farcall Function170923
-	ld a, BANK(s5_aa8c) ; aka BANK(s5_b2fa)
-	call OpenSRAM
-	ld a, [s5_aa8c]
+	ld hl, hMinutes
+	ld a, [hl]
 	inc a
-	ld [s5_aa8c], a
-	ld a, [s5_b2fa]
-	inc a
-	ld [s5_b2fa], a
-	call CloseSRAM
+	cp a, 60
+	jr z, .increment_hours
+	ld [hl], a
 	ret
 
-.dont_update
+.increment_hours:
 	xor a
+	ld [hl], a
+
+	; if minutes overflow
+	; increment hours
+
+	ld hl, hHours
+	ld a, [hl]
+	inc a
+	cp a, 24
+	jr z, .increment_days
+	ld [hl], a
 	ret
 
-_InitTime::
-	call GetClock
-	call FixDays
-	ld hl, hRTCSeconds
-	ld de, wStartSecond
+.increment_days:
+	xor a
+	ld [hl], a
 
-	ld a, [wStringBuffer2 + 3]
-	sub [hl]
-	dec hl
-	jr nc, .okay_secs
-	add 60
-.okay_secs
-	ld [de], a
-	dec de
+	; if hours overflow
+	; increment days
 
-	ld a, [wStringBuffer2 + 2]
-	sbc [hl]
-	dec hl
-	jr nc, .okay_mins
-	add 60
-.okay_mins
-	ld [de], a
-	dec de
+	ld hl, wCurDay
+	ld a, [hl]
+	inc a
+	cp a, 7
+	jr z, .reset_days
+	ld [hl], a
+	ret
 
-	ld a, [wStringBuffer2 + 1]
-	sbc [hl]
-	dec hl
-	jr nc, .okay_hrs
-	add 24
-.okay_hrs
-	ld [de], a
-	dec de
-
-	ld a, [wStringBuffer2]
-	sbc [hl]
-	dec hl
-	jr nc, .okay_days
-	add 140
-	ld c, 7
-	call SimpleDivide
-
-.okay_days
-	ld [de], a
+.reset_days:
+	xor a
+	ld [hl], a
 	ret

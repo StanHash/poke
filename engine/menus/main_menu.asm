@@ -35,7 +35,6 @@ MainMenu:
 	res GAME_TIMER_PAUSED_F, [hl]
 	call MainMenu_GetWhichMenu
 	ld [wWhichIndexSet], a
-	call MainMenu_PrintCurrentTimeAndDay
 	ld hl, .MenuHeader
 	call LoadMenuHeader
 	call MainMenuJoypadLoop
@@ -240,7 +239,6 @@ MainMenu_GetWhichMenu:
 MainMenuJoypadLoop:
 	call SetUpMenu
 .loop
-	call MainMenu_PrintCurrentTimeAndDay
 	ld a, [w2DMenuFlags1]
 	set 5, a
 	ld [w2DMenuFlags1], a
@@ -260,103 +258,6 @@ MainMenuJoypadLoop:
 .b_button
 	scf
 	ret
-
-MainMenu_PrintCurrentTimeAndDay:
-	ld a, [wSaveFileExists]
-	and a
-	ret z
-	xor a
-	ldh [hBGMapMode], a
-	call .PlaceBox
-	ld hl, wOptions
-	ld a, [hl]
-	push af
-	set NO_TEXT_SCROLL, [hl]
-	call .PlaceTime
-	pop af
-	ld [wOptions], a
-	ld a, $1
-	ldh [hBGMapMode], a
-	ret
-
-.PlaceBox:
-	call CheckRTCStatus
-	and %10000000 ; Day count exceeded 16383
-	jr nz, .TimeFail
-	hlcoord 0, 14
-	ld b, 2
-	ld c, 18
-	call Textbox
-	ret
-
-.TimeFail:
-	call SpeechTextbox
-	ret
-
-.PlaceTime:
-	ld a, [wSaveFileExists]
-	and a
-	ret z
-	call CheckRTCStatus
-	and $80
-	jp nz, .PrintTimeNotSet
-	call UpdateTime
-	call GetWeekday
-	ld b, a
-	decoord 1, 15
-	call .PrintDayOfWeek
-	decoord 4, 16
-	ldh a, [hHours]
-	ld c, a
-	farcall PrintHour
-	ld [hl], ":"
-	inc hl
-	ld de, hMinutes
-	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
-	call PrintNum
-	ret
-
-.minString: ; unreferenced
-	db "min.@"
-
-.PrintTimeNotSet:
-	hlcoord 1, 14
-	ld de, .TimeNotSetString
-	call PlaceString
-	ret
-
-.TimeNotSetString:
-	db "TIME NOT SET@"
-
-.MainMenuTimeUnknownText: ; unreferenced
-	text_far _MainMenuTimeUnknownText
-	text_end
-
-.PrintDayOfWeek:
-	push de
-	ld hl, .Days
-	ld a, b
-	call GetNthString
-	ld d, h
-	ld e, l
-	pop hl
-	call PlaceString
-	ld h, b
-	ld l, c
-	ld de, .Day
-	call PlaceString
-	ret
-
-.Days:
-	db "SUN@"
-	db "MON@"
-	db "TUES@"
-	db "WEDNES@"
-	db "THURS@"
-	db "FRI@"
-	db "SATUR@"
-.Day:
-	db "DAY@"
 
 ClearTilemapEtc:
 	xor a

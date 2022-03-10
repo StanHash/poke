@@ -94,11 +94,6 @@ SECTION "Roofs", ROMX
 INCLUDE "engine/tilesets/mapgroup_roofs.asm"
 
 
-SECTION "Clock Reset", ROMX
-
-INCLUDE "engine/rtc/restart_clock.asm"
-
-
 SECTION "bank9", ROMX
 
 INCLUDE "data/text_buffers.asm"
@@ -208,7 +203,6 @@ INCLUDE "engine/phone/phonering_copytilemapatonce.asm"
 SECTION "bank13_2", ROMX
 
 INCLUDE "engine/link/link_2.asm"
-INCLUDE "engine/rtc/reset_password.asm"
 INCLUDE "engine/menus/delete_save.asm"
 INCLUDE "data/tilesets.asm"
 INCLUDE "engine/smallflag.asm"
@@ -314,7 +308,6 @@ INCLUDE "engine/gfx/mon_icons.asm"
 SECTION "bank24", ROMX
 
 INCLUDE "engine/phone/phone.asm"
-INCLUDE "engine/rtc/timeset.asm"
 INCLUDE "engine/pokegear/pokegear.asm"
 INCLUDE "engine/events/fish.asm"
 INCLUDE "engine/games/slot_machine.asm"

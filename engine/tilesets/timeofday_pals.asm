@@ -3,7 +3,7 @@ DummyPredef36:
 	ret
 
 UpdateTimeOfDayPal::
-	call UpdateTime
+	call GetTimeOfDay
 	ld a, [wTimeOfDay]
 	ld [wCurTimeOfDay], a
 	call GetTimePalette

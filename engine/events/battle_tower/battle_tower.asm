@@ -1033,7 +1033,7 @@ Function1707ac:
 	cp 2
 	jr nc, .asm_1707ef
 	push bc
-	call UpdateTime
+	call GetTimeOfDay
 	pop bc
 	ld a, BANK(s5_aa8c)
 	call OpenSRAM
@@ -1071,7 +1071,7 @@ Function1707f4:
 	ret
 
 Function170807:
-	call UpdateTime
+	call GetTimeOfDay
 	ld a, BANK(s5_b2f9) ; aka BANK(s5_b2fa)
 	call OpenSRAM
 	ld a, [wCurDay]
@@ -1094,7 +1094,7 @@ Function17081d:
 	cp 2
 	jr nc, .asm_170853
 	push bc
-	call UpdateTime
+	call GetTimeOfDay
 	pop bc
 	ld a, [wCurDay]
 	sub c
@@ -1183,7 +1183,7 @@ CheckMobileEventIndex: ; BattleTowerAction $0b something to do with GS Ball
 	ret
 
 Function1708c8: ; BattleTowerAction $0c
-	call UpdateTime
+	call GetTimeOfDay
 	ld a, BANK(s5_aa8b) ; aka BANK(s5_aa8c), BANK(s5_aa5d), BANK(s5_aa48), and BANK(s5_aa47)
 	call OpenSRAM
 	ld a, [wCurDay]
@@ -1204,7 +1204,7 @@ Function1708c8: ; BattleTowerAction $0c
 Function1708f0: ; BattleTowerAction $0d
 	xor a ; FALSE
 	ld [wScriptVar], a
-	call UpdateTime
+	call GetTimeOfDay
 	ld a, BANK(s5_aa48) ; aka BANK(s5_aa47)
 	call OpenSRAM
 	ld a, [s5_aa48]
@@ -1386,7 +1386,7 @@ Function1709bb: ; BattleTowerAction $10
 .Action5:
 	ld a, 0 ; ???
 	call OpenSRAM
-	ld hl, wRTC
+	ld hl, wInGameTimeBackup
 	ld de, wc608
 	ld bc, 4
 	call CopyBytes

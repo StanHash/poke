@@ -140,8 +140,6 @@ Init::
 	xor a ; LOW(vBGMap1)
 	ldh [hBGMapAddress], a
 
-	farcall StartClock
-
 	xor a ; SRAM_DISABLE
 	ld [MBC3LatchClock], a
 	ld [MBC3SRamEnable], a

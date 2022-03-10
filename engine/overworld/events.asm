@@ -135,11 +135,6 @@ EnterMap:
 	ld [wMapStatus], a
 	ret
 
-UnusedWait30Frames: ; unreferenced
-	ld c, 30
-	call DelayFrames
-	ret
-
 HandleMap:
 	call ResetOverworldDelay
 	call HandleMapTimeAndJoypad
@@ -151,6 +146,7 @@ HandleMap:
 	cp MAPSTATUS_HANDLE
 	ret nz
 
+	farcall AdvanceTime
 	call HandleMapObjects
 	call NextOverworldFrame
 	call HandleMapBackground
@@ -198,7 +194,7 @@ HandleMapTimeAndJoypad:
 	cp MAPEVENTS_OFF
 	ret z
 
-	call UpdateTime
+	call GetTimeOfDay
 	call GetJoypad
 	call TimeOfDayPals
 	ret
@@ -241,13 +237,10 @@ _CheckObjectEnteringVisibleRange:
 	ret
 
 PlayerEvents:
-	xor a
-; If there's already a player event, don't interrupt it.
+	; If there's already a player event, don't interrupt it.
 	ld a, [wScriptRunning]
 	and a
 	ret nz
-
-	call Dummy_CheckScriptFlags2Bit5 ; This is a waste of time
 
 	call CheckTrainerBattle_GetPlayerEvent
 	jr c, .ok
@@ -392,12 +385,6 @@ SetMinTwoStepWildEncounterCooldown:
 	ret nc
 	ld a, 2
 	ld [wWildEncounterCooldown], a
-	ret
-
-Dummy_CheckScriptFlags2Bit5:
-	call CheckBit5_ScriptFlags2
-	ret z
-	call SetXYCompareFlags
 	ret
 
 RunSceneScript:

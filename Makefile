@@ -75,7 +75,7 @@ $(foreach obj, $(rom_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
 endif
 
 
-rom_opt = -Cjv -t PM_CRYSTAL -i BYTE -n 0 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+rom_opt = -Cjv -t PM_CRYSTAL -i BYTE -n 0 -k 01 -l 0x33 -m 0x13 -r 3 -p 0
 
 $(rom): $(rom_obj) layout.link
 	$(RGBLINK) -n $(rom:.gbc=.sym) -m $(rom:.gbc=.map) -l layout.link -o $@ $(rom_obj)

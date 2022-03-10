@@ -6,7 +6,7 @@ UpdateTimeAndPals::
 	cp 0
 	ret z
 
-	call UpdateTime
+	call GetTimeOfDay
 
 ; obj update on?
 	ld a, [wVramState]

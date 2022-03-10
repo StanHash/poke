@@ -903,25 +903,6 @@ _SpaceSpaceColonText:: ; unreferenced
 	text "  :"
 	done
 
-_PasswordAskResetText::
-	text "Password OK."
-	line "Select CONTINUE &"
-	cont "reset settings."
-	prompt
-
-_PasswordWrongText::
-	text "Wrong password!"
-	prompt
-
-_PasswordAskResetClockText::
-	text "Reset the clock?"
-	done
-
-_PasswordAskEnterText::
-	text "Please enter the"
-	line "password."
-	done
-
 _ClearAllSaveDataText::
 	text "Clear all save"
 	line "data?"
@@ -1469,46 +1450,6 @@ _DeleterIntroText::
 _DeleterAskWhichMonText::
 	text "Which #MON?"
 	prompt
-
-_DSTIsThatOKText::
-	text " DST,"
-	line "is that OK?"
-	done
-
-_TimeAskOkayText::
-	text ","
-	line "is that OK?"
-	done
-
-_TimesetAskDSTText::
-	text "Do you want to"
-	line "switch to Daylight"
-	cont "Saving Time?"
-	done
-
-_TimesetDSTText::
-	text "I set the clock"
-	line "forward by one"
-	cont "hour."
-	prompt
-
-_TimesetAskNotDSTText::
-	text "Is Daylight Saving"
-	line "Time over?"
-	done
-
-_TimesetNotDSTText::
-	text "I put the clock"
-	line "back one hour."
-	prompt
-
-_TimesetAskAdjustDSTText::
-	text "Do you want to"
-	line "adjust your clock"
-
-	para "for Daylight"
-	line "Saving Time?"
-	done
 
 _MomLostGearBookletText::
 	text "I lost the in-"

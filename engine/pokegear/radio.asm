@@ -1689,7 +1689,7 @@ BuenasPassword21:
 	jp NextRadioLine
 
 BuenasPasswordCheckTime:
-	call UpdateTime
+	call GetTimeOfDay
 	ldh a, [hHours]
 	cp NITE_HOUR
 	ret

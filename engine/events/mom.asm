@@ -21,15 +21,15 @@ BankOfMom:
 	jumptable .dw, wJumptableIndex
 
 .dw
-	dw .CheckIfBankInitialized
-	dw .InitializeBank
-	dw .IsThisAboutYourMoney
-	dw .AccessBankOfMom
-	dw .StoreMoney
-	dw .TakeMoney
-	dw .StopOrStartSavingMoney
-	dw .JustDoWhatYouCan
-	dw .AskDST
+	dw .CheckIfBankInitialized ; 0
+	dw .InitializeBank ; 1
+	dw .IsThisAboutYourMoney ; 2
+	dw .AccessBankOfMom ; 3
+	dw .StoreMoney ; 4
+	dw .TakeMoney ; 5
+	dw .StopOrStartSavingMoney ; 6
+	dw .JustDoWhatYouCan ; 7
+	dw .Finish ; 8
 
 .CheckIfBankInitialized:
 	ld a, [wMomSavingMoney]
@@ -77,7 +77,7 @@ BankOfMom:
 	jr .done_2
 
 .nope
-	call DSTChecks
+	call LostBooklet
 	ld a, $7
 
 .done_2
@@ -276,102 +276,16 @@ BankOfMom:
 	ld hl, MomJustDoWhatYouCanText
 	call PrintText
 
-.AskDST:
+.Finish:
 	ld hl, wJumptableIndex
 	set 7, [hl]
 	ret
 
-DSTChecks:
-; check the time; avoid changing DST if doing so would change the current day
-	ld a, [wDST]
-	bit 7, a
-	ldh a, [hHours]
-	jr z, .NotDST
-	and a ; within one hour of 00:00?
-	jr z, .LostBooklet
-	jr .loop
-
-.NotDST:
-	cp 23 ; within one hour of 23:00?
-	jr nz, .loop
-	; fallthrough
-
-.LostBooklet:
-	call .ClearBox
-	bccoord 1, 14
-	ld hl, .TimesetAskAdjustDSTText
-	call PlaceHLTextAtBC
-	call YesNoBox
-	ret c
+LostBooklet:
 	call .ClearBox
 	bccoord 1, 14
 	ld hl, .MomLostGearBookletText
-	call PlaceHLTextAtBC
-	ret
-
-.loop
-	call .ClearBox
-	bccoord 1, 14
-	ld a, [wDST]
-	bit 7, a
-	jr z, .SetDST
-	ld hl, .TimesetAskNotDSTText
-	call PlaceHLTextAtBC
-	call YesNoBox
-	ret c
-	ld a, [wDST]
-	res 7, a
-	ld [wDST], a
-	call .SetClockBack
-	call .ClearBox
-	bccoord 1, 14
-	ld hl, .TimesetNotDSTText
-	call PlaceHLTextAtBC
-	ret
-
-.SetDST:
-	ld hl, .TimesetAskDSTText
-	call PlaceHLTextAtBC
-	call YesNoBox
-	ret c
-	ld a, [wDST]
-	set 7, a
-	ld [wDST], a
-	call .SetClockForward
-	call .ClearBox
-	bccoord 1, 14
-	ld hl, .TimesetDSTText
-	call PlaceHLTextAtBC
-	ret
-
-.SetClockForward:
-	ld a, [wStartHour]
-	add 1
-	sub 24
-	jr nc, .DontLoopHourForward
-	add 24
-.DontLoopHourForward:
-	ld [wStartHour], a
-	ccf
-	ld a, [wStartDay]
-	adc 0
-	ld [wStartDay], a
-	ret
-
-.SetClockBack:
-	ld a, [wStartHour]
-	sub 1
-	jr nc, .DontLoopHourBack
-	add 24
-.DontLoopHourBack:
-	ld [wStartHour], a
-	ld a, [wStartDay]
-	sbc 0
-	jr nc, .DontLoopDayBack
-	add 7
-.DontLoopDayBack:
-	ld [wStartDay], a
-	ret
+	jp PlaceHLTextAtBC
 
 .ClearBox:
 	hlcoord 1, 14
@@ -379,28 +293,8 @@ DSTChecks:
 	call ClearBox
 	ret
 
-.TimesetAskAdjustDSTText:
-	text_far _TimesetAskAdjustDSTText
-	text_end
-
 .MomLostGearBookletText:
 	text_far _MomLostGearBookletText
-	text_end
-
-.TimesetAskDSTText:
-	text_far _TimesetAskDSTText
-	text_end
-
-.TimesetDSTText:
-	text_far _TimesetDSTText
-	text_end
-
-.TimesetAskNotDSTText:
-	text_far _TimesetAskNotDSTText
-	text_end
-
-.TimesetNotDSTText:
-	text_far _TimesetNotDSTText
 	text_end
 
 Mom_SetUpWithdrawMenu:

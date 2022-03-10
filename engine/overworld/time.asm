@@ -64,7 +64,7 @@ InitOneDayCountdown:
 InitNDaysCountdown:
 	ld [hl], a
 	push hl
-	call UpdateTime
+	call GetTimeOfDay
 	pop hl
 	inc hl
 	call CopyDayToHL
@@ -83,7 +83,7 @@ CheckDayDependentEventHL:
 RestartReceiveCallDelay:
 	ld hl, wReceiveCallDelay_MinsRemaining
 	ld [hl], a
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wReceiveCallDelay_StartTime
 	call CopyDayHourMinToHL
 	ret
@@ -144,9 +144,9 @@ SampleKenjiBreakCountdown:
 StartBugContestTimer:
 	ld a, BUG_CONTEST_MINUTES
 	ld [wBugContestMinsRemaining], a
-	ld a, BUG_CONTEST_SECONDS
+	ld a, BUG_CONTEST_MINUTES_DECIMAL
 	ld [wBugContestSecsRemaining], a
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wBugContestStartTime
 	call CopyDayHourMinSecToHL
 	ret
@@ -160,7 +160,7 @@ CheckBugContestTimer::
 	ld a, [wHoursSince]
 	and a
 	jr nz, .timed_out
-	ld a, [wSecondsSince]
+	ld a, [wMinutesDecimalSince]
 	ld b, a
 	ld a, [wBugContestSecsRemaining]
 	sub b
@@ -186,7 +186,7 @@ CheckBugContestTimer::
 	ret
 
 InitializeStartDay:
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wTimerEventStartDay
 	call CopyDayToHL
 	ret
@@ -207,7 +207,7 @@ SetUnusedTwoDayTimer: ; unreferenced
 	ld a, 2
 	ld hl, wUnusedTwoDayTimer
 	ld [hl], a
-	call UpdateTime
+	call GetTimeOfDay
 	ld hl, wUnusedTwoDayTimerStartDate
 	call CopyDayToHL
 	ret
@@ -317,7 +317,7 @@ GetSecondsSinceIfLessThan60: ; unreferenced
 	jr nz, GetTimeElapsed_ExceedsUnitLimit
 	ld a, [wMinutesSince]
 	jr nz, GetTimeElapsed_ExceedsUnitLimit
-	ld a, [wSecondsSince]
+	ld a, [wMinutesDecimalSince]
 	ret
 
 GetMinutesSinceIfLessThan60:
@@ -364,15 +364,12 @@ CalcSecsMinsHoursDaysSince:
 	inc hl
 	inc hl
 	inc hl
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld c, a
-	sub [hl]
-	jr nc, .skip
-	add 60
-.skip
-	ld [hl], c ; current seconds
+	sub a, [hl]
+	ld [hl], c
 	dec hl
-	ld [wSecondsSince], a ; seconds since
+	ld [wMinutesDecimalSince], a ; seconds since
 
 _CalcMinsHoursDaysSince:
 	ldh a, [hMinutes]
@@ -414,7 +411,7 @@ CopyDayHourMinSecToHL:
 	ld [hli], a
 	ldh a, [hMinutes]
 	ld [hli], a
-	ldh a, [hSeconds]
+	ldh a, [hMinutesDecimal]
 	ld [hli], a
 	ret
 
