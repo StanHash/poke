@@ -1,48 +1,17 @@
 ; Functions to fade the screen in and out.
 
-TimeOfDayFade:: ; unreferenced
-	ld a, [wTimeOfDayPal]
-	ld b, a
-	ld hl, IncGradGBPalTable_11
-	ld a, l
-	sub b
-	ld l, a
-	jr nc, .okay
-	dec h
-
-.okay
-	ld a, [hli]
-	ldh [rBGP], a
-	ld a, [hli]
-	ldh [rOBP0], a
-	ld a, [hli]
-	ldh [rOBP1], a
-	ret
-
+; fade from white
 RotateFourPalettesRight::
-	ldh a, [hCGB]
-	and a
-	jr z, .dmg
 	ld hl, IncGradGBPalTable_00
 	ld b, 4
 	jr RotatePalettesRight
 
-.dmg
-	ld hl, IncGradGBPalTable_08
-	ld b, 4
-	jr RotatePalettesRight
-
+; fade to black
 RotateThreePalettesRight::
-	ldh a, [hCGB]
-	and a
-	jr z, .dmg
 	ld hl, IncGradGBPalTable_05
 	ld b, 3
-	jr RotatePalettesRight
+	; fallthrough
 
-.dmg
-	ld hl, IncGradGBPalTable_13
-	ld b, 3
 RotatePalettesRight::
 ; Rotate palettes to the right and fill with loaded colors from the left
 ; If we're already at the leftmost color, fill with the leftmost color
@@ -54,37 +23,25 @@ RotatePalettesRight::
 	ld a, [hli]
 	ld d, a
 	call DmgToCgbObjPals
-	ld c, 8
+	ld c, 4
 	call DelayFrames
 	pop de
 	dec b
 	jr nz, RotatePalettesRight
 	ret
 
+; fade to white
 RotateFourPalettesLeft::
-	ldh a, [hCGB]
-	and a
-	jr z, .dmg
 	ld hl, IncGradGBPalTable_04 - 1
 	ld b, 4
 	jr RotatePalettesLeft
 
-.dmg
-	ld hl, IncGradGBPalTable_12 - 1
-	ld b, 4
-	jr RotatePalettesLeft
-
+; fade from black
 RotateThreePalettesLeft::
-	ldh a, [hCGB]
-	and a
-	jr z, .dmg
 	ld hl, IncGradGBPalTable_07 - 1
 	ld b, 3
 	jr RotatePalettesLeft
 
-.dmg
-	ld hl, IncGradGBPalTable_15 - 1
-	ld b, 3
 RotatePalettesLeft::
 ; Rotate palettes to the left and fill with loaded colors from the right
 ; If we're already at the rightmost color, fill with the rightmost color
@@ -96,13 +53,14 @@ RotatePalettesLeft::
 	call DmgToCgbObjPals
 	ld a, [hld]
 	call DmgToCgbBGPals
-	ld c, 8
+	ld c, 4
 	call DelayFrames
 	pop de
 	dec b
 	jr nz, RotatePalettesLeft
 	ret
 
+;                           bgp      obp1     obp2
 IncGradGBPalTable_00:: dc 3,3,3,3, 3,3,3,3, 3,3,3,3
 IncGradGBPalTable_01:: dc 3,3,3,2, 3,3,3,2, 3,3,3,2
 IncGradGBPalTable_02:: dc 3,3,2,1, 3,3,2,1, 3,3,2,1
@@ -114,13 +72,3 @@ IncGradGBPalTable_06:: dc 1,0,0,0, 1,0,0,0, 1,0,0,0
 
 IncGradGBPalTable_07:: dc 0,0,0,0, 0,0,0,0, 0,0,0,0
 ;                           bgp      obp1     obp2
-IncGradGBPalTable_08:: dc 3,3,3,3, 3,3,3,3, 3,3,3,3
-IncGradGBPalTable_09:: dc 3,3,3,2, 3,3,3,2, 3,3,2,0
-IncGradGBPalTable_10:: dc 3,3,2,1, 3,2,1,0, 3,2,1,0
-IncGradGBPalTable_11:: dc 3,2,1,0, 3,1,0,0, 3,2,0,0
-
-IncGradGBPalTable_12:: dc 3,2,1,0, 3,1,0,0, 3,2,0,0
-IncGradGBPalTable_13:: dc 2,1,0,0, 2,0,0,0, 2,1,0,0
-IncGradGBPalTable_14:: dc 1,0,0,0, 1,0,0,0, 1,0,0,0
-
-IncGradGBPalTable_15:: dc 0,0,0,0, 0,0,0,0, 0,0,0,0
